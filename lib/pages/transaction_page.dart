@@ -20,6 +20,8 @@ class _TransactionPageState extends State<TransactionPage> {
   TextEditingController amountController = TextEditingController();
   TextEditingController deskripsiController = TextEditingController();
   String dbDate = '';
+  List<String> list = ["Makan", "Jajan", "Transportasi"];
+  late String dropdownValue = list.first;
 
   // Parameter untuk ImageInput
   File? savedImage;
@@ -114,6 +116,32 @@ class _TransactionPageState extends State<TransactionPage> {
                           ),
                         ),
 
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              hintText: 'Pilih Kategori',
+                            ),
+                            isExpanded: true,
+                            value: dropdownValue,
+                            icon: Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                                color: primary,
+                              ),
+                            ),
+                            items: list
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {},
+                          ),
+                        ),
+
                         SizedBox(
                           height: 25,
                         ),
@@ -138,7 +166,7 @@ class _TransactionPageState extends State<TransactionPage> {
                         ),
                         Center(
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 70, 16, 10),
+                            padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
                             child: Row(
                               children: [
                                 Expanded(
