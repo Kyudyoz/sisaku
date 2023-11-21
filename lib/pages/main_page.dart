@@ -251,9 +251,7 @@ class _MainPageState extends State<MainPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: (currentIndex == 0 || currentIndex == 4)
-                      ? primary
-                      : Colors.black,
+                  color: (currentIndex == 0) ? primary : Colors.black,
                 ),
               ),
             ),
@@ -271,6 +269,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
             ),
+
             Expanded(
               child: IconButton(
                 onPressed: () {
