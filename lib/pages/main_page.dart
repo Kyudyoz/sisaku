@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
               },
             )
           : PreferredSize(
-              preferredSize: Size.fromHeight(174),
+              preferredSize: Size.fromHeight(200),
               child: Container(
                 color: primary,
                 child: Padding(
