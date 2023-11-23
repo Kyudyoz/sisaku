@@ -79,14 +79,12 @@ class _MainPageState extends State<MainPage> {
               },
             )
           : PreferredSize(
-              preferredSize: Size.fromHeight(200),
+              preferredSize:
+                  Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
               child: Container(
                 color: primary,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 50,
-                    horizontal: 16,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
                   child: (currentIndex == 1 || currentIndex == 4)
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
