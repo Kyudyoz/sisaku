@@ -44,6 +44,7 @@ dependencies:
   path: ^1.8.3
   provider: ^6.1.0
   image_picker: ^1.0.4
+  pie_chart: any
 
 dev_dependencies:
   flutter_test:

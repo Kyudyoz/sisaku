@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:sisaku/colors.dart';
 
 class RekapPage extends StatefulWidget {
@@ -11,6 +12,12 @@ class RekapPage extends StatefulWidget {
 
 class _RekapPageState extends State<RekapPage> {
   late int r;
+
+  Map<String, double> dataMap = {
+    "Balance": 253000,
+    "Belanja Bulanan": 35000,
+    "Makan dan Minum": 12000,
+  };
 
   @override
   void initState() {
@@ -162,7 +169,7 @@ class _RekapPageState extends State<RekapPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            (r != 3)
+                            (r == 3)
                                 ? Padding(
                                     padding: const EdgeInsets.only(bottom: 85),
                                     child: Column(
@@ -180,13 +187,26 @@ class _RekapPageState extends State<RekapPage> {
                                   )
                                 : Column(
                                     children: [
-                                      Image.asset(
-                                        'assets/img/tes.png',
-                                        width: 200,
-                                      ),
-                                      Text(
-                                        "Tidak Ada Data",
-                                        style: GoogleFonts.montserrat(),
+                                      // Image.asset(
+                                      //   'assets/img/tes.png',
+                                      //   width: 200,
+                                      // ),
+                                      // Text(
+                                      //   "Tidak Ada Data",
+                                      //   style: GoogleFonts.montserrat(),
+                                      // ),
+                                      PieChart(
+                                        dataMap: dataMap,
+                                        chartRadius:
+                                            MediaQuery.of(context).size.width /
+                                                1.7,
+                                        legendOptions: LegendOptions(
+                                          legendPosition: LegendPosition.bottom,
+                                        ),
+                                        chartValuesOptions: ChartValuesOptions(
+                                          showChartValuesInPercentage: true,
+                                          decimalPlaces: 0,
+                                        ),
                                       ),
                                     ],
                                   ),
