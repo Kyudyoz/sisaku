@@ -201,6 +201,8 @@ class _RekapPageState extends State<RekapPage> {
                                             MediaQuery.of(context).size.width /
                                                 1.7,
                                         legendOptions: LegendOptions(
+                                          legendTextStyle:
+                                              GoogleFonts.montserrat(),
                                           legendPosition: LegendPosition.bottom,
                                         ),
                                         chartValuesOptions: ChartValuesOptions(
