@@ -36,6 +36,7 @@ class _TransactionPageState extends State<TransactionPage> {
         children: [
           Expanded(
             child: Container(
+              padding: EdgeInsets.only(top: 0),
               decoration: BoxDecoration(
                 color: base,
                 borderRadius: BorderRadius.only(

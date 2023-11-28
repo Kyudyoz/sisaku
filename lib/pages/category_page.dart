@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:sisaku/colors.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -15,6 +16,9 @@ class _CategoryPageState extends State<CategoryPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
             content: SingleChildScrollView(
               child: Center(
                 child: Column(
@@ -25,12 +29,31 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), hintText: "Nama"),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          hintText: "Tidak Boleh Kosong"),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    ElevatedButton(onPressed: () {}, child: Text('save'))
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(
+                          ContinuousRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        'Simpan',
+                        style: GoogleFonts.montserrat(
+                          color: base,
+                          fontSize: 12,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -60,59 +83,80 @@ class _CategoryPageState extends State<CategoryPage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 16),
+                      padding: const EdgeInsets.only(
+                        right: 16,
+                        top: 10,
+                      ),
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: MaterialStatePropertyAll(
+                            ContinuousRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                        ),
                         onPressed: () {
                           openDialog(context);
                         },
                         child: Text(
                           'Tambah',
-                          style: TextStyle(color: Colors.white),
+                          style: GoogleFonts.montserrat(
+                            color: base,
+                          ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Card(
-                        elevation: 10,
-                        child: ListTile(
-                          title: Text('Belanja'),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                          child: Column(
                             children: [
-                              IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.edit)),
-                              SizedBox(
-                                width: 10,
+                              Card(
+                                elevation: 10,
+                                child: ListTile(
+                                  title: Text('Belanja'),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.edit)),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.delete)),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.delete)),
+                              Card(
+                                elevation: 10,
+                                child: ListTile(
+                                  title: Text('Gaji'),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.edit)),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.delete)),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Card(
-                        elevation: 10,
-                        child: ListTile(
-                          title: Text('Gaji'),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.edit)),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.delete)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
