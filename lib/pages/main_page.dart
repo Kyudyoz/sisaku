@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sisaku/pages/category_page.dart';
+import 'package:sisaku/pages/gallery_pages.dart';
 import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
@@ -13,6 +14,7 @@ class MainPage extends StatefulWidget {
   final int params;
 
   final String title;
+
   const MainPage({super.key, required this.params, required this.title});
 
   @override
@@ -39,6 +41,10 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  int getType() {
+    return type;
+  }
+
   void updateView(int index, String title, DateTime? date) {
     setState(() {
       if (date != null) {
@@ -55,7 +61,8 @@ class _MainPageState extends State<MainPage> {
         CategoryPage(),
         RekapPage(),
         SettingPage(),
-        TransactionPage(),
+        TransactionPage(transactionWithCategory: null),
+        GalleryPage()
       ];
     });
   }
@@ -85,14 +92,17 @@ class _MainPageState extends State<MainPage> {
                 color: primary,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
-                  child: (currentIndex == 1 || currentIndex == 4)
+                  // Kalo Kategori dan Gallery Page dipilih
+                  child: (currentIndex == 1 ||
+                          currentIndex == 4 ||
+                          currentIndex == 5)
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               currentTitle,
                               style: GoogleFonts.montserrat(
-                                fontSize: 30,
+                                fontSize: 23,
                                 color: base,
                               ),
                             ),
@@ -210,7 +220,7 @@ class _MainPageState extends State<MainPage> {
                       : Text(
                           currentTitle,
                           style: GoogleFonts.montserrat(
-                            fontSize: 30,
+                            fontSize: 23,
                             color: base,
                           ),
                         ),
