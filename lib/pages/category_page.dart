@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:sisaku/colors.dart';
+import 'package:sisaku/pages/main_page.dart';
+
+bool isExpense = true;
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
@@ -11,6 +14,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+  // Dialog
   Future<void> openDialog(BuildContext context) {
     return showDialog<void>(
         context: context,
@@ -23,7 +27,15 @@ class _CategoryPageState extends State<CategoryPage> {
               child: Center(
                 child: Column(
                   children: [
-                    Text("Tambah Kategori Pengeluaran"),
+                    Text(
+                      (isExpense)
+                          ? 'Tambah Kategori Pengeluaran'
+                          : 'Tambah kategori Pemasukan',
+                      style: GoogleFonts.inder(
+                        fontSize: 18,
+                        // color: (isExpense) ? Colors.red : Colors.green,
+                      ),
+                    ),
                     SizedBox(
                       height: 10,
                     ),

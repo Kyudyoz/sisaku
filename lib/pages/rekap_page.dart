@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:sisaku/colors.dart';
 
+import 'gallery_pages.dart';
+import 'main_page.dart';
+
 class RekapPage extends StatefulWidget {
   const RekapPage({super.key});
 
@@ -147,7 +150,7 @@ class _RekapPageState extends State<RekapPage> {
                                                 updateR(3);
                                               },
                                               child: Text(
-                                                "Bulanan",
+                                                "Custom",
                                                 style: GoogleFonts.montserrat(
                                                   color:
                                                       (r == 3) ? base : primary,
@@ -195,6 +198,7 @@ class _RekapPageState extends State<RekapPage> {
                                       //   "Tidak Ada Data",
                                       //   style: GoogleFonts.montserrat(),
                                       // ),
+
                                       PieChart(
                                         dataMap: dataMap,
                                         chartRadius:
@@ -212,6 +216,32 @@ class _RekapPageState extends State<RekapPage> {
                                       ),
                                     ],
                                   ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                shape: MaterialStatePropertyAll(
+                                  ContinuousRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  // DetailPage adalah halaman yang dituju
+                                  MaterialPageRoute(
+                                      builder: (context) => MainPage(
+                                            params: 5,
+                                            title: "Gallery",
+                                          )),
+                                );
+                              },
+                              child: Text(
+                                'Lihat Galeri',
+                                style: GoogleFonts.montserrat(
+                                  color: base,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
