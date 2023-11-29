@@ -55,34 +55,37 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-            height: 200,
-            width: 200,
-            decoration:
-                BoxDecoration(border: Border.all(width: 2, color: Colors.cyan)),
-            // ignore: unnecessary_null_comparison
-            child: _imageFile != null
-                ? Image.file(_imageFile!, fit: BoxFit.cover)
-                : Center(
-                    child: Text('Belum ada gambar'),
-                  )),
-        SizedBox(width: 20),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextButton.icon(
-                onPressed: _galleryPicture,
-                icon: Icon(Icons.image),
-                label: Text('Ambil dari galeri')),
-            TextButton.icon(
-                onPressed: _takePicture,
-                icon: Icon(Icons.camera),
-                label: Text('Gunakan kamera')),
-          ],
-        ),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: Colors.cyan)),
+              // ignore: unnecessary_null_comparison
+              child: _imageFile != null
+                  ? Image.file(_imageFile!, fit: BoxFit.cover)
+                  : Center(
+                      child: Text('Belum ada gambar'),
+                    )),
+          SizedBox(width: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton.icon(
+                  onPressed: _galleryPicture,
+                  icon: Icon(Icons.image),
+                  label: Text('Ambil dari galeri')),
+              TextButton.icon(
+                  onPressed: _takePicture,
+                  icon: Icon(Icons.camera),
+                  label: Text('Gunakan kamera')),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

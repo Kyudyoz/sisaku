@@ -238,13 +238,20 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         MainPage(
-                                                          params: 0,
-                                                          title: "Home",
+                                                          params: 1,
+                                                          title: "Kategori",
                                                         )),
                                               );
                                             },
-                                            icon: Icon(Icons.add),
-                                            label: Text('Tambah kategori'),
+                                            icon: Icon(
+                                              Icons.add,
+                                              color: base,
+                                            ),
+                                            label: Text(
+                                              'Tambah kategori',
+                                              style: GoogleFonts.montserrat(
+                                                  color: base),
+                                            ),
                                             style: ButtonStyle(
                                               backgroundColor:
                                                   // (isExpense) ? MaterialStateProperty.all<Color>(Colors.red) :
