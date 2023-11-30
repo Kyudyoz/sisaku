@@ -123,7 +123,7 @@ class _CategoryPageState extends State<CategoryPage> {
                       },
                       child: Text(
                         'Simpan',
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.inder(
                           color: base,
                           fontSize: 12,
                         ),
@@ -152,7 +152,7 @@ class _CategoryPageState extends State<CategoryPage> {
               children: [
                 Text(
                   "Kategori",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.inder(
                     fontSize: 23,
                     color: base,
                   ),
@@ -197,7 +197,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         },
                                         child: Text(
                                           "Pemasukan",
-                                          style: GoogleFonts.montserrat(
+                                          style: GoogleFonts.inder(
                                             color: (type == 1) ? base : primary,
                                           ),
                                         ),
@@ -227,7 +227,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         },
                                         child: Text(
                                           "Pengeluaran",
-                                          style: GoogleFonts.montserrat(
+                                          style: GoogleFonts.inder(
                                             color: (type == 2) ? base : primary,
                                           ),
                                         ),
@@ -292,7 +292,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           },
                           child: Text(
                             'Tambah',
-                            style: GoogleFonts.montserrat(
+                            style: GoogleFonts.inder(
                               color: base,
                             ),
                           ),
@@ -345,7 +345,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             Text(
                                                                           'Yakin ingin Hapus?',
                                                                           style:
-                                                                              GoogleFonts.montserrat(
+                                                                              GoogleFonts.inder(
                                                                             fontSize:
                                                                                 16,
                                                                             fontWeight:
@@ -371,7 +371,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             child:
                                                                                 Text(
                                                                               'Batal',
-                                                                              style: GoogleFonts.montserrat(
+                                                                              style: GoogleFonts.inder(
                                                                                 color: home,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
@@ -389,7 +389,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             child:
                                                                                 Text(
                                                                               'Ya',
-                                                                              style: GoogleFonts.montserrat(
+                                                                              style: GoogleFonts.inder(
                                                                                 color: base,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),

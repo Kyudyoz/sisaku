@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                               ).format(
                                 rest,
                               )).replaceAll('IDR', ''),
-                          style: GoogleFonts.montserrat(
+                          style: GoogleFonts.inder(
                             fontWeight: FontWeight.w500,
                             fontSize: 20,
                           ),
@@ -149,14 +149,15 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Total Pemasukan',
-                                        style: GoogleFonts.montserrat(
+                                        'Pemasukan',
+                                        style: GoogleFonts.inder(
                                           color: base,
-                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 10,
+                                        height: 5,
                                       ),
                                       Text(
                                         'Rp. ' +
@@ -166,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                                             ).format(
                                               totalAmount1,
                                             )).replaceAll('IDR', ''),
-                                        style: GoogleFonts.montserrat(
+                                        style: GoogleFonts.inder(
                                           color: base,
                                           fontSize: 14,
                                         ),
@@ -195,14 +196,15 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Total Pengeluaran',
-                                        style: GoogleFonts.montserrat(
+                                        'Pengeluaran',
+                                        style: GoogleFonts.inder(
                                           color: base,
-                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 10,
+                                        height: 5,
                                       ),
                                       Text(
                                         'Rp. ' +
@@ -212,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                                             ).format(
                                               totalAmount2,
                                             )).replaceAll('IDR', ''),
-                                        style: GoogleFonts.montserrat(
+                                        style: GoogleFonts.inder(
                                           color: base,
                                           fontSize: 14,
                                         ),
@@ -234,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Text(
                               'Transaksi',
-                              style: GoogleFonts.montserrat(
+                              style: GoogleFonts.inder(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -250,7 +252,7 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Text(
                                 'Lihat Semua',
-                                style: GoogleFonts.montserrat(
+                                style: GoogleFonts.inder(
                                   fontSize: 14,
                                   color: Colors.black54,
                                 ),
@@ -340,10 +342,10 @@ class _HomePageState extends State<HomePage> {
                                                 subtitle: Text(
                                                   snapshot.data![index].category
                                                           .name +
-                                                      ' (' +
+                                                      ' ' +
                                                       snapshot.data![index]
                                                           .transaction.name +
-                                                      ') ',
+                                                      ' ',
                                                 ),
                                                 trailing: Row(
                                                   mainAxisSize:
@@ -372,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                                                                               Text(
                                                                             'Yakin ingin Hapus?',
                                                                             style:
-                                                                                GoogleFonts.montserrat(
+                                                                                GoogleFonts.inder(
                                                                               fontSize: 16,
                                                                               fontWeight: FontWeight.bold,
                                                                             ),
@@ -430,9 +432,9 @@ class _HomePageState extends State<HomePage> {
                                                             });
                                                       },
                                                     ),
-                                                    SizedBox(
-                                                      width: 15,
-                                                    ),
+                                                    // SizedBox(
+                                                    //   width: 1,
+                                                    // ),
                                                     IconButton(
                                                       icon: Icon(Icons.edit),
                                                       onPressed: () {
