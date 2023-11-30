@@ -59,6 +59,24 @@ class AppDb extends _$AppDb {
         .get();
   }
 
+  Future insertTransaction(int amount, DateTime date, String deskripsi,
+      int categoryId, Uint8List? imageDb) async {
+    DateTime now = DateTime.now();
+    return into(transactions).insertReturning(
+      TransactionsCompanion(
+        name: Value(deskripsi), // Gunakan Value() untuk setiap parameter
+        category_id: Value(categoryId),
+        transaction_date: Value(date),
+        amount: Value(amount),
+        createdAt: Value(now),
+        updatedAt: Value(now),
+        image: imageDb != null
+            ? Value(imageDb)
+            : Value.absent(), // Periksa apakah gambar null
+      ),
+    );
+  }
+
 // Update
   Future updateCategoryRepo(int id, String name) async {
     return (update(categories)..where((tbl) => tbl.id.equals(id))).write(

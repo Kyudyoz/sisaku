@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
   late List<Widget> _children;
   late int currentIndex;
   late String currentTitle;
-  late int type;
+  late int type = 2;
 
   @override
   void initState() {
@@ -39,10 +39,7 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       type = index;
     });
-  }
-
-  int getType() {
-    return type;
+    print("tipe sekarang : " + type.toString());
   }
 
   void updateView(int index, String title, DateTime? date) {
@@ -55,13 +52,13 @@ class _MainPageState extends State<MainPage> {
       currentTitle = title;
       currentIndex = index;
       _children = [
-        HomePage(
-          selectedDate: selectedDate,
-        ),
+        HomePage(),
         CategoryPage(),
         RekapPage(),
         SettingPage(),
-        TransactionPage(transactionWithCategory: null),
+        TransactionPage(
+          transactionWithCategory: null,
+        ),
         GalleryPage()
       ];
     });

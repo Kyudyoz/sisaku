@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:drift/drift.dart';
 
 class Transactions extends Table {
