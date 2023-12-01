@@ -26,7 +26,7 @@ class _RekapPageState extends State<RekapPage> {
 
   @override
   void initState() {
-    updateR(1);
+    updateR(2);
     super.initState();
   }
 
@@ -35,6 +35,8 @@ class _RekapPageState extends State<RekapPage> {
       r = index;
     });
   }
+
+  bool datakosong = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _RekapPageState extends State<RekapPage> {
             padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
             child: Text(
               "Rekap",
-              style: GoogleFonts.montserrat(
+              style: GoogleFonts.inder(
                 fontSize: 23,
                 color: base,
               ),
@@ -108,8 +110,8 @@ class _RekapPageState extends State<RekapPage> {
                                                   updateR(1);
                                                 },
                                                 child: Text(
-                                                  "Semua",
-                                                  style: GoogleFonts.montserrat(
+                                                  "Realtime",
+                                                  style: GoogleFonts.inder(
                                                     color: (r == 1)
                                                         ? base
                                                         : primary,
@@ -139,7 +141,7 @@ class _RekapPageState extends State<RekapPage> {
                                                 },
                                                 child: Text(
                                                   "Bulanan",
-                                                  style: GoogleFonts.montserrat(
+                                                  style: GoogleFonts.inder(
                                                     color: (r == 2)
                                                         ? base
                                                         : primary,
@@ -173,7 +175,7 @@ class _RekapPageState extends State<RekapPage> {
                                                 },
                                                 child: Text(
                                                   "Custom",
-                                                  style: GoogleFonts.montserrat(
+                                                  style: GoogleFonts.inder(
                                                     color: (r == 3)
                                                         ? base
                                                         : primary,
@@ -193,37 +195,29 @@ class _RekapPageState extends State<RekapPage> {
                         ),
                         Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              (r == 3)
-                                  ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 85),
-                                      child: Column(
-                                        children: [
-                                          Image.asset(
-                                            'assets/img/tes.png',
-                                            width: 200,
-                                          ),
-                                          Text(
-                                            "Tidak Ada Data",
-                                            style: GoogleFonts.montserrat(),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : Column(
-                                      children: [
-                                        // Image.asset(
-                                        //   'assets/img/tes.png',
-                                        //   width: 200,
-                                        // ),
-                                        // Text(
-                                        //   "Tidak Ada Data",
-                                        //   style: GoogleFonts.montserrat(),
-                                        // ),
-
-                                        PieChart(
+                              // Kalo Custom
+                              if (r == 1) ...[
+                                (datakosong)
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 85),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              'assets/img/tes.png',
+                                              width: 200,
+                                            ),
+                                            Text(
+                                              "Tidak Ada Data",
+                                              style: GoogleFonts.inder(),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.only(top: 35),
+                                        child: PieChart(
                                           dataMap: dataMap,
                                           chartRadius: MediaQuery.of(context)
                                                   .size
@@ -231,7 +225,7 @@ class _RekapPageState extends State<RekapPage> {
                                               1.7,
                                           legendOptions: LegendOptions(
                                             legendTextStyle:
-                                                GoogleFonts.montserrat(),
+                                                GoogleFonts.inder(),
                                             legendPosition:
                                                 LegendPosition.bottom,
                                           ),
@@ -241,8 +235,151 @@ class _RekapPageState extends State<RekapPage> {
                                             decimalPlaces: 0,
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      )
+                              ]
+
+                              // Kalo Bulanan
+                              else if (r == 2) ...[
+                                (datakosong)
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 85),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              'assets/img/tes.png',
+                                              width: 200,
+                                            ),
+                                            Text(
+                                              "Tidak Ada Data",
+                                              style: GoogleFonts.inder(),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Column(
+                                        children: [
+                                          SizedBox(height: 35),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "1 Desember 2023 - 31 Desember 2023",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              IconButton(
+                                                  // Pindah ke halaman Detail Rekap
+                                                  onPressed: () {},
+                                                  color: primary,
+                                                  hoverColor: secondary,
+                                                  icon: Icon(
+                                                      Icons.arrow_forward_ios))
+                                            ],
+                                          ),
+                                          SizedBox(height: 20),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text("Total Pengeluaran "),
+                                                Text("Rp. XXX.XXX "),
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text("Total Pemasukan "),
+                                                Text("Rp. XXX.XXX "),
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text("Sisa "),
+                                                Text("Rp. XXX.XXX "),
+                                              ]),
+                                          SizedBox(height: 30),
+                                        ],
+                                      )
+                              ] else if (r == 3) ...[
+                                (datakosong)
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 85),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              'assets/img/tes.png',
+                                              width: 200,
+                                            ),
+                                            Text(
+                                              "Tidak Ada Data",
+                                              style: GoogleFonts.inder(),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : Column(
+                                        children: [
+                                          SizedBox(height: 35),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Nama Kustom Rekap",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              IconButton(
+                                                  // Pindah ke halaman Detail Rekap
+                                                  onPressed: () {},
+                                                  color: primary,
+                                                  hoverColor: secondary,
+                                                  icon: Icon(
+                                                      Icons.arrow_forward_ios))
+                                            ],
+                                          ),
+                                          SizedBox(height: 20),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text("Total Pengeluaran "),
+                                                Text("Rp. XXX.XXX "),
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text("Total Pemasukan "),
+                                                Text("Rp. XXX.XXX "),
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text("Sisa "),
+                                                Text("Rp. XXX.XXX "),
+                                              ]),
+                                          SizedBox(height: 30),
+                                        ],
+                                      )
+                              ],
                               ElevatedButton(
                                 style: ButtonStyle(
                                   shape: MaterialStatePropertyAll(
@@ -262,7 +399,7 @@ class _RekapPageState extends State<RekapPage> {
                                 },
                                 child: Text(
                                   'Lihat Galeri',
-                                  style: GoogleFonts.montserrat(
+                                  style: GoogleFonts.inder(
                                     color: base,
                                   ),
                                 ),

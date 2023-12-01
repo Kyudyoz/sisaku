@@ -124,7 +124,7 @@ class _TransactionPageState extends State<TransactionPage> {
               children: [
                 Text(
                   "Tambah Transaksi",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.inder(
                     fontSize: 23,
                     color: base,
                   ),
@@ -169,7 +169,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                         },
                                         child: Text(
                                           "Pemasukan",
-                                          style: GoogleFonts.montserrat(
+                                          style: GoogleFonts.inder(
                                             color: (type == 1) ? base : primary,
                                           ),
                                         ),
@@ -199,7 +199,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                         },
                                         child: Text(
                                           "Pengeluaran",
-                                          style: GoogleFonts.montserrat(
+                                          style: GoogleFonts.inder(
                                             color: (type == 2) ? base : primary,
                                           ),
                                         ),
@@ -382,7 +382,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                               ),
                                               label: Text(
                                                 'Tambah kategori',
-                                                style: GoogleFonts.montserrat(
+                                                style: GoogleFonts.inder(
                                                     color: base),
                                               ),
                                               style: ButtonStyle(
@@ -539,7 +539,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                       },
                                       child: Text(
                                         'Simpan Transaksi',
-                                        style: GoogleFonts.montserrat(
+                                        style: GoogleFonts.inder(
                                           color: base,
                                           fontSize: 15,
                                         ),
