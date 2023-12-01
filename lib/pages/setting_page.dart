@@ -25,7 +25,7 @@ class _SettingPageState extends State<SettingPage> {
             padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
             child: Text(
               "Pengaturan",
-              style: GoogleFonts.montserrat(
+              style: GoogleFonts.inder(
                 fontSize: 23,
                 color: base,
               ),
@@ -53,24 +53,6 @@ class _SettingPageState extends State<SettingPage> {
                         child: Column(
                           children: [
                             // Restore Purchased Items
-                            Row(children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  child: Icon(
-                                    Icons.replay_outlined,
-                                    color: base,
-                                    size: 27,
-                                  )),
-                              SizedBox(width: 20),
-                              TextButton(
-                                  child: Text("Restore Purchased Items"),
-                                  style: TextButton.styleFrom(
-                                      foregroundColor: Colors.black),
-                                  onPressed: () {}),
-                            ]),
-                            SizedBox(height: 18),
 
                             // Remove Ads
                             Row(children: [
@@ -85,7 +67,7 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Remove Ads"),
+                                  child: Text("Hapus Iklan"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -105,7 +87,7 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Backup and Restore Data"),
+                                  child: Text("Backup dan Restore Data"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -125,7 +107,7 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Clear Data"),
+                                  child: Text("Hapus Data"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -145,7 +127,7 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Reminder"),
+                                  child: Text("Pengingat"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -165,7 +147,7 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Theme Color"),
+                                  child: Text("Tema Warna"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -185,7 +167,7 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Language"),
+                                  child: Text("Bahasa"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -196,7 +178,7 @@ class _SettingPageState extends State<SettingPage> {
                             Center(
                               child: Column(
                                 children: [
-                                  Text("Follow Us"),
+                                  Text("Ikuti Kami"),
                                   SizedBox(height: 16),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
