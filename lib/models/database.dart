@@ -85,13 +85,14 @@ class AppDb extends _$AppDb {
   }
 
   Future updateTransactionRepo(int id, int amount, int categoryId,
-      DateTime transactionDate, String deskripsi) async {
+      DateTime transactionDate, String deskripsi, Uint8List? imageDb) async {
     return (update(transactions)..where((tbl) => tbl.id.equals(id))).write(
       TransactionsCompanion(
         name: Value(deskripsi),
         amount: Value(amount),
         category_id: Value(categoryId),
         transaction_date: Value(transactionDate),
+        image: imageDb != null ? Value(imageDb) : Value.absent(),
       ),
     );
   }

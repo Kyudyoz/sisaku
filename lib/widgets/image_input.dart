@@ -60,16 +60,17 @@ class _ImageInputState extends State<ImageInput> {
       child: Row(
         children: [
           Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: Colors.cyan)),
-              // ignore: unnecessary_null_comparison
-              child: _imageFile != null
-                  ? Image.file(_imageFile!, fit: BoxFit.cover)
-                  : Center(
-                      child: Text('Belum ada gambar'),
-                    )),
+            height: 200,
+            width: 200,
+            decoration:
+                BoxDecoration(border: Border.all(width: 2, color: Colors.cyan)),
+            // ignore: unnecessary_null_comparison
+            child: _imageFile != null
+                ? Image.file(_imageFile!, fit: BoxFit.cover)
+                : Center(
+                    child: Text('Belum ada gambar'),
+                  ),
+          ),
           SizedBox(width: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,

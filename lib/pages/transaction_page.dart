@@ -39,6 +39,7 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   String dbDate = '';
+  Uint8List? imageLama;
 
   @override
   void initState() {
@@ -69,7 +70,7 @@ class _TransactionPageState extends State<TransactionPage> {
         .format(transactionWithCategory.transaction.transaction_date);
     type = transactionWithCategory.category.type;
     selectedCategory = transactionWithCategory.category;
-    imageDb = transactionWithCategory.transaction.image;
+    imageLama = transactionWithCategory.transaction.image;
   }
 
   Future insert(int amount, DateTime date, String deskripsi, int categoryId,
@@ -79,13 +80,14 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   Future update(int transactionId, int amount, int categoryId,
-      DateTime transactionDate, String deskripsi) async {
+      DateTime transactionDate, String deskripsi, Uint8List? imageDb) async {
     return await database.updateTransactionRepo(
       transactionId,
       amount,
       categoryId,
       transactionDate,
       deskripsi,
+      imageDb,
     );
   }
 
@@ -421,22 +423,80 @@ class _TransactionPageState extends State<TransactionPage> {
                           SizedBox(
                             height: 25,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Gambar (opsional)",
-                                  style: GoogleFonts.montserrat(),
+                          (imageLama != null)
+                              ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Gambar Lama",
+                                              style: GoogleFonts.montserrat(),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 2, color: primary),
+                                              ),
+                                              child: Image.memory(
+                                                imageLama!,
+                                                width: 200,
+                                                height: 200,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Gambar Baru(opsional)",
+                                              style: GoogleFonts.montserrat(),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            ImageInput(
+                                              imagesaveat: savedImages,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Gambar (opsional)",
+                                        style: GoogleFonts.montserrat(),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      ImageInput(imagesaveat: savedImages),
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ImageInput(imagesaveat: savedImages),
-                              ],
-                            ),
-                          ),
                           SizedBox(
                             height: 25,
                           ),
@@ -466,6 +526,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 selectedCategory!.id,
                                                 DateTime.parse(dbDate),
                                                 deskripsiController.text,
+                                                imageDb,
                                               );
 
                                         // Navigator.pop(context);
