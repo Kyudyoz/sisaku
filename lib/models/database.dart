@@ -59,6 +59,22 @@ class AppDb extends _$AppDb {
         .get();
   }
 
+  Future<Map<String, double>> getMapFromDatabase() async {
+    // Lakukan query select
+    final List<Transaction> results = await select(transactions).get();
+
+    // Buat map kosong
+    Map<String, double> dataMap = {};
+
+    // Iterasi hasil query
+    for (Transaction transaction in results) {
+      // Masukkan data ke dalam map
+      dataMap[transaction.name] = transaction.amount.toDouble();
+    }
+
+    return dataMap;
+  }
+
   Future insertTransaction(int amount, DateTime date, String deskripsi,
       int categoryId, Uint8List? imageDb) async {
     DateTime now = DateTime.now();

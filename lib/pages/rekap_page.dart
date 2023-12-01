@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:sisaku/colors.dart';
+import 'package:sisaku/models/database.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
@@ -18,16 +19,30 @@ class RekapPage extends StatefulWidget {
 class _RekapPageState extends State<RekapPage> {
   late int r;
 
-  Map<String, double> dataMap = {
-    "Balance": 253000,
-    "Belanja Bulanan": 35000,
-    "Makan dan Minum": 12000,
-  };
+  // Map<String, double> dataMap = {
+  //   "Balance": 253000,
+  //   "Belanja Bulanan": 35000,
+  //   "Makan dan Minum": 12000,
+  // };
+
+  final AppDb database = AppDb();
+
+  Future<Map<String, double>> datamap() async {
+    final Map<String, double> dataMap = await database.getMapFromDatabase();
+    return dataMap;
+  }
+
+  late Map<String, double> _dataMap;
 
   @override
   void initState() {
-    updateR(2);
     super.initState();
+    updateR(2);
+    datamap().then((dataMap) {
+      setState(() {
+        _dataMap = dataMap;
+      });
+    });
   }
 
   void updateR(int index) {
@@ -218,7 +233,7 @@ class _RekapPageState extends State<RekapPage> {
                                     : Padding(
                                         padding: const EdgeInsets.only(top: 35),
                                         child: PieChart(
-                                          dataMap: dataMap,
+                                          dataMap: _dataMap,
                                           chartRadius: MediaQuery.of(context)
                                                   .size
                                                   .width /
