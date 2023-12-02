@@ -122,6 +122,21 @@ class AppDb extends _$AppDb {
     return (delete(transactions)..where((tbl) => tbl.id.equals(id))).go();
   }
 
+  Future deleteCategoryAndTransactionsRepo(int id) async {
+    // Hapus kategori
+    await (delete(categories)..where((tbl) => tbl.id.equals(id))).go();
+
+    await (delete(transactions)..where((tbl) => tbl.category_id.equals(id)))
+        .go();
+    return;
+  }
+
+  Future deleteAll() async {
+    await delete(transactions).go();
+    await delete(categories).go();
+    return;
+  }
+
   // transaksi
   Stream<List<TransactionWithCategory>> getTransactionByDate(DateTime date) {
     final query = (select(transactions).join([

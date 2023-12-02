@@ -213,10 +213,9 @@ class _RekapPageState extends State<RekapPage> {
                             children: [
                               // Kalo Custom
                               if (r == 1) ...[
-                                (datakosong)
+                                (_dataMap.isEmpty)
                                     ? Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 85),
+                                        padding: const EdgeInsets.only(top: 85),
                                         child: Column(
                                           children: [
                                             Image.asset(

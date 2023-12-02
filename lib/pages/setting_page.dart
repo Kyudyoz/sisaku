@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sisaku/colors.dart';
+import 'package:sisaku/models/database.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
@@ -13,6 +14,7 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  final AppDb database = AppDb();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,20 +99,103 @@ class _SettingPageState extends State<SettingPage> {
                             // Clear Data
                             Row(children: [
                               Container(
-                                  decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  child: Icon(
-                                    Icons.delete_rounded,
-                                    color: base,
-                                    size: 27,
-                                  )),
+                                decoration: BoxDecoration(
+                                    color: primary,
+                                    borderRadius: BorderRadius.circular(3)),
+                                child: Icon(
+                                  Icons.delete_rounded,
+                                  color: base,
+                                  size: 27,
+                                ),
+                              ),
                               SizedBox(width: 20),
                               TextButton(
                                   child: Text("Hapus Data"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            shadowColor: Colors.red[50],
+                                            content: SingleChildScrollView(
+                                              child: Center(
+                                                child: Column(
+                                                  children: [
+                                                    Center(
+                                                      child: Text(
+                                                        'Yakin ingin Hapus?',
+                                                        style:
+                                                            GoogleFonts.inder(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 30,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text(
+                                                            'Batal',
+                                                            style: GoogleFonts
+                                                                .inder(
+                                                              color: home,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context,
+                                                                    rootNavigator:
+                                                                        true)
+                                                                .pop('dialog');
+                                                            database
+                                                                .deleteAll();
+                                                            setState(() {
+                                                              print(
+                                                                "Berhasil Hapus Semua",
+                                                              );
+                                                            });
+                                                          },
+                                                          child: Text(
+                                                            'Ya',
+                                                            style: GoogleFonts
+                                                                .inder(
+                                                              color: base,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  }),
                             ]),
                             SizedBox(height: 18),
 

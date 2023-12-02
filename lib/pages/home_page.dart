@@ -342,10 +342,10 @@ class _HomePageState extends State<HomePage> {
                                                 subtitle: Text(
                                                   snapshot.data![index].category
                                                           .name +
-                                                      ' ' +
+                                                      ' ( ' +
                                                       snapshot.data![index]
                                                           .transaction.name +
-                                                      ' ',
+                                                      ' )',
                                                 ),
                                                 trailing: Row(
                                                   mainAxisSize:

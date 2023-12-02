@@ -381,7 +381,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             onPressed:
                                                                                 () {
                                                                               Navigator.of(context, rootNavigator: true).pop('dialog');
-                                                                              database.deleteCategoryRepo(snapshot.data![index].id);
+                                                                              database.deleteCategoryAndTransactionsRepo(snapshot.data![index].id);
                                                                               setState(() {
                                                                                 print("Berhasil Hapus");
                                                                               });
