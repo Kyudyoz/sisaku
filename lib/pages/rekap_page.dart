@@ -412,7 +412,78 @@ class _RekapPageState extends State<RekapPage> {
                                                                   Icons.edit)),
                                                           IconButton(
                                                               // Pindah ke halaman Detail Rekap
-                                                              onPressed: () {},
+                                                              onPressed: () {
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return AlertDialog(
+                                                                        shadowColor:
+                                                                            Colors.red[50],
+                                                                        content:
+                                                                            SingleChildScrollView(
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Column(
+                                                                              children: [
+                                                                                Center(
+                                                                                  child: Text(
+                                                                                    'Yakin ingin Hapus?',
+                                                                                    style: GoogleFonts.inder(
+                                                                                      fontSize: 16,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 30,
+                                                                                ),
+                                                                                Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                  children: [
+                                                                                    TextButton(
+                                                                                      onPressed: () {
+                                                                                        Navigator.of(context).pop();
+                                                                                      },
+                                                                                      child: Text(
+                                                                                        'Batal',
+                                                                                        style: GoogleFonts.inder(
+                                                                                          color: home,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                    ElevatedButton(
+                                                                                      onPressed: () {
+                                                                                        Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                                        database.deleteRekap(snapshot.data![index].id);
+                                                                                        setState(() {
+                                                                                          print(
+                                                                                            "Berhasil Hapus Semua",
+                                                                                          );
+                                                                                        });
+                                                                                      },
+                                                                                      child: Text(
+                                                                                        'Ya',
+                                                                                        style: GoogleFonts.inder(
+                                                                                          color: base,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    });
+                                                              },
                                                               color: primary,
                                                               focusColor:
                                                                   secondary,
