@@ -295,7 +295,7 @@ class AppDb extends _$AppDb {
 
   // CRUD Update Rekap
   Future updateRekap(
-      String namaRekap, DateTime startDate, DateTime endDate) async {
+      int id, String namaRekap, DateTime startDate, DateTime endDate) async {
     DateTime now = DateTime.now();
 
     // Ambil hasil transaksi dalam rentang tanggal yang diberikan
@@ -351,7 +351,7 @@ class AppDb extends _$AppDb {
 
     int sisa = totalIncome - totalExpense;
     // Insert ke dalam tabel rekaps dengan nilai yang dihitung
-    return into(rekaps).insertReturning(
+    return (update(rekaps)..where((tbl) => tbl.id.equals(id))).write(
       RekapsCompanion(
         name: Value(namaRekap),
         startDate: Value(startDate),

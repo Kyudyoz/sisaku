@@ -28,7 +28,7 @@ class _RekapPageState extends State<RekapPage> {
   // };
   bool datakosong = false;
 
-  late Map<String, double> _dataMap;
+  late Map<String, double> _dataMap = {};
 
   @override
   void initState() {
@@ -227,10 +227,9 @@ class _RekapPageState extends State<RekapPage> {
                             children: [
                               // Kalo Realtime
                               if (r == 1) ...[
-                                (datakosong)
+                                (_dataMap.isEmpty)
                                     ? Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 85),
+                                        padding: const EdgeInsets.only(top: 85),
                                         child: Column(
                                           children: [
                                             Image.asset(
@@ -392,24 +391,39 @@ class _RekapPageState extends State<RekapPage> {
                                                       Row(
                                                         children: [
                                                           IconButton(
-                                                              // Pindah ke halaman Detail Rekap
-                                                              onPressed: () {},
-                                                              color: primary,
-                                                              hoverColor:
-                                                                  secondary,
-                                                              icon: Icon(Icons
-                                                                  .arrow_forward_ios)),
+                                                            // Pindah ke halaman Detail Rekap
+                                                            onPressed: () {},
+                                                            color: primary,
+                                                            hoverColor:
+                                                                secondary,
+                                                            icon: Icon(Icons
+                                                                .arrow_forward_ios),
+                                                          ),
                                                           IconButton(
-                                                              // Pindah ke halaman Detail Rekap
-                                                              onPressed: () {},
-                                                              color: primary,
-                                                              focusColor:
-                                                                  secondary,
-                                                              hoverColor:
-                                                                  secondary,
-                                                              iconSize: 20,
-                                                              icon: Icon(
-                                                                  Icons.edit)),
+                                                            // Pindah ke halaman edit
+                                                            onPressed: () {
+                                                              Navigator
+                                                                  .pushReplacement(
+                                                                context,
+                                                                // DetailPage adalah halaman yang dituju
+                                                                MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      AddEditRekap(
+                                                                          rekap:
+                                                                              snapshot.data![index]),
+                                                                ),
+                                                              );
+                                                              print("tes edit");
+                                                            },
+                                                            color: primary,
+                                                            focusColor:
+                                                                secondary,
+                                                            hoverColor:
+                                                                secondary,
+                                                            iconSize: 20,
+                                                            icon: Icon(
+                                                                Icons.edit),
+                                                          ),
                                                           IconButton(
                                                               // Pindah ke halaman Detail Rekap
                                                               onPressed: () {

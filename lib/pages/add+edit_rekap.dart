@@ -1,3 +1,4 @@
+//add+edit
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -29,7 +30,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
   String dbStartDate = '';
   String dbEndDate = '';
 
-  void updateTransactionView(Rekap rekap) {
+  void updateRekapView(Rekap rekap) {
     namaRekapController.text = rekap.name.toString();
     startDateController.text =
         DateFormat('dd-MMMM-yyyy').format(rekap.startDate);
@@ -43,8 +44,17 @@ class _AddEditRekapState extends State<AddEditRekap> {
     return await database.insertRekap(namaRekap, startDate, endDate);
   }
 
-  Future update(String namaRekap, DateTime startDate, DateTime endDate) async {
-    return await database.insertRekap(namaRekap, startDate, endDate);
+  Future update(
+      int id, String namaRekap, DateTime startDate, DateTime endDate) async {
+    return await database.updateRekap(id, namaRekap, startDate, endDate);
+  }
+
+  @override
+  void initState() {
+    if (widget.rekap != null) {
+      updateRekapView(widget.rekap!);
+    }
+    super.initState();
   }
 
   @override
@@ -61,13 +71,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
               children: [
                 IconButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        // DetailPage adalah halaman yang dituju
-                        MaterialPageRoute(
-                          builder: (context) => RekapPage(),
-                        ),
-                      );
+                      Navigator.of(context).pop();
                     },
                     icon: Icon(
                       Icons.arrow_back,
@@ -195,8 +199,12 @@ class _AddEditRekapState extends State<AddEditRekap> {
                                     DateTime.parse(dbStartDate),
                                     DateTime.parse(dbEndDate),
                                   )
-                                : await update("nama Rekap yg bisa diedit",
-                                    DateTime.now(), DateTime.now());
+                                : await update(
+                                    widget.rekap!.id,
+                                    namaRekapController.text,
+                                    DateTime.parse(dbStartDate),
+                                    DateTime.parse(dbEndDate),
+                                  );
 
                             print("CRUD Berhasil ??");
                             await Navigator.pushReplacement(
