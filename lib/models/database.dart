@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 // These imports are used to open the database
 import 'package:drift/native.dart';
+import 'package:intl/intl.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -135,6 +136,7 @@ class AppDb extends _$AppDb {
   Future deleteAll() async {
     await delete(transactions).go();
     await delete(categories).go();
+    await delete(rekaps).go();
     return;
   }
 
@@ -186,21 +188,136 @@ class AppDb extends _$AppDb {
 // Rekap
 
   // Get All Rekaps
-  Stream<List<Rekap>> getRekaps() {
+  Stream<List<Rekap>> getAllRekaps() {
     return select(rekaps).watch();
   }
 
-  // Ngdapatin Daftar Transaksi (Belum Selesai)
-  Future<List<QueryRow>> getTransactionsPerMonth(
-      CustomRekap customRekap) async {
-    final query = customSelect(
-      'SELECT * FROM transactions WHERE transaction_date BETWEEN ? AND ?',
-      variables: [
-        Variable<DateTime>(customRekap.startDate),
-        Variable<DateTime>(customRekap.endDate),
-      ],
+  Stream<List<Rekap>> getCustomRekaps() {
+    final query = select(rekaps)..where((tbl) => tbl.isMonthly.equals(false));
+    return query.watch();
+  }
+
+  // Ngdapatin Daftar Transaksi PerBulan (Belum Selesai)
+  Stream<List<Rekap>> getMonthlyRekaps() {
+    final query = select(rekaps)..where((tbl) => tbl.isMonthly.equals(true));
+    return query.watch();
+  }
+
+  Future<void> createMonthlyRekaps(int year, int month) async {
+    // Hitung jumlah hari dalam bulan dan tahun tertentu
+    final lastDay = DateTime(year, month + 1, 0);
+    final daysInMonth = lastDay.day;
+
+    // Tentukan rentang tanggal awal dan akhir untuk bulan tersebut
+    final startDate = DateTime(year, month, 1);
+    final endDate = DateTime(year, month, daysInMonth);
+
+    // Fungsi Untuk Mendapatkan Nama Bulan
+    String getMonthNameIndonesian(int month) {
+      final startOfMonth = DateTime(year, month, 1);
+      final endOfMonth = DateTime(year, month + 1, 0);
+
+      final dateFormat = DateFormat.yMMMMd('id_ID');
+      var result =
+          '${dateFormat.format(startOfMonth)} - ${dateFormat.format(endOfMonth)}';
+      return result;
+    }
+
+    // Ambil transaksi dalam rentang waktu tersebut
+    final transactions = await getTransactionsInDateRange(startDate, endDate);
+
+    // Jika ada transaksi, lakukan perhitungan dan masukkan ke dalam tabel Rekap
+    if (transactions.isNotEmpty) {
+      final monthName = getMonthNameIndonesian(month);
+      await insertMonthlyRekap(monthName, startDate, endDate);
+    }
+    // await getMonthlyRekaps();
+  }
+
+  // CRUD Create Monthly Rekap
+  Future insertMonthlyRekap(
+      String monthName, DateTime startDate, DateTime endDate) async {
+    DateTime now = DateTime.now();
+
+    // Periksa apakah rekap dengan nama tersebut sudah ada
+    final existingRekap = await (select(rekaps)
+          ..where((rekap) => rekap.name.equals(monthName)))
+        .getSingleOrNull();
+
+    // Jika rekap sudah ada, keluar dari fungsi
+    if (existingRekap != null) {
+      return;
+    }
+
+    // Ambil hasil transaksi dalam rentang tanggal yang diberikan
+    final getTransactions =
+        await getTransactionsInDateRange(startDate, endDate);
+
+    getCategoryType(categoryId) async {
+      final type = await getCategoryTypeById(categoryId);
+      return type;
+    }
+
+    print(rekaps.name);
+    // Hitung jumlah transaksi, pengeluaran, pemasukan, rata-rata pengeluaran, dan rata-rata pemasukan
+    int totalTransactions = getTransactions.length;
+    int totalExpense = 0;
+    int totalIncome = 0;
+    int countExpense = 0;
+    int countIncome = 0;
+// List untuk menyimpan nilai amount
+    print("Dari Tanggal : " +
+        startDate.toString() +
+        " Sampai " +
+        endDate.toString());
+    // print("isi data" + getTransactions.toString());
+    print("Banyak Transaksi : " + totalTransactions.toString());
+
+    for (var transaction in getTransactions) {
+      print("isi data" + transaction.data.toString());
+      print("Transaksi : " + transaction.data.toString());
+      int amount = transaction.data["amount"];
+
+      // Ngedapatin Amount
+      print("isi amount" + amount.toString());
+      int idCategory = transaction.data["category_id"];
+
+      // Ngedapatin id Category dari category Id
+      var type = await getCategoryType(idCategory);
+
+      print("isi Type " + type.toString());
+      if (type == 1) {
+        // Pemasukan
+        totalIncome += amount;
+        countIncome++;
+      } else if (type == 2) {
+        // Pengeluaran
+        totalExpense += amount;
+        countExpense++;
+      }
+    }
+
+    double averageExpense = countExpense == 0 ? 0 : totalExpense / countExpense;
+    double averageIncome = countIncome == 0 ? 0 : totalIncome / countIncome;
+
+    int sisa = totalIncome - totalExpense;
+    // Insert ke dalam tabel rekaps dengan nilai yang dihitung
+    return into(rekaps).insertReturning(
+      RekapsCompanion(
+        name: Value(monthName),
+        startDate: Value(startDate),
+        endDate: Value(endDate),
+        isMonthly: Value(true),
+        createdAt: Value(now),
+        updatedAt: Value(now),
+        totalTransactions: Value(totalTransactions),
+        totalExpense: Value(totalExpense),
+        totalIncome: Value(totalIncome),
+        sisa: Value(sisa), // Sesuaikan dengan logika aplikasi Anda
+        averageExpense: Value(averageExpense),
+        averageIncome: Value(averageIncome),
+      ),
     );
-    return query.get();
   }
 
   // Get Rekaps In Data Range(Custom)
@@ -218,7 +335,7 @@ class AppDb extends _$AppDb {
     return results;
   }
 
-  // CRUD Create Rekap
+  // CRUD Create Custom Rekap
   Future insertRekap(
       String namaRekap, DateTime startDate, DateTime endDate) async {
     DateTime now = DateTime.now();
@@ -281,6 +398,7 @@ class AppDb extends _$AppDb {
         name: Value(namaRekap),
         startDate: Value(startDate),
         endDate: Value(endDate),
+        isMonthly: Value(false),
         createdAt: Value(now),
         updatedAt: Value(now),
         totalTransactions: Value(totalTransactions),
@@ -354,7 +472,7 @@ class AppDb extends _$AppDb {
         name: Value(namaRekap),
         startDate: Value(startDate),
         endDate: Value(endDate),
-
+        isMonthly: Value(false),
         totalTransactions: Value(totalTransactions),
         totalExpense: Value(totalExpense),
         totalIncome: Value(totalIncome),
