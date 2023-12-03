@@ -743,6 +743,15 @@ class $RekapsTable extends Rekaps with TableInfo<$RekapsTable, Rekap> {
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _isMonthlyMeta =
+      const VerificationMeta('isMonthly');
+  @override
+  late final GeneratedColumn<bool> isMonthly = GeneratedColumn<bool>(
+      'is_monthly', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_monthly" IN (0, 1))'));
   static const VerificationMeta _totalTransactionsMeta =
       const VerificationMeta('totalTransactions');
   @override
@@ -786,6 +795,7 @@ class $RekapsTable extends Rekaps with TableInfo<$RekapsTable, Rekap> {
         endDate,
         createdAt,
         updatedAt,
+        isMonthly,
         totalTransactions,
         totalExpense,
         totalIncome,
@@ -835,6 +845,12 @@ class $RekapsTable extends Rekaps with TableInfo<$RekapsTable, Rekap> {
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('is_monthly')) {
+      context.handle(_isMonthlyMeta,
+          isMonthly.isAcceptableOrUnknown(data['is_monthly']!, _isMonthlyMeta));
+    } else if (isInserting) {
+      context.missing(_isMonthlyMeta);
     }
     if (data.containsKey('total_transactions')) {
       context.handle(
@@ -891,6 +907,8 @@ class $RekapsTable extends Rekaps with TableInfo<$RekapsTable, Rekap> {
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
       updatedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      isMonthly: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_monthly'])!,
       totalTransactions: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}total_transactions']),
       totalExpense: attachedDatabase.typeMapping
@@ -919,6 +937,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
   final DateTime endDate;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final bool isMonthly;
   final int? totalTransactions;
   final int? totalExpense;
   final int? totalIncome;
@@ -932,6 +951,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
       required this.endDate,
       required this.createdAt,
       required this.updatedAt,
+      required this.isMonthly,
       this.totalTransactions,
       this.totalExpense,
       this.totalIncome,
@@ -947,6 +967,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
     map['end_date'] = Variable<DateTime>(endDate);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['is_monthly'] = Variable<bool>(isMonthly);
     if (!nullToAbsent || totalTransactions != null) {
       map['total_transactions'] = Variable<int>(totalTransactions);
     }
@@ -976,6 +997,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
       endDate: Value(endDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
+      isMonthly: Value(isMonthly),
       totalTransactions: totalTransactions == null && nullToAbsent
           ? const Value.absent()
           : Value(totalTransactions),
@@ -1005,6 +1027,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
       endDate: serializer.fromJson<DateTime>(json['endDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      isMonthly: serializer.fromJson<bool>(json['isMonthly']),
       totalTransactions: serializer.fromJson<int?>(json['totalTransactions']),
       totalExpense: serializer.fromJson<int?>(json['totalExpense']),
       totalIncome: serializer.fromJson<int?>(json['totalIncome']),
@@ -1023,6 +1046,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
       'endDate': serializer.toJson<DateTime>(endDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'isMonthly': serializer.toJson<bool>(isMonthly),
       'totalTransactions': serializer.toJson<int?>(totalTransactions),
       'totalExpense': serializer.toJson<int?>(totalExpense),
       'totalIncome': serializer.toJson<int?>(totalIncome),
@@ -1039,6 +1063,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
           DateTime? endDate,
           DateTime? createdAt,
           DateTime? updatedAt,
+          bool? isMonthly,
           Value<int?> totalTransactions = const Value.absent(),
           Value<int?> totalExpense = const Value.absent(),
           Value<int?> totalIncome = const Value.absent(),
@@ -1052,6 +1077,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
         endDate: endDate ?? this.endDate,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        isMonthly: isMonthly ?? this.isMonthly,
         totalTransactions: totalTransactions.present
             ? totalTransactions.value
             : this.totalTransactions,
@@ -1073,6 +1099,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
           ..write('endDate: $endDate, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('isMonthly: $isMonthly, ')
           ..write('totalTransactions: $totalTransactions, ')
           ..write('totalExpense: $totalExpense, ')
           ..write('totalIncome: $totalIncome, ')
@@ -1091,6 +1118,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
       endDate,
       createdAt,
       updatedAt,
+      isMonthly,
       totalTransactions,
       totalExpense,
       totalIncome,
@@ -1107,6 +1135,7 @@ class Rekap extends DataClass implements Insertable<Rekap> {
           other.endDate == this.endDate &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
+          other.isMonthly == this.isMonthly &&
           other.totalTransactions == this.totalTransactions &&
           other.totalExpense == this.totalExpense &&
           other.totalIncome == this.totalIncome &&
@@ -1122,6 +1151,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
   final Value<DateTime> endDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
+  final Value<bool> isMonthly;
   final Value<int?> totalTransactions;
   final Value<int?> totalExpense;
   final Value<int?> totalIncome;
@@ -1135,6 +1165,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
     this.endDate = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.isMonthly = const Value.absent(),
     this.totalTransactions = const Value.absent(),
     this.totalExpense = const Value.absent(),
     this.totalIncome = const Value.absent(),
@@ -1149,6 +1180,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
     required DateTime endDate,
     required DateTime createdAt,
     required DateTime updatedAt,
+    required bool isMonthly,
     this.totalTransactions = const Value.absent(),
     this.totalExpense = const Value.absent(),
     this.totalIncome = const Value.absent(),
@@ -1159,7 +1191,8 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
         startDate = Value(startDate),
         endDate = Value(endDate),
         createdAt = Value(createdAt),
-        updatedAt = Value(updatedAt);
+        updatedAt = Value(updatedAt),
+        isMonthly = Value(isMonthly);
   static Insertable<Rekap> custom({
     Expression<int>? id,
     Expression<String>? name,
@@ -1167,6 +1200,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
     Expression<DateTime>? endDate,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
+    Expression<bool>? isMonthly,
     Expression<int>? totalTransactions,
     Expression<int>? totalExpense,
     Expression<int>? totalIncome,
@@ -1181,6 +1215,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
       if (endDate != null) 'end_date': endDate,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (isMonthly != null) 'is_monthly': isMonthly,
       if (totalTransactions != null) 'total_transactions': totalTransactions,
       if (totalExpense != null) 'total_expense': totalExpense,
       if (totalIncome != null) 'total_income': totalIncome,
@@ -1197,6 +1232,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
       Value<DateTime>? endDate,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
+      Value<bool>? isMonthly,
       Value<int?>? totalTransactions,
       Value<int?>? totalExpense,
       Value<int?>? totalIncome,
@@ -1210,6 +1246,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
       endDate: endDate ?? this.endDate,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      isMonthly: isMonthly ?? this.isMonthly,
       totalTransactions: totalTransactions ?? this.totalTransactions,
       totalExpense: totalExpense ?? this.totalExpense,
       totalIncome: totalIncome ?? this.totalIncome,
@@ -1239,6 +1276,9 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (isMonthly.present) {
+      map['is_monthly'] = Variable<bool>(isMonthly.value);
     }
     if (totalTransactions.present) {
       map['total_transactions'] = Variable<int>(totalTransactions.value);
@@ -1270,6 +1310,7 @@ class RekapsCompanion extends UpdateCompanion<Rekap> {
           ..write('endDate: $endDate, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('isMonthly: $isMonthly, ')
           ..write('totalTransactions: $totalTransactions, ')
           ..write('totalExpense: $totalExpense, ')
           ..write('totalIncome: $totalIncome, ')

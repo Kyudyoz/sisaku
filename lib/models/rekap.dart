@@ -13,6 +13,8 @@ class Rekaps extends Table {
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
 
+  BoolColumn get isMonthly => boolean()();
+
   // Jumlah berapa banyak transaksi
   IntColumn get totalTransactions => integer().nullable()();
 
@@ -29,6 +31,16 @@ class CustomRekap {
   DateTime endDate;
 
   CustomRekap({
+    required this.startDate,
+    required this.endDate,
+  });
+}
+
+class RekapBulanan {
+  DateTime startDate;
+  DateTime endDate;
+
+  RekapBulanan({
     required this.startDate,
     required this.endDate,
   });
