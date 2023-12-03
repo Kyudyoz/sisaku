@@ -45,6 +45,7 @@ dependencies:
     provider: ^6.1.0
     image_picker: ^1.0.4
     pie_chart: any
+    percent_indicator: ^4.0.1
     # For social media icon
 
 dev_dependencies:
