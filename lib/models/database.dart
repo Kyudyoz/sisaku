@@ -185,10 +185,25 @@ class AppDb extends _$AppDb {
 
 // Rekap
 
+  // Get All Rekaps
   Future<List<Rekap>> getRekaps() async {
     return select(rekaps).get();
   }
 
+  // Ngdapatin Daftar Transaksi (Belum Selesai)
+  Future<List<QueryRow>> getTransactionsPerMonth(
+      CustomRekap customRekap) async {
+    final query = customSelect(
+      'SELECT * FROM transactions WHERE transaction_date BETWEEN ? AND ?',
+      variables: [
+        Variable<DateTime>(customRekap.startDate),
+        Variable<DateTime>(customRekap.endDate),
+      ],
+    );
+    return query.get();
+  }
+
+  // Get Rekaps In Data Range(Custom)
   Future<List<QueryRow>> getTransactionsInDateRange(
       DateTime startDate, DateTime endDate) async {
     final results = await customSelect(
@@ -203,6 +218,7 @@ class AppDb extends _$AppDb {
     return results;
   }
 
+  // CRUD Create Rekap
   Future insertRekap(
       String namaRekap, DateTime startDate, DateTime endDate) async {
     DateTime now = DateTime.now();
@@ -277,18 +293,84 @@ class AppDb extends _$AppDb {
     );
   }
 
-  // Ngdapatin Daftar Transaksi
-  Future<List<QueryRow>> getTransactionsInCustomRekap(
-      CustomRekap customRekap) async {
-    final query = customSelect(
-      'SELECT * FROM transactions WHERE transaction_date BETWEEN ? AND ?',
-      variables: [
-        Variable<DateTime>(customRekap.startDate),
-        Variable<DateTime>(customRekap.endDate),
-      ],
-    );
+  // CRUD Update Rekap
+  Future updateRekap(
+      String namaRekap, DateTime startDate, DateTime endDate) async {
+    DateTime now = DateTime.now();
 
-    return query.get();
+    // Ambil hasil transaksi dalam rentang tanggal yang diberikan
+    final getTransactions =
+        await getTransactionsInDateRange(startDate, endDate);
+
+    getCategoryType(categoryId) async {
+      final type = await getCategoryTypeById(categoryId);
+      return type;
+    }
+
+    print(rekaps.name);
+    // Hitung jumlah transaksi, pengeluaran, pemasukan, rata-rata pengeluaran, dan rata-rata pemasukan
+    int totalTransactions = getTransactions.length;
+    int totalExpense = 0;
+    int totalIncome = 0;
+    int countExpense = 0;
+    int countIncome = 0;
+// List untuk menyimpan nilai amount
+    print("Dari Tanggal : " +
+        startDate.toString() +
+        " Sampai " +
+        endDate.toString());
+    // print("isi data" + getTransactions.toString());
+    print("Banyak Transaksi : " + totalTransactions.toString());
+
+    for (var transaction in getTransactions) {
+      print("isi data" + transaction.data.toString());
+      print("Transaksi : " + transaction.data.toString());
+      int amount = transaction.data["amount"];
+
+      // Ngedapatin Amount
+      print("isi amount" + amount.toString());
+      int idCategory = transaction.data["category_id"];
+
+      // Ngedapatin id Category dari category Id
+      var type = await getCategoryType(idCategory);
+
+      print("isi Type " + type.toString());
+      if (type == 1) {
+        // Pemasukan
+        totalIncome += amount;
+        countIncome++;
+      } else if (type == 2) {
+        // Pengeluaran
+        totalExpense += amount;
+        countExpense++;
+      }
+    }
+
+    double averageExpense = countExpense == 0 ? 0 : totalExpense / countExpense;
+    double averageIncome = countIncome == 0 ? 0 : totalIncome / countIncome;
+
+    int sisa = totalIncome - totalExpense;
+    // Insert ke dalam tabel rekaps dengan nilai yang dihitung
+    return into(rekaps).insertReturning(
+      RekapsCompanion(
+        name: Value(namaRekap),
+        startDate: Value(startDate),
+        endDate: Value(endDate),
+        createdAt: Value(now),
+        updatedAt: Value(now),
+        totalTransactions: Value(totalTransactions),
+        totalExpense: Value(totalExpense),
+        totalIncome: Value(totalIncome),
+        sisa: Value(sisa), // Sesuaikan dengan logika aplikasi Anda
+        averageExpense: Value(averageExpense),
+        averageIncome: Value(averageIncome),
+      ),
+    );
+  }
+
+  // CRUD Delete Rekap
+  Future deleteRekap(int id) async {
+    return (delete(rekaps)..where((tbl) => tbl.id.equals(id))).go();
   }
 }
 
