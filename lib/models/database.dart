@@ -9,19 +9,20 @@ import 'package:path/path.dart' as p;
 import 'package:sisaku/models/category.dart';
 import 'package:sisaku/models/transaction_with_category.dart';
 import 'package:sisaku/models/transactions.dart';
+import 'package:sisaku/models/rekap.dart';
 
 part 'database.g.dart';
 
 @DriftDatabase(
   // relative import for the drift file. Drift also supports `package:`
   // imports
-  tables: [Categories, Transactions],
+  tables: [Categories, Transactions, Rekaps],
 )
 class AppDb extends _$AppDb {
   AppDb() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   Future<int> getTotalAmountForTypeAndDate(int type) {
     final query = customSelect(
@@ -137,7 +138,7 @@ class AppDb extends _$AppDb {
     return;
   }
 
-  // transaksi
+// Transaksi With Category
   Stream<List<TransactionWithCategory>> getTransactionByDate(DateTime date) {
     final query = (select(transactions).join([
       innerJoin(
@@ -155,6 +156,139 @@ class AppDb extends _$AppDb {
         );
       }).toList();
     });
+  }
+
+  Future<int> getCategoryTypeById(int categoryId) async {
+    final query = customSelect(
+      'SELECT DISTINCT categories.type AS type FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'WHERE transactions.category_id = ?',
+      variables: [Variable.withInt(categoryId)],
+      readsFrom: {transactions, categories},
+    );
+
+    try {
+      final result =
+          await query.map((row) => row.read<int>('type')).getSingle();
+
+      // Validasi hasil
+      if (result != 1 && result != 2) {
+        throw Exception('Hasil bukan 1 atau 2');
+      }
+
+      return result;
+    } catch (e) {
+      // Tangkap pengecualian jika tidak dapat menemukan hasil unik
+      throw Exception('Invalid category type');
+    }
+  }
+
+// Rekap
+
+  Future<List<Rekap>> getRekaps() async {
+    return select(rekaps).get();
+  }
+
+  Future<List<QueryRow>> getTransactionsInDateRange(
+      DateTime startDate, DateTime endDate) async {
+    final results = await customSelect(
+      'SELECT * FROM transactions '
+      'WHERE transaction_date BETWEEN ? AND ?',
+      variables: [
+        Variable<DateTime>(startDate),
+        Variable<DateTime>(endDate),
+      ],
+      readsFrom: {transactions},
+    ).get();
+    return results;
+  }
+
+  Future insertRekap(
+      String namaRekap, DateTime startDate, DateTime endDate) async {
+    DateTime now = DateTime.now();
+
+    // Ambil hasil transaksi dalam rentang tanggal yang diberikan
+    final getTransactions =
+        await getTransactionsInDateRange(startDate, endDate);
+
+    getCategoryType(categoryId) async {
+      final type = await getCategoryTypeById(categoryId);
+      return type;
+    }
+
+    print(rekaps.name);
+    // Hitung jumlah transaksi, pengeluaran, pemasukan, rata-rata pengeluaran, dan rata-rata pemasukan
+    int totalTransactions = getTransactions.length;
+    int totalExpense = 0;
+    int totalIncome = 0;
+    int countExpense = 0;
+    int countIncome = 0;
+// List untuk menyimpan nilai amount
+    print("Dari Tanggal : " +
+        startDate.toString() +
+        " Sampai " +
+        endDate.toString());
+    // print("isi data" + getTransactions.toString());
+    print("Banyak Transaksi : " + totalTransactions.toString());
+
+    for (var transaction in getTransactions) {
+      print("isi data" + transaction.data.toString());
+      print("Transaksi : " + transaction.data.toString());
+      int amount = transaction.data["amount"];
+
+      // Ngedapatin Amount
+      print("isi amount" + amount.toString());
+      int idCategory = transaction.data["category_id"];
+
+      // Ngedapatin id Category dari category Id
+      var type = await getCategoryType(idCategory);
+
+      print("isi Type " + type.toString());
+      if (type == 1) {
+        // Pemasukan
+        totalIncome += amount;
+        countIncome++;
+      } else if (type == 2) {
+        // Pengeluaran
+        totalExpense += amount;
+        countExpense++;
+      }
+    }
+
+    double averageExpense = countExpense == 0 ? 0 : totalExpense / countExpense;
+    double averageIncome = countIncome == 0 ? 0 : totalIncome / countIncome;
+
+    int sisa = totalIncome - totalExpense;
+    // Insert ke dalam tabel rekaps dengan nilai yang dihitung
+    return into(rekaps).insertReturning(
+      RekapsCompanion(
+        name: Value(namaRekap),
+        startDate: Value(startDate),
+        endDate: Value(endDate),
+        createdAt: Value(now),
+        updatedAt: Value(now),
+        totalTransactions: Value(totalTransactions),
+        totalExpense: Value(totalExpense),
+        totalIncome: Value(totalIncome),
+        sisa: Value(sisa), // Sesuaikan dengan logika aplikasi Anda
+        averageExpense: Value(averageExpense),
+        averageIncome: Value(averageIncome),
+      ),
+    );
+  }
+
+  // Ngdapatin Daftar Transaksi
+  Future<List<QueryRow>> getTransactionsInCustomRekap(
+      CustomRekap customRekap) async {
+    final query = customSelect(
+      'SELECT * FROM transactions WHERE transaction_date BETWEEN ? AND ?',
+      variables: [
+        Variable<DateTime>(customRekap.startDate),
+        Variable<DateTime>(customRekap.endDate),
+      ],
+    );
+
+    return query.get();
   }
 }
 
