@@ -21,6 +21,7 @@ class RekapPage extends StatefulWidget {
 class _RekapPageState extends State<RekapPage> {
   final AppDb database = AppDb();
   late int r;
+  late bool isUpdate = false;
   // Map<String, double> dataMap = {
   //   "Balance": 253000,
   //   "Belanja Bulanan": 35000,
@@ -46,10 +47,15 @@ class _RekapPageState extends State<RekapPage> {
     setState(() {
       r = index;
     });
+    setState(() {});
   }
 
-  Future<List<Rekap>> getCustomRekaps() async {
-    return await database.getRekaps();
+  Stream<List<Rekap>> getCustomRekaps() {
+    return database.getRekaps();
+  }
+
+  Future update(int id, DateTime startDate, DateTime endDate) async {
+    return await database.updateRekapAmount(id, startDate, endDate);
   }
 
   // Future<List<Rekap>> getRekaps() async {
@@ -62,8 +68,6 @@ class _RekapPageState extends State<RekapPage> {
   }
 
   Future<void> _loadData() async {
-    // await database.getTransactionsInCustomRekap(CustomRekap(startDate: , endDate: endDate));
-
     setState(() {});
   }
 
@@ -341,7 +345,7 @@ class _RekapPageState extends State<RekapPage> {
                                 // Kalo Custom
                               ] else if (r == 3) ...[
                                 Expanded(
-                                    child: FutureBuilder<List<Rekap>>(
+                                    child: StreamBuilder<List<Rekap>>(
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
@@ -365,6 +369,16 @@ class _RekapPageState extends State<RekapPage> {
                                                       .format(snapshot
                                                           .data![index]
                                                           .endDate);
+                                              if (!isUpdate) {
+                                                update(
+                                                    snapshot.data![index].id,
+                                                    snapshot
+                                                        .data![index].startDate,
+                                                    snapshot
+                                                        .data![index].endDate);
+                                                isUpdate = true;
+                                              }
+
                                               return Column(
                                                 children: [
                                                   SizedBox(height: 35),
@@ -605,7 +619,7 @@ class _RekapPageState extends State<RekapPage> {
                                       }
                                     }
                                   },
-                                  future: getCustomRekaps(),
+                                  stream: getCustomRekaps(),
                                 ))
                               ],
                               ElevatedButton(
