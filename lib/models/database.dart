@@ -192,12 +192,18 @@ class AppDb extends _$AppDb {
     return select(rekaps).watch();
   }
 
+  // Ngdapatin Daftar Transaksi PerBulan
+  Future<List<Rekap>> getSingleRekaps(int id) async {
+    return await (select(rekaps)..where((tbl) => tbl.id.equals(id))).get();
+  }
+
+// Ngdapatin Daftar Custom Rekaps
   Stream<List<Rekap>> getCustomRekaps() {
     final query = select(rekaps)..where((tbl) => tbl.isMonthly.equals(false));
     return query.watch();
   }
 
-  // Ngdapatin Daftar Transaksi PerBulan (Belum Selesai)
+  // Ngdapatin Daftar Transaksi PerBulan
   Stream<List<Rekap>> getMonthlyRekaps() {
     final query = select(rekaps)..where((tbl) => tbl.isMonthly.equals(true));
     return query.watch();
