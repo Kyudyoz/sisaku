@@ -33,7 +33,7 @@ class _RekapPageState extends State<RekapPage> {
   @override
   void initState() {
     super.initState();
-    updateR(2);
+    updateR(1);
     _loadData();
     datamap().then((dataMap) {
       setState(() {
@@ -372,24 +372,57 @@ class _RekapPageState extends State<RekapPage> {
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
-                                                            .center,
+                                                            .spaceBetween,
                                                     children: [
-                                                      Text(
-                                                        snapshot
-                                                            .data![index].name
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            snapshot
+                                                                .data![index]
+                                                                .name
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(width: 35),
+                                                        ],
                                                       ),
-                                                      IconButton(
-                                                          // Pindah ke halaman Detail Rekap
-                                                          onPressed: () {},
-                                                          color: primary,
-                                                          hoverColor: secondary,
-                                                          icon: Icon(Icons
-                                                              .arrow_forward_ios))
+                                                      Row(
+                                                        children: [
+                                                          IconButton(
+                                                              // Pindah ke halaman Detail Rekap
+                                                              onPressed: () {},
+                                                              color: primary,
+                                                              hoverColor:
+                                                                  secondary,
+                                                              icon: Icon(Icons
+                                                                  .arrow_forward_ios)),
+                                                          IconButton(
+                                                              // Pindah ke halaman Detail Rekap
+                                                              onPressed: () {},
+                                                              color: primary,
+                                                              focusColor:
+                                                                  secondary,
+                                                              hoverColor:
+                                                                  secondary,
+                                                              iconSize: 20,
+                                                              icon: Icon(
+                                                                  Icons.edit)),
+                                                          IconButton(
+                                                              // Pindah ke halaman Detail Rekap
+                                                              onPressed: () {},
+                                                              color: primary,
+                                                              focusColor:
+                                                                  secondary,
+                                                              hoverColor:
+                                                                  secondary,
+                                                              iconSize: 20,
+                                                              icon: Icon(Icons
+                                                                  .delete)),
+                                                        ],
+                                                      ),
                                                     ],
                                                   ),
                                                   SizedBox(height: 20),
@@ -441,7 +474,7 @@ class _RekapPageState extends State<RekapPage> {
                                                         Text("Rp." +
                                                             snapshot
                                                                 .data![index]
-                                                                .totalExpense
+                                                                .sisa
                                                                 .toString()),
                                                       ]),
                                                   SizedBox(height: 30),
