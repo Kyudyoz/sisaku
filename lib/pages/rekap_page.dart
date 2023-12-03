@@ -51,7 +51,11 @@ class _RekapPageState extends State<RekapPage> {
   }
 
   Stream<List<Rekap>> getCustomRekaps() {
-    return database.getRekaps();
+    return database.getCustomRekaps();
+  }
+
+  Stream<List<Rekap>> getMonthlyRekaps() {
+    return database.getMonthlyRekaps();
   }
 
   Future update(int id, DateTime startDate, DateTime endDate) async {
@@ -272,80 +276,177 @@ class _RekapPageState extends State<RekapPage> {
 
                               // Kalo Bulanan
                               else if (r == 2) ...[
-                                (datakosong)
-                                    ? Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 85),
-                                        child: Column(
-                                          children: [
-                                            Image.asset(
-                                              'assets/img/tes.png',
-                                              width: 200,
+                                Expanded(
+                                    child: StreamBuilder<List<Rekap>>(
+                                  stream: getMonthlyRekaps(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else {
+                                      if (snapshot.hasData) {
+                                        if (snapshot.data!.length > 0) {
+                                          return ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: snapshot.data!.length,
+                                            itemBuilder: (context, index) {
+                                              String startDate =
+                                                  DateFormat('dd-MMMM-yyyy')
+                                                      .format(snapshot
+                                                          .data![index]
+                                                          .startDate);
+                                              String endDate =
+                                                  DateFormat('dd-MMMM-yyyy')
+                                                      .format(snapshot
+                                                          .data![index]
+                                                          .endDate);
+                                              if (!isUpdate) {
+                                                update(
+                                                    snapshot.data![index].id,
+                                                    snapshot
+                                                        .data![index].startDate,
+                                                    snapshot
+                                                        .data![index].endDate);
+                                                isUpdate = true;
+                                              }
+
+                                              return Column(
+                                                children: [
+                                                  SizedBox(height: 35),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            snapshot
+                                                                .data![index]
+                                                                .name
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(width: 10),
+                                                        ],
+                                                      ),
+                                                      IconButton(
+                                                        // Pindah ke halaman Detail Rekap
+                                                        onPressed: () {},
+                                                        color: primary,
+                                                        hoverColor: secondary,
+                                                        icon: Icon(Icons
+                                                            .arrow_forward_ios),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 20),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text("Durasi "),
+                                                        Text(startDate +
+                                                            " ~ " +
+                                                            endDate),
+                                                      ]),
+                                                  SizedBox(height: 15),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                            "Total Pengeluaran "),
+                                                        Text("Rp." +
+                                                            snapshot
+                                                                .data![index]
+                                                                .totalExpense
+                                                                .toString()),
+                                                      ]),
+                                                  SizedBox(height: 15),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                            "Total Pemasukan "),
+                                                        Text("Rp." +
+                                                            snapshot
+                                                                .data![index]
+                                                                .totalIncome
+                                                                .toString()),
+                                                      ]),
+                                                  SizedBox(height: 15),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text("Sisa "),
+                                                        Text("Rp." +
+                                                            snapshot
+                                                                .data![index]
+                                                                .sisa
+                                                                .toString()),
+                                                      ]),
+                                                  SizedBox(height: 30),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 85),
+                                            child: Column(
+                                              children: [
+                                                SizedBox(height: 35),
+                                                Image.asset(
+                                                  'assets/img/tes.png',
+                                                  width: 200,
+                                                ),
+                                                Text(
+                                                  "Belum ada transaksi pada bulan ini",
+                                                  style: GoogleFonts.inder(),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "Tidak Ada Data",
-                                              style: GoogleFonts.inder(),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : Column(
-                                        children: [
-                                          SizedBox(height: 35),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                          );
+                                        }
+                                      } else {
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 85),
+                                          child: Column(
                                             children: [
-                                              Text(
-                                                "1 Desember 2023 - 31 Desember 2023",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Image.asset(
+                                                'assets/img/tes.png',
+                                                width: 200,
                                               ),
-                                              IconButton(
-                                                  // Pindah ke halaman Detail Rekap
-                                                  onPressed: () {},
-                                                  color: primary,
-                                                  hoverColor: secondary,
-                                                  icon: Icon(
-                                                      Icons.arrow_forward_ios))
+                                              Text(
+                                                "Tidak Ada Data",
+                                                style: GoogleFonts.inder(),
+                                              ),
                                             ],
                                           ),
-                                          SizedBox(height: 20),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text("Total Pengeluaran "),
-                                                Text("Rp. XXX.XXX "),
-                                              ]),
-                                          SizedBox(height: 15),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text("Total Pemasukan "),
-                                                Text("Rp. XXX.XXX "),
-                                              ]),
-                                          SizedBox(height: 15),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text("Sisa "),
-                                                Text("Rp. XXX.XXX "),
-                                              ]),
-                                          SizedBox(height: 30),
-                                        ],
-                                      )
+                                        );
+                                      }
+                                    }
+                                  },
+                                ))
 
                                 // Kalo Custom
                               ] else if (r == 3) ...[
                                 Expanded(
                                     child: StreamBuilder<List<Rekap>>(
+                                  stream: getCustomRekaps(),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
@@ -619,7 +720,6 @@ class _RekapPageState extends State<RekapPage> {
                                       }
                                     }
                                   },
-                                  stream: getCustomRekaps(),
                                 ))
                               ],
                               ElevatedButton(
