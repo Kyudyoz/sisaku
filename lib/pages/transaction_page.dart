@@ -195,6 +195,11 @@ class _TransactionPageState extends State<TransactionPage> {
         });
   }
 
+  // Untuk Otomatatis langsung memasukkan ke rekap bulanan
+  Future createMonthlyRekaps(int year, int month) async {
+    return await database.createMonthlyRekaps(year, month);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -393,6 +398,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                       .format(pickedDate);
                                   setState(() {
                                     dbDate = data;
+                                    print("Isi dbDate : " + dbDate);
                                   });
                                 }
                               },
@@ -616,7 +622,16 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 deskripsiController.text,
                                                 imageDb,
                                               );
+                                        // Parsing string tanggal ke dalam objek DateTime
+                                        DateTime date = DateTime.parse(dbDate);
 
+                                        // Mendapatkan tahun dan bulan dari objek DateTime
+                                        int year = date.year;
+                                        int month = date.month;
+
+                                        print("Tahun: $year");
+                                        print("Bulan: $month");
+                                        await createMonthlyRekaps(year, month);
                                         // Navigator.pop(context);
                                         await Navigator.pushReplacement(
                                           context,
