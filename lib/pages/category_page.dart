@@ -475,7 +475,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) =>
+                          HomePage(selectedDate: DateTime.now()),
                     ),
                   );
                 },

@@ -1,7 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:calendar_appbar/calendar_appbar.dart';
+// import 'package:calendar_appbar/calendar_appbar.dart';
+import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+    show CalendarCarousel;
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
 import 'package:sisaku/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +17,9 @@ import 'package:sisaku/pages/setting_page.dart';
 import 'package:sisaku/pages/transaction_page.dart';
 
 class HomePage extends StatefulWidget {
+  final DateTime selectedDate;
   const HomePage({
+    required this.selectedDate,
     super.key,
   });
 
@@ -29,9 +35,11 @@ class _HomePageState extends State<HomePage> {
   int rest = 0;
   int result1 = 0;
   int result2 = 0;
-  late DateTime selectedDate;
+  late DateTime selectedDate = widget.selectedDate;
   void initState() {
-    updateView(DateTime.now());
+    print(selectedDate);
+    updateView(selectedDate);
+    print(selectedDate);
     _loadData();
     super.initState();
   }
@@ -71,19 +79,69 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CalendarAppBar(
-        locale: 'id',
-        backButton: false,
-        accent: primary,
-        firstDate: DateTime.now().subtract(
-          Duration(days: 140),
+      // appBar: CalendarAppBar(
+      //   locale: 'id',
+      //   backButton: false,
+      //   accent: primary,
+      //   lastDate: DateTime.now(),
+      //   selectedDate: selectedDate,
+      //   onDateChanged: (value) {
+      //     print('Selected date : ' + value.toString());
+      //     selectedDate = value;
+      //     updateView(value);
+      //     print('Selected date baru : ' + selectedDate.toString());
+      //   },
+      // ),
+      appBar: PreferredSize(
+        preferredSize:
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.23),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(50, 50, 50, 5),
+          child: CalendarCarousel<Event>(
+            onDayPressed: (date, events) {
+              this.setState(() => selectedDate = date);
+              events.forEach((event) => print(event.title));
+            },
+            daysTextStyle: GoogleFonts.inder(
+              color: home,
+              fontSize: 18,
+            ),
+            weekendTextStyle: TextStyle(
+              color: Colors.red,
+            ),
+            thisMonthDayBorderColor: base,
+            headerTextStyle: GoogleFonts.inder(
+              color: base,
+              fontSize: 20,
+            ),
+            iconColor: base,
+            weekFormat: true,
+            showWeekDays: true,
+            weekdayTextStyle: GoogleFonts.inder(fontSize: 18, color: base),
+            locale: 'id',
+            height: 200.0,
+            selectedDateTime: selectedDate,
+            showIconBehindDayText: true,
+            customGridViewPhysics: NeverScrollableScrollPhysics(),
+            markedDateShowIcon: true,
+            firstDayOfWeek: 1,
+            pageSnapping: true,
+            markedDateIconMaxShown: 2,
+            headerText: '${DateFormat.yMMM().format(selectedDate)}',
+            selectedDayTextStyle: GoogleFonts.inder(
+                color: Colors.black, fontWeight: FontWeight.bold),
+            selectedDayBorderColor: base,
+            selectedDayButtonColor: base,
+            nextMonthDayBorderColor: base,
+            minSelectedDate: DateTime.now().subtract(Duration(days: 365 * 4)),
+            maxSelectedDate: DateTime.now().add(Duration(days: 100)),
+            todayButtonColor: Colors.transparent,
+            todayBorderColor: base,
+            markedDateMoreShowTotal: true,
+            nextDaysTextStyle: GoogleFonts.inder(color: base),
+            prevDaysTextStyle: GoogleFonts.inder(color: home),
+          ),
         ),
-        lastDate: DateTime.now(),
-        onDateChanged: (value) {
-          print('Selected date : ' + value.toString());
-          selectedDate = value;
-          updateView(selectedDate);
-        },
       ),
       body: SafeArea(
         child: Column(
@@ -412,7 +470,7 @@ class _HomePageState extends State<HomePage> {
                                                                                 // Navigator.of(context, rootNavigator: true).pop('dialog');
                                                                                 Navigator.of(context).pushReplacement(
                                                                                   MaterialPageRoute(
-                                                                                    builder: (context) => HomePage(),
+                                                                                    builder: (context) => HomePage(selectedDate: selectedDate),
                                                                                   ),
                                                                                 );
 
@@ -506,7 +564,8 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) =>
+                          HomePage(selectedDate: DateTime.now()),
                     ),
                   );
                 },

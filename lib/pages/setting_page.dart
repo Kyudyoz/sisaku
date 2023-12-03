@@ -335,7 +335,8 @@ class _SettingPageState extends State<SettingPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) =>
+                          HomePage(selectedDate: DateTime.now()),
                     ),
                   );
                 },

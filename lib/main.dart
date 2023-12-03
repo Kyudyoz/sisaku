@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       //   params: 0,
       //   title: "Home",
       // ),
-      home: HomePage(),
+      home: HomePage(selectedDate: DateTime.now()),
       theme: ThemeData(
         primaryColor: primary,
         primarySwatch: Colors.cyan,

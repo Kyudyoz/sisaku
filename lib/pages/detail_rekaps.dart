@@ -113,58 +113,61 @@ class _DetailRekapsStat extends State<DetailRekap>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          primary: true,
           title: Text(
             "Detail Rekap",
             style: GoogleFonts.inder(
-                fontWeight: FontWeight.w500, fontSize: 20, color: base),
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+              color: base,
+            ),
           ),
           centerTitle: true,
           leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(Icons.arrow_back_ios_new_outlined, color: base)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back_ios_new_outlined, color: base),
+          ),
           actions: [
             TextButton(
               onPressed: () {},
               child: Text(
                 "Export",
                 style: GoogleFonts.inder(
-                    fontWeight: FontWeight.w500, fontSize: 14, color: base),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  color: base,
+                ),
               ),
-            )
+            ),
           ],
-          toolbarHeight: (MediaQuery.of(context).size.height * 0.10),
-          bottom: Tab(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 12),
-              child: Column(
-                children: [
-                  Container(
-                    height: kToolbarHeight + 8.0,
-                    padding: const EdgeInsets.only(
-                        top: 16.0, right: 16.0, left: 16.0),
-                    decoration: BoxDecoration(
-                      color: _selectedColor,
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(8.0),
-                          topRight: Radius.circular(8.0)),
-                    ),
-                    child: TabBar(
-                      controller: _tabController,
-                      indicator: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8.0),
-                              topRight: Radius.circular(8.0)),
-                          color: Colors.white),
-                      labelColor: Colors.black,
-                      unselectedLabelColor: Colors.white,
-                      tabs: _tabs,
-                      onTap: updateR,
-                    ),
+          bottom: PreferredSize(
+            preferredSize:
+                Size.fromHeight(MediaQuery.of(context).size.height * 0.1),
+            child: Tab(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                decoration: BoxDecoration(
+                  color: _selectedColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
                   ),
-                ],
+                ),
+                child: TabBar(
+                  controller: _tabController,
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0),
+                    ),
+                    color: Colors.white,
+                  ),
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.white,
+                  tabs: _tabs,
+                  onTap: updateR,
+                ),
               ),
             ),
           ),
@@ -221,7 +224,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                               legendTextStyle:
                                                   GoogleFonts.inder(),
                                               legendPosition:
-                                                  LegendPosition.bottom,
+                                                  LegendPosition.right,
                                             ),
                                             chartValuesOptions:
                                                 ChartValuesOptions(
@@ -270,171 +273,180 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                   isUpdate = true;
                                                 }
 
-                                                return Column(
-                                                  children: [
-                                                    SizedBox(height: 35),
-                                                    Text(
-                                                      snapshot.data![index].name
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    SizedBox(height: 20),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text("Durasi "),
-                                                          Text(startDate +
-                                                              " ~ " +
-                                                              endDate),
-                                                        ]),
-                                                    SizedBox(height: 15),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                              "Total Pengeluaran "),
-                                                          Text("Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalExpense
-                                                                  .toString()),
-                                                        ]),
-                                                    SizedBox(height: 15),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                              "Total Pemasukan "),
-                                                          Text("Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalIncome
-                                                                  .toString()),
-                                                        ]),
-                                                    SizedBox(height: 15),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                              "Rata-Rata Harian "),
-                                                          Text("Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalIncome
-                                                                  .toString()),
-                                                        ]),
-                                                    SizedBox(height: 15),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text("Sisa "),
-                                                          Text("Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .sisa
-                                                                  .toString()),
-                                                        ]),
-                                                    SizedBox(height: 15),
-                                                    Text(
-                                                      "Pengeluaran Berdasarkan Kategori",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    SizedBox(height: 20),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                              "Belanja Bulanan "),
-                                                          Text("XXX")
-                                                        ]),
-                                                    SizedBox(height: 7),
-                                                    new LinearPercentIndicator(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.85,
-                                                      barRadius:
-                                                          const Radius.circular(
-                                                              16),
-                                                      lineHeight: 8.0,
-                                                      percent: 0.5,
-                                                      progressColor: Colors.red,
-                                                    ),
-                                                    SizedBox(height: 25),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                              "Makan Dan Minum "),
-                                                          Text("XXX")
-                                                        ]),
-                                                    SizedBox(height: 7),
-                                                    new LinearPercentIndicator(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.85,
-                                                      barRadius:
-                                                          const Radius.circular(
-                                                              16),
-                                                      lineHeight: 8.0,
-                                                      percent: 0.5,
-                                                      progressColor: Colors.red,
-                                                    ),
-                                                    SizedBox(height: 15),
-                                                    Text(
-                                                      "Pemasukan Berdasarkan Kategori",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    SizedBox(height: 20),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                              "Nama Kategori Pemasukan "),
-                                                          Text("XXX")
-                                                        ]),
-                                                    SizedBox(height: 7),
-                                                    new LinearPercentIndicator(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.85,
-                                                      lineHeight: 8.0,
-                                                      barRadius:
-                                                          const Radius.circular(
-                                                              16),
-                                                      percent: 0.5,
-                                                      progressColor:
-                                                          Colors.green,
-                                                    ),
-                                                    SizedBox(height: 15),
-                                                  ],
+                                                return SingleChildScrollView(
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(height: 35),
+                                                      Text(
+                                                        snapshot
+                                                            .data![index].name
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      SizedBox(height: 20),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text("Durasi "),
+                                                            Text(startDate +
+                                                                " ~ " +
+                                                                endDate),
+                                                          ]),
+                                                      SizedBox(height: 15),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                                "Total Pengeluaran "),
+                                                            Text("Rp." +
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .totalExpense
+                                                                    .toString()),
+                                                          ]),
+                                                      SizedBox(height: 15),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                                "Total Pemasukan "),
+                                                            Text("Rp." +
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .totalIncome
+                                                                    .toString()),
+                                                          ]),
+                                                      SizedBox(height: 15),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                                "Rata-Rata Harian "),
+                                                            Text("Rp." +
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .totalIncome
+                                                                    .toString()),
+                                                          ]),
+                                                      SizedBox(height: 15),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text("Sisa "),
+                                                            Text("Rp." +
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .sisa
+                                                                    .toString()),
+                                                          ]),
+                                                      SizedBox(height: 15),
+                                                      Text(
+                                                        "Pengeluaran Berdasarkan Kategori",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      SizedBox(height: 20),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                                "Belanja Bulanan "),
+                                                            Text("XXX")
+                                                          ]),
+                                                      SizedBox(height: 7),
+                                                      new LinearPercentIndicator(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.85,
+                                                        barRadius: const Radius
+                                                            .circular(16),
+                                                        lineHeight: 8.0,
+                                                        percent: 0.5,
+                                                        progressColor:
+                                                            Colors.red,
+                                                      ),
+                                                      SizedBox(height: 25),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                                "Makan Dan Minum "),
+                                                            Text("XXX")
+                                                          ]),
+                                                      SizedBox(height: 7),
+                                                      new LinearPercentIndicator(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.85,
+                                                        barRadius: const Radius
+                                                            .circular(16),
+                                                        lineHeight: 8.0,
+                                                        percent: 0.5,
+                                                        progressColor:
+                                                            Colors.red,
+                                                      ),
+                                                      SizedBox(height: 15),
+                                                      Text(
+                                                        "Pemasukan Berdasarkan Kategori",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      SizedBox(height: 20),
+                                                      Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                                "Nama Kategori Pemasukan "),
+                                                            Text("XXX")
+                                                          ]),
+                                                      SizedBox(height: 7),
+                                                      new LinearPercentIndicator(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.85,
+                                                        lineHeight: 8.0,
+                                                        barRadius: const Radius
+                                                            .circular(16),
+                                                        percent: 0.5,
+                                                        progressColor:
+                                                            Colors.green,
+                                                      ),
+                                                      SizedBox(height: 15),
+                                                    ],
+                                                  ),
                                                 );
                                               },
                                             );

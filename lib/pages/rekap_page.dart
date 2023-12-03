@@ -22,7 +22,7 @@ class RekapPage extends StatefulWidget {
 class _RekapPageState extends State<RekapPage> {
   final AppDb database = AppDb();
   late int r;
-  late bool isUpdate = false;
+  bool isUpdate = false;
   // Map<String, double> dataMap = {
   //   "Balance": 253000,
   //   "Belanja Bulanan": 35000,
@@ -48,7 +48,8 @@ class _RekapPageState extends State<RekapPage> {
     setState(() {
       r = index;
     });
-    setState(() {});
+
+    isUpdate = false;
   }
 
   Stream<List<Rekap>> getCustomRekaps() {
@@ -264,7 +265,7 @@ class _RekapPageState extends State<RekapPage> {
                                             legendTextStyle:
                                                 GoogleFonts.inder(),
                                             legendPosition:
-                                                LegendPosition.bottom,
+                                                LegendPosition.right,
                                           ),
                                           chartValuesOptions:
                                               ChartValuesOptions(
@@ -310,6 +311,7 @@ class _RekapPageState extends State<RekapPage> {
                                                         .data![index].startDate,
                                                     snapshot
                                                         .data![index].endDate);
+
                                                 isUpdate = true;
                                               }
 
@@ -338,8 +340,7 @@ class _RekapPageState extends State<RekapPage> {
                                                       IconButton(
                                                         // Pindah ke halaman Edit Rekap
                                                         onPressed: () {
-                                                          Navigator
-                                                              .pushReplacement(
+                                                          Navigator.push(
                                                             context,
                                                             // DetailPage adalah halaman yang dituju
                                                             MaterialPageRoute(
@@ -523,8 +524,7 @@ class _RekapPageState extends State<RekapPage> {
                                                           IconButton(
                                                             // Pindah ke halaman Detail Rekap
                                                             onPressed: () {
-                                                              Navigator
-                                                                  .pushReplacement(
+                                                              Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
                                                                   builder: (context) =>
@@ -823,7 +823,8 @@ class _RekapPageState extends State<RekapPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) =>
+                          HomePage(selectedDate: DateTime.now()),
                     ),
                   );
                 },

@@ -636,7 +636,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                         await Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => HomePage(),
+                                            builder: (context) => HomePage(
+                                                selectedDate:
+                                                    DateTime.parse(dbDate)),
                                           ),
                                         );
                                       },
@@ -686,7 +688,8 @@ class _TransactionPageState extends State<TransactionPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) =>
+                          HomePage(selectedDate: DateTime.now()),
                     ),
                   );
                 },
