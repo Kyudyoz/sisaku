@@ -5,6 +5,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:sisaku/colors.dart';
 import 'package:sisaku/models/database.dart';
 import 'package:sisaku/pages/category_page.dart';
+import 'package:sisaku/pages/detail_rekaps.dart';
 import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
 
@@ -335,8 +336,22 @@ class _RekapPageState extends State<RekapPage> {
                                                         ],
                                                       ),
                                                       IconButton(
-                                                        // Pindah ke halaman Detail Rekap
-                                                        onPressed: () {},
+                                                        // Pindah ke halaman Edit Rekap
+                                                        onPressed: () {
+                                                          Navigator
+                                                              .pushReplacement(
+                                                            context,
+                                                            // DetailPage adalah halaman yang dituju
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  DetailRekap(
+                                                                      rekap: snapshot
+                                                                              .data![
+                                                                          index]),
+                                                            ),
+                                                          );
+                                                          print("tes edit");
+                                                        },
                                                         color: primary,
                                                         hoverColor: secondary,
                                                         icon: Icon(Icons
@@ -507,7 +522,19 @@ class _RekapPageState extends State<RekapPage> {
                                                         children: [
                                                           IconButton(
                                                             // Pindah ke halaman Detail Rekap
-                                                            onPressed: () {},
+                                                            onPressed: () {
+                                                              Navigator
+                                                                  .pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      DetailRekap(
+                                                                          rekap:
+                                                                              snapshot.data![index]),
+                                                                ),
+                                                              );
+                                                              print("tes edit");
+                                                            },
                                                             color: primary,
                                                             hoverColor:
                                                                 secondary,
