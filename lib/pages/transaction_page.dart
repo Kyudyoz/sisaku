@@ -91,6 +91,14 @@ class _TransactionPageState extends State<TransactionPage> {
     );
   }
 
+  Future insertCategory(String name, int type) async {
+    DateTime now = DateTime.now();
+    final row = await database.into(database.categories).insertReturning(
+        CategoriesCompanion.insert(
+            name: name, type: type, createdAt: now, updatedAt: now));
+    print(row);
+  }
+
   convertImageToUint8List(File image) {
     // Baca data gambar sebagai byte
     List<int> bytes = image.readAsBytesSync();
@@ -107,6 +115,84 @@ class _TransactionPageState extends State<TransactionPage> {
   void savedImages(File image) {
     savedImage = image;
     imageDb = convertImageToUint8List(image);
+  }
+
+  TextEditingController categoryNameController = TextEditingController();
+  // Dialog
+  void openDialog(Category? category) {
+    if (category != null) {
+      categoryNameController.text = category.name;
+    }
+    showDialog(
+        context: context,
+        useSafeArea: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            content: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: [
+                    Text(
+                      (type == 2)
+                          ? 'Tambah Kategori Pengeluaran'
+                          : 'Tambah kategori Pemasukan',
+                      style: GoogleFonts.inder(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: categoryNameController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        hintText: "Tidak Boleh Kosong",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(
+                          ContinuousRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (category == null &&
+                            categoryNameController.text != '') {
+                          insertCategory(
+                            categoryNameController.text,
+                            type,
+                          );
+                          Navigator.of(context, rootNavigator: true)
+                              .pop('dialog');
+                          setState(() {});
+                          categoryNameController.clear();
+                        }
+                      },
+                      child: Text(
+                        'Simpan',
+                        style: GoogleFonts.inder(
+                          color: base,
+                          fontSize: 12,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -367,14 +453,16 @@ class _TransactionPageState extends State<TransactionPage> {
                                             Text('Kategori tidak ada'),
                                             ElevatedButton.icon(
                                               onPressed: () {
-                                                Navigator.pushReplacement(
-                                                  context,
-                                                  // DetailPage adalah halaman yang dituju
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CategoryPage(),
-                                                  ),
-                                                );
+                                                // Navigator.pushReplacement(
+                                                //   context,
+                                                //   // DetailPage adalah halaman yang dituju
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //         CategoryPage(),
+                                                //   ),
+                                                // );
+                                                openDialog(null);
+                                                categoryNameController.clear();
                                               },
                                               icon: Icon(
                                                 Icons.add,
