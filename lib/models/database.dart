@@ -207,21 +207,31 @@ class AppDb extends _$AppDb {
   }
 
   // Get Category Name by Id(Return String) For Rekaps
-  Future<Map<String, Map>?> getCategoryNameByRekaps(
+  Future<Map<String, List>?> getCategoryNameByRekaps(
       DateTime start, DateTime end) async {
     final getTransactions = await getTransactionsInDateRange(start, end);
 
-    Map<String, Map> dataMap = {};
+    Map<String, List> dataMap = {
+      "incomeName": [],
+      "incomeAmount": [],
+      "expenseName": [],
+      "expenseAmount": []
+    };
 
     getCategoryType(categoryId) async {
       final type = await getCategoryTypeById(categoryId);
       return type;
     }
 
+// Set untuk menyimpan nama kategori yang sudah ada
+    Set<String> uniqueCategoryNames = {};
+
+// Ngedapatin semua transaksi berdasarkan rekap dan looping
     for (var transaction in getTransactions) {
       // Ngedapatin Amount
       int idCategory = transaction.data["category_id"];
       print("isi Id Kategori " + idCategory.toString());
+
       // Ngedapatin Amount
       int amount = transaction.data["amount"];
       print("isi Data Amount begini " + amount.toString());
@@ -239,32 +249,46 @@ class AppDb extends _$AppDb {
       );
 
       // Tes
-
       final name =
           await query.map((row) => row.read<String>('name')).getSingle();
       print("Isi nama kategori ==> $name");
 
-      // Kalo Pemasukan
+      // Kalo Pemasukan/Income
       var type = await getCategoryType(idCategory);
       if (type == 1) {
-        final name =
-            await query.map((row) => row.read<String>('name')).getSingle();
         print("Isi nama kategori Pemasukan $name");
-        incomeCategory += amount;
-        dataMap["Pemasukan"] = {name: incomeCategory};
-      }
+        // Menambahkan amount
 
-      // Kalo Pengeluaran
-      else if (type == 2) {
-        final name =
-            await query.map((row) => row.read<String>('name')).getSingle();
-        print("Isi nama kategori Pengeluaran $name");
+        // Jika nama kategori belum ada dalam Set, tambahkan nama kategori ke Set dan tambahkan ke Map
+        if (!uniqueCategoryNames.contains(name)) {
+          uniqueCategoryNames.add(name);
+          // Menambah data expenseName
+          dataMap["incomeName"]?.add(name);
+        }
+
         incomeCategory += amount;
-        dataMap["Pengeluaran"] = {name: expenseCategory};
+        dataMap["incomeAmount"]?.add(incomeCategory);
+
+        // Menambah data incomeName & Income Amount
+      } else if (type == 2) {
+        print("Isi nama kategori Pengeluaran $name");
+
+        // Jika nama kategori belum ada dalam Set, tambahkan nama kategori ke Set dan tambahkan ke Map
+        if (!uniqueCategoryNames.contains(name)) {
+          uniqueCategoryNames.add(name);
+          // Menambah data expenseName
+          dataMap["expenseName"]?.add(name);
+        }
+
+        // Menambahkan amount
+        expenseCategory += amount;
+        // Menambah data Expense Amount
+        dataMap["expenseAmount"]?.add(expenseCategory);
       } else {
         print("Data Kategori tidak ditemukan?");
       }
     }
+    print("Unique Category Names: $uniqueCategoryNames");
     print("Hasil akhir datamap : === $dataMap");
     return dataMap;
   }

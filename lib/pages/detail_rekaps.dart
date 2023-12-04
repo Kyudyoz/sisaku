@@ -52,7 +52,7 @@ class _DetailRekapsStat extends State<DetailRekap>
   ];
   late bool isUpdate = false;
 
-  late Map<String, Map> _dataMapCategory = {};
+  late Map<String, List> _dataMapCategory = {};
   late Map<String, double> _dataMapChart = {};
 
   // final _iconTabs = const [
@@ -65,7 +65,7 @@ class _DetailRekapsStat extends State<DetailRekap>
     setState(() {});
   }
 
-  Future<Map<String, Map>?> getDataMapCategory(
+  Future<Map<String, List>?> getDataMapCategory(
       DateTime startDate, DateTime endDate) async {
     final dataMap = await database.getCategoryNameByRekaps(startDate, endDate);
 
@@ -111,6 +111,18 @@ class _DetailRekapsStat extends State<DetailRekap>
     setState(() {});
   }
 
+  // Kalkulasi persen berdasarkan kategori
+  double calculatePercentage(double categoryAmount, double totalAmount) {
+    if (totalAmount > 0) {
+      return categoryAmount / totalAmount;
+    } else {
+      return 0.0;
+    }
+  }
+
+  double totalExpenseAmounts = 0;
+  double totalIncomeAmounts = 0;
+
   @override
   void initState() {
     if (widget.rekap != null) {
@@ -118,13 +130,14 @@ class _DetailRekapsStat extends State<DetailRekap>
     }
     super.initState();
     getDataMapCategory(dbStartDate, dbEndDate).then((datamap) {
-      print("tessss");
       setState(() {
         _dataMapCategory = datamap!;
+        print("Ini dataMap Category  $_dataMapCategory");
       });
-      print("Ini dataMap Category  $datamap");
     });
+    final data = _dataMapCategory["Pemasukan"];
     print("Ini dataMap Category  $_dataMapCategory");
+    print("Tes Hasil nama value $data");
     getDailyAverage(totalExpense, totalIncome);
     updateR(1);
 
@@ -376,87 +389,129 @@ class _DetailRekapsStat extends State<DetailRekap>
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
+
+                                        // Data dari Database
                                         ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: _dataMapCategory.length,
-                                            itemBuilder: (context, index) {
-                                              String key = _dataMapCategory.keys
-                                                  .elementAt(index);
-                                              return Column(
-                                                children: [
-                                                  SizedBox(height: 20),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(""),
-                                                        Text(_dataMapCategory[
-                                                                "Pemasukan"]![
-                                                            "Belanja_Bulanan"])
-                                                      ]),
-                                                  SizedBox(height: 7),
-                                                  new LinearPercentIndicator(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.85,
-                                                    barRadius:
-                                                        const Radius.circular(
-                                                            16),
-                                                    lineHeight: 8.0,
-                                                    percent: 0.5,
-                                                    progressColor: Colors.red,
-                                                  ),
-                                                  SizedBox(height: 25),
-                                                ],
-                                              );
-                                            }),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Makan Dan Minum "),
-                                              Text("XXX")
-                                            ]),
-                                        SizedBox(height: 7),
-                                        new LinearPercentIndicator(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.85,
-                                          barRadius: const Radius.circular(16),
-                                          lineHeight: 8.0,
-                                          percent: 0.5,
-                                          progressColor: Colors.red,
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              _dataMapCategory["expenseName"]
+                                                      ?.length ??
+                                                  0,
+                                          itemBuilder: (context, index) {
+                                            final expenseName =
+                                                _dataMapCategory["expenseName"]
+                                                        ?[index] ??
+                                                    '';
+                                            final expenseAmount =
+                                                _dataMapCategory[
+                                                            "expenseAmount"]
+                                                        ?[index] ??
+                                                    0;
+
+                                            totalExpenseAmounts +=
+                                                expenseAmount.toDouble();
+                                            return Column(
+                                              children: [
+                                                SizedBox(height: 20),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                        expenseName), // Nama kategori expense
+                                                    Text("Rp." +
+                                                        (NumberFormat.currency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0,
+                                                        ).format(
+                                                          expenseAmount,
+                                                        )).replaceAll('IDR',
+                                                            '')), // Total Expense
+                                                  ],
+                                                ),
+                                                SizedBox(height: 7),
+                                                LinearPercentIndicator(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.85,
+                                                  barRadius:
+                                                      const Radius.circular(16),
+                                                  lineHeight: 8.0,
+                                                  percent: calculatePercentage(
+                                                      expenseAmount.toDouble(),
+                                                      totalExpenseAmounts), // Ganti nilai persentase sesuai kebutuhan
+                                                  progressColor: Colors.red,
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         ),
-                                        SizedBox(height: 15),
+
+                                        // Mapping Data Income
+                                        SizedBox(height: 25),
                                         Text(
                                           "Pemasukan Berdasarkan Kategori",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        SizedBox(height: 20),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Nama Kategori Pemasukan "),
-                                              Text("XXX")
-                                            ]),
-                                        SizedBox(height: 7),
-                                        new LinearPercentIndicator(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.85,
-                                          lineHeight: 8.0,
-                                          barRadius: const Radius.circular(16),
-                                          percent: 0.5,
-                                          progressColor: Colors.green,
+                                        ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              _dataMapCategory["incomeName"]
+                                                      ?.length ??
+                                                  0,
+                                          itemBuilder: (context, index) {
+                                            final incomeName =
+                                                _dataMapCategory["incomeName"]
+                                                        ?[index] ??
+                                                    '';
+                                            final incomeAmount =
+                                                _dataMapCategory["incomeAmount"]
+                                                        ?[index] ??
+                                                    0;
+                                            totalExpenseAmounts +=
+                                                incomeAmount.toDouble();
+                                            return Column(
+                                              children: [
+                                                SizedBox(height: 20),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                        incomeName), // Nama kategori income
+                                                    Text("Rp." +
+                                                        (NumberFormat.currency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0,
+                                                        ).format(
+                                                          incomeAmount,
+                                                        )).replaceAll('IDR',
+                                                            '')), // Total Income
+                                                  ],
+                                                ),
+                                                SizedBox(height: 7),
+                                                LinearPercentIndicator(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.85,
+                                                  barRadius:
+                                                      const Radius.circular(16),
+                                                  lineHeight: 8.0,
+                                                  percent: calculatePercentage(
+                                                      incomeAmount.toDouble(),
+                                                      totalExpenseAmounts), // Ganti nilai persentase sesuai kebutuhan
+                                                  progressColor: Colors.red,
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         ),
-                                        SizedBox(height: 15),
+                                        SizedBox(height: 25),
                                       ],
                                     ),
                                   )

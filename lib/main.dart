@@ -13,10 +13,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: MainPage(
-      //   params: 0,
-      //   title: "Home",
-      // ),
       home: HomePage(selectedDate: DateTime.now()),
       theme: ThemeData(
         primaryColor: primary,
