@@ -77,6 +77,27 @@ class AppDb extends _$AppDb {
     return dataMap;
   }
 
+  Stream<List<TransactionWithCategory>> getGallery(int type) {
+    // Lakukan query select
+    final query = (select(transactions).join([
+      innerJoin(
+        categories,
+        categories.id.equalsExp(transactions.category_id),
+      ),
+    ])
+      ..where(categories.type.equals(type))
+      ..where(transactions.image.isNotNull()));
+
+    return query.watch().map((rows) {
+      return rows.map((row) {
+        return TransactionWithCategory(
+          row.readTable(transactions),
+          row.readTable(categories),
+        );
+      }).toList();
+    });
+  }
+
   Future insertTransaction(int amount, DateTime date, String deskripsi,
       int categoryId, Uint8List? imageDb) async {
     DateTime now = DateTime.now();
@@ -160,7 +181,6 @@ class AppDb extends _$AppDb {
     });
   }
 
-// Get Category tipe by Id(Return Int) For Rekaps
   Future<int> getCategoryTypeById(int categoryId) async {
     final query = customSelect(
       'SELECT DISTINCT categories.type AS type FROM transactions '
@@ -186,7 +206,7 @@ class AppDb extends _$AppDb {
     }
   }
 
-// Get Category Name by Id(Return String) For Rekaps
+  // Get Category Name by Id(Return String) For Rekaps
   Future<Map<String, Map>?> getCategoryNameByRekaps(
       DateTime start, DateTime end) async {
     final getTransactions = await getTransactionsInDateRange(start, end);
@@ -493,7 +513,7 @@ class AppDb extends _$AppDb {
       return type;
     }
 
-    print(rekaps.name);
+    // print(rekaps.name);
     // Hitung jumlah transaksi, pengeluaran, pemasukan, rata-rata pengeluaran, dan rata-rata pemasukan
     int totalTransactions = getTransactions.length;
     int totalExpense = 0;
@@ -509,18 +529,18 @@ class AppDb extends _$AppDb {
     print("Banyak Transaksi : " + totalTransactions.toString());
 
     for (var transaction in getTransactions) {
-      print("isi data" + transaction.data.toString());
-      print("Transaksi : " + transaction.data.toString());
+      // print("isi data" + transaction.data.toString());
+      // print("Transaksi : " + transaction.data.toString());
       int amount = transaction.data["amount"];
 
       // Ngedapatin Amount
-      print("isi amount" + amount.toString());
+      // print("isi amount" + amount.toString());
       int idCategory = transaction.data["category_id"];
 
       // Ngedapatin id Category dari category Id
       var type = await getCategoryType(idCategory);
 
-      print("isi Type " + type.toString());
+      // print("isi Type " + type.toString());
       if (type == 1) {
         // Pemasukan
         totalIncome += amount;
@@ -563,7 +583,7 @@ class AppDb extends _$AppDb {
       return type;
     }
 
-    print(rekaps.name);
+    // print(rekaps.name);
     // Hitung jumlah transaksi, pengeluaran, pemasukan, rata-rata pengeluaran, dan rata-rata pemasukan
     int totalTransactions = getTransactions.length;
     int totalExpense = 0;
@@ -579,18 +599,18 @@ class AppDb extends _$AppDb {
     print("Banyak Transaksi : " + totalTransactions.toString());
 
     for (var transaction in getTransactions) {
-      print("isi data" + transaction.data.toString());
-      print("Transaksi : " + transaction.data.toString());
+      // print("isi data" + transaction.data.toString());
+      // print("Transaksi : " + transaction.data.toString());
       int amount = transaction.data["amount"];
 
       // Ngedapatin Amount
-      print("isi amount" + amount.toString());
+      // print("isi amount" + amount.toString());
       int idCategory = transaction.data["category_id"];
 
       // Ngedapatin id Category dari category Id
       var type = await getCategoryType(idCategory);
 
-      print("isi Type " + type.toString());
+      // print("isi Type " + type.toString());
       if (type == 1) {
         // Pemasukan
         totalIncome += amount;

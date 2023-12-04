@@ -237,43 +237,116 @@ class _RekapPageState extends State<RekapPage> {
                             children: [
                               // Kalo Realtime
                               if (r == 1) ...[
-                                (_dataMap.isEmpty)
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(top: 85),
-                                        child: Column(
-                                          children: [
-                                            Image.asset(
-                                              'assets/img/tes.png',
-                                              width: 200,
+                                // (_dataMap.isEmpty)
+                                //     ? Padding(
+                                //         padding: const EdgeInsets.only(top: 85),
+                                //         child: Column(
+                                //           children: [
+                                //             Image.asset(
+                                //               'assets/img/tes.png',
+                                //               width: 200,
+                                //             ),
+                                //             Text(
+                                //               "Tidak Ada Data",
+                                //               style: GoogleFonts.inder(),
+                                //             ),
+                                //           ],
+                                //         ),
+                                //       )
+                                //     :
+
+                                Expanded(
+                                  child: FutureBuilder<Map<String, double>>(
+                                    future: datamap(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.length > 0) {
+                                            return ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: 1,
+                                              itemBuilder: (context, index) {
+                                                return Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 35),
+                                                      child: PieChart(
+                                                        dataMap: _dataMap,
+                                                        chartRadius:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                1.7,
+                                                        legendOptions:
+                                                            LegendOptions(
+                                                          legendTextStyle:
+                                                              GoogleFonts
+                                                                  .inder(),
+                                                          legendPosition:
+                                                              LegendPosition
+                                                                  .right,
+                                                        ),
+                                                        chartValuesOptions:
+                                                            ChartValuesOptions(
+                                                          showChartValuesInPercentage:
+                                                              true,
+                                                          decimalPlaces: 0,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 85),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height: 35),
+                                                  Image.asset(
+                                                    'assets/img/tes.png',
+                                                    width: 200,
+                                                  ),
+                                                  Text(
+                                                    "Belum ada transaksi",
+                                                    style: GoogleFonts.inder(),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 85),
+                                            child: Column(
+                                              children: [
+                                                Image.asset(
+                                                  'assets/img/tes.png',
+                                                  width: 200,
+                                                ),
+                                                Text(
+                                                  "Tidak Ada Data",
+                                                  style: GoogleFonts.inder(),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "Tidak Ada Data",
-                                              style: GoogleFonts.inder(),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.only(top: 35),
-                                        child: PieChart(
-                                          dataMap: _dataMap,
-                                          chartRadius: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.7,
-                                          legendOptions: LegendOptions(
-                                            legendTextStyle:
-                                                GoogleFonts.inder(),
-                                            legendPosition:
-                                                LegendPosition.right,
-                                          ),
-                                          chartValuesOptions:
-                                              ChartValuesOptions(
-                                            showChartValuesInPercentage: true,
-                                            decimalPlaces: 0,
-                                          ),
-                                        ),
-                                      )
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                )
                               ]
 
                               // Kalo Bulanan
