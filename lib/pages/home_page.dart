@@ -350,42 +350,67 @@ class _HomePageState extends State<HomePage> {
                                                         BorderRadius.circular(
                                                             8),
                                                   ),
-                                                  child: (snapshot
-                                                              .data![index]
-                                                              .transaction
-                                                              .image !=
-                                                          null)
-                                                      ? Image.memory(
-                                                          snapshot
+                                                  child:
+                                                      (snapshot
                                                                   .data![index]
                                                                   .transaction
-                                                                  .image ??
-                                                              Uint8List(0),
-                                                          width: 80,
-                                                        )
-                                                      : Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 8,
-                                                              ),
-                                                              child: Icon(
-                                                                Icons
-                                                                    .question_mark,
-                                                                color: Colors
-                                                                    .green,
-                                                              ),
+                                                                  .image !=
+                                                              null)
+                                                          ? Image.memory(
+                                                              snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .transaction
+                                                                      .image ??
+                                                                  Uint8List(0),
+                                                              // width: 80,
+                                                              fit: BoxFit.cover,
+                                                              width: 80,
+                                                            )
+                                                          : Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Container(
+                                                                  width: 80,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                      color: Color
+                                                                          .fromRGBO(
+                                                                              0,
+                                                                              0,
+                                                                              0,
+                                                                              0.1)),
+                                                                  child: snapshot
+                                                                              .data![index]
+                                                                              .category
+                                                                              .type ==
+                                                                          2
+                                                                      ? Icon(
+                                                                          Icons
+                                                                              .upload_rounded,
+                                                                          color:
+                                                                              Colors.red,
+                                                                          size:
+                                                                              40,
+                                                                        )
+                                                                      : Icon(
+                                                                          Icons
+                                                                              .download_rounded,
+                                                                          color:
+                                                                              Colors.green,
+                                                                          size:
+                                                                              40,
+                                                                        ),
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
                                                 ),
                                                 title: Text(
                                                   'Rp. ' +

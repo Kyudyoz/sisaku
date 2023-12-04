@@ -208,19 +208,19 @@ class _GalleryPageState extends State<GalleryPage> {
                                                             builder:
                                                                 (context) =>
                                                                     AlertDialog(
-                                                              title: Text(
-                                                                e.transaction
-                                                                        .name +
-                                                                    " (" +
-                                                                    e.category
-                                                                        .name +
-                                                                    ")",
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .inder(
-                                                                  fontSize: 28,
-                                                                ),
-                                                              ),
+                                                              // title: Text(
+                                                              //   e.transaction
+                                                              //           .name +
+                                                              //       " (" +
+                                                              //       e.category
+                                                              //           .name +
+                                                              //       ")",
+                                                              //   style:
+                                                              //       GoogleFonts
+                                                              //           .inder(
+                                                              //     fontSize: 28,
+                                                              //   ),
+                                                              // ),
                                                               content: Stack(
                                                                 alignment: Alignment
                                                                     .bottomCenter,
@@ -233,7 +233,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                     height: MediaQuery.of(context)
                                                                             .size
                                                                             .height /
-                                                                        1.3,
+                                                                        2,
                                                                     decoration:
                                                                         BoxDecoration(
                                                                       borderRadius:
@@ -242,7 +242,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                       image:
                                                                           DecorationImage(
                                                                         fit: BoxFit
-                                                                            .cover,
+                                                                            .fill,
                                                                         image: MemoryImage(e.transaction.image ??
                                                                             Uint8List(0)),
                                                                       ),
@@ -393,7 +393,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                         10),
                                                             image:
                                                                 DecorationImage(
-                                                              fit: BoxFit.cover,
+                                                              fit: BoxFit.fill,
                                                               image: MemoryImage(e
                                                                       .transaction
                                                                       .image ??
