@@ -6,9 +6,14 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +21,18 @@ class MyApp extends StatelessWidget {
       home: HomePage(selectedDate: DateTime.now()),
       theme: ThemeData(
         primaryColor: primary,
-        primarySwatch: Colors.cyan,
+        primarySwatch: MaterialColor(primary.value, {
+          50: Color.fromARGB(255, 255, 255, 255),
+          100: Color.fromARGB(255, 255, 255, 255),
+          200: Color.fromARGB(255, 255, 255, 255),
+          300: Color.fromARGB(255, 255, 255, 255),
+          400: Color.fromARGB(255, 255, 255, 255),
+          500: primary,
+          600: Color.fromARGB(255, 255, 255, 255),
+          700: Color.fromARGB(255, 255, 255, 255),
+          800: Color.fromARGB(255, 255, 255, 255),
+          900: Color.fromARGB(255, 255, 255, 255),
+        }),
       ),
     );
   }

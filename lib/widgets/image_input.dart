@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspath;
+import 'package:sisaku/colors.dart';
 
 class ImageInput extends StatefulWidget {
   final Function imagesaveat;
@@ -63,7 +64,7 @@ class _ImageInputState extends State<ImageInput> {
             height: 200,
             width: 200,
             decoration:
-                BoxDecoration(border: Border.all(width: 2, color: Colors.cyan)),
+                BoxDecoration(border: Border.all(width: 2, color: primary)),
             // ignore: unnecessary_null_comparison
             child: _imageFile != null
                 ? Image.file(_imageFile!, fit: BoxFit.cover)
@@ -77,12 +78,24 @@ class _ImageInputState extends State<ImageInput> {
             children: [
               TextButton.icon(
                   onPressed: _galleryPicture,
-                  icon: Icon(Icons.image),
-                  label: Text('Ambil dari galeri')),
+                  icon: Icon(
+                    Icons.image,
+                    color: primary,
+                  ),
+                  label: Text(
+                    'Ambil dari galeri',
+                    style: TextStyle(color: primary),
+                  )),
               TextButton.icon(
                   onPressed: _takePicture,
-                  icon: Icon(Icons.camera),
-                  label: Text('Gunakan kamera')),
+                  icon: Icon(
+                    Icons.camera,
+                    color: primary,
+                  ),
+                  label: Text(
+                    'Gunakan kamera',
+                    style: TextStyle(color: primary),
+                  )),
             ],
           ),
         ],

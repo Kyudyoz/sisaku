@@ -235,7 +235,57 @@ class _SettingPageState extends State<SettingPage> {
                                   child: Text("Tema Warna"),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            alignment: Alignment.center,
+                                            title: Text(
+                                              "Pilih Warna",
+                                              style: GoogleFonts.inder(
+                                                  color: Colors.black),
+                                            ),
+                                            content: SingleChildScrollView(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      IconButton(
+                                                        onPressed: () {},
+                                                        icon:
+                                                            Icon(Icons.circle),
+                                                        color: Color.fromARGB(
+                                                            255, 0, 171, 194),
+                                                      ),
+                                                      Text("Default",
+                                                          style: GoogleFonts
+                                                              .inder()),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      IconButton(
+                                                        onPressed: () {},
+                                                        icon:
+                                                            Icon(Icons.circle),
+                                                        color: Color.fromARGB(
+                                                            255, 230, 57, 230),
+                                                      ),
+                                                      Text("Magenta",
+                                                          style: GoogleFonts
+                                                              .inder()),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  }),
                             ]),
                             SizedBox(height: 18),
 

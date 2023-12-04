@@ -617,8 +617,7 @@ class _RekapPageState extends State<RekapPage> {
                                                           IconButton(
                                                             // Pindah ke halaman edit
                                                             onPressed: () {
-                                                              Navigator
-                                                                  .pushReplacement(
+                                                              Navigator.push(
                                                                 context,
                                                                 // DetailPage adalah halaman yang dituju
                                                                 MaterialPageRoute(
@@ -824,6 +823,8 @@ class _RekapPageState extends State<RekapPage> {
                               ],
                               ElevatedButton(
                                 style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(primary),
                                   shape: MaterialStatePropertyAll(
                                     ContinuousRectangleBorder(
                                       borderRadius: BorderRadius.circular(100),

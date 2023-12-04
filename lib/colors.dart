@@ -4,6 +4,7 @@ import 'package:sisaku/models/database.dart';
 final AppDb database = AppDb();
 const defaultTheme = [
   Color.fromARGB(255, 0, 171, 194),
+  Color.fromARGB(255, 230, 57, 230),
 ];
 
 var primary = defaultTheme[0];
