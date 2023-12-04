@@ -160,6 +160,7 @@ class AppDb extends _$AppDb {
     });
   }
 
+// Get Category tipe by Id(Return Int) For Rekaps
   Future<int> getCategoryTypeById(int categoryId) async {
     final query = customSelect(
       'SELECT DISTINCT categories.type AS type FROM transactions '
@@ -183,6 +184,69 @@ class AppDb extends _$AppDb {
       // Tangkap pengecualian jika tidak dapat menemukan hasil unik
       throw Exception('Invalid category type');
     }
+  }
+
+// Get Category Name by Id(Return String) For Rekaps
+  Future<Map<String, Map>?> getCategoryNameByRekaps(
+      DateTime start, DateTime end) async {
+    final getTransactions = await getTransactionsInDateRange(start, end);
+
+    Map<String, Map> dataMap = {};
+
+    getCategoryType(categoryId) async {
+      final type = await getCategoryTypeById(categoryId);
+      return type;
+    }
+
+    for (var transaction in getTransactions) {
+      // Ngedapatin Amount
+      int idCategory = transaction.data["category_id"];
+      print("isi Id Kategori " + idCategory.toString());
+      // Ngedapatin Amount
+      int amount = transaction.data["amount"];
+      print("isi Data Amount begini " + amount.toString());
+
+      // Ngedapatin amount dari setiap kategori
+      int incomeCategory = 0;
+      int expenseCategory = 0;
+
+      final query = customSelect(
+        'SELECT DISTINCT categories.name AS name FROM transactions '
+        'INNER JOIN categories ON transactions.category_id = categories.id '
+        'WHERE transactions.category_id = ?',
+        variables: [Variable.withInt(idCategory)],
+        readsFrom: {transactions, categories},
+      );
+
+      // Tes
+
+      final name =
+          await query.map((row) => row.read<String>('name')).getSingle();
+      print("Isi nama kategori ==> $name");
+
+      // Kalo Pemasukan
+      var type = await getCategoryType(idCategory);
+      if (type == 1) {
+        final name =
+            await query.map((row) => row.read<String>('name')).getSingle();
+        print("Isi nama kategori Pemasukan $name");
+        incomeCategory += amount;
+        dataMap["Pemasukan"] = {name: incomeCategory};
+      }
+
+      // Kalo Pengeluaran
+      else if (type == 2) {
+        final name =
+            await query.map((row) => row.read<String>('name')).getSingle();
+        print("Isi nama kategori Pengeluaran $name");
+        incomeCategory += amount;
+        dataMap["Pengeluaran"] = {name: expenseCategory};
+      } else {
+        print("Data Kategori tidak ditemukan?");
+      }
+    }
+    print("Hasil akhir datamap : === $dataMap");
+    return dataMap;
   }
 
 // Rekap
