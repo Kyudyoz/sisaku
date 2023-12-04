@@ -21,7 +21,26 @@ class _DetailRekapsStat extends State<DetailRekap>
     with SingleTickerProviderStateMixin {
   final AppDb database = AppDb();
   late int r;
+
+  // Data Detail Rekap dari Rekap yang dipilih
   late int id;
+  late String name;
+  late String startDate;
+  late String endDate;
+  late var dbStartDate;
+  late var dbEndDate;
+  late var totalExpense;
+  late var totalIncome;
+  late var averageIncome;
+  late var averageExpense;
+  late int totalTransactions;
+  late var balance;
+  late bool isMonthly;
+  late double dailyAverage;
+
+  // Untuk dapetin categoi
+  late var getCategory;
+  // Tab
   late TabController _tabController;
 
   final _selectedColor = primary;
@@ -32,7 +51,10 @@ class _DetailRekapsStat extends State<DetailRekap>
     Tab(text: 'Nama'),
   ];
   late bool isUpdate = false;
-  late Map<String, double> _dataMap = {};
+
+  late Map<String, Map> _dataMapCategory = {};
+  late Map<String, double> _dataMapChart = {};
+
   // final _iconTabs = const [
   //   Tab(icon: Icon(Icons.home)),
   //   Tab(icon: Icon(Icons.search)),
@@ -43,18 +65,43 @@ class _DetailRekapsStat extends State<DetailRekap>
     setState(() {});
   }
 
+  Future<Map<String, Map>?> getDataMapCategory(
+      DateTime startDate, DateTime endDate) async {
+    final dataMap = await database.getCategoryNameByRekaps(startDate, endDate);
+
+    return dataMap;
+  }
+
   void updateRekapView(Rekap rekap) {
     id = rekap.id;
-    String name = rekap.name;
-    String startDate = DateFormat('dd-MMMM-yyyy').format(rekap.startDate);
-    String endDate = DateFormat('dd-MMMM-yyyy').format(rekap.startDate);
-    var totalExpense = rekap.totalExpense;
-    var totalIncome = rekap.totalIncome;
-    var averageIncome = rekap.totalIncome;
-    var averageExpense = rekap.totalExpense;
-    var balance = rekap.sisa;
-    var isMonthly = rekap.isMonthly;
+    name = rekap.name;
+    print("Ini startDate :" + rekap.startDate.toString());
+
+    startDate = DateFormat('dd-MMMM-yyyy').format(rekap.startDate);
+    endDate = DateFormat('dd-MMMM-yyyy').format(rekap.endDate);
+
+    // Untuk Query
+    dbStartDate = rekap.startDate;
+    dbEndDate = rekap.endDate;
+    totalTransactions = rekap.totalTransactions!;
+    totalExpense = rekap.totalExpense;
+    totalIncome = rekap.totalIncome;
+    averageIncome = rekap.totalIncome;
+    averageExpense = rekap.totalExpense;
+    balance = rekap.sisa;
+    isMonthly = rekap.isMonthly;
     print('ini id $id');
+  }
+
+  Future<Map<String, double>> datamap() async {
+    final Map<String, double> dataMap = await database.getMapFromDatabase();
+
+    return dataMap;
+  }
+
+  double getDailyAverage(int totalExpense, int totalIncome) {
+    dailyAverage = (totalExpense + totalIncome) / totalTransactions;
+    return dailyAverage;
   }
 
   void updateR(int index) {
@@ -70,14 +117,23 @@ class _DetailRekapsStat extends State<DetailRekap>
       updateRekapView(widget.rekap!);
     }
     super.initState();
-
+    getDataMapCategory(dbStartDate, dbEndDate).then((datamap) {
+      print("tessss");
+      setState(() {
+        _dataMapCategory = datamap!;
+      });
+      print("Ini dataMap Category  $datamap");
+    });
+    print("Ini dataMap Category  $_dataMapCategory");
+    getDailyAverage(totalExpense, totalIncome);
     updateR(1);
+
     _tabController = TabController(length: 3, vsync: this);
 
     _loadData();
     datamap().then((dataMap) {
       setState(() {
-        _dataMap = dataMap;
+        _dataMapChart = dataMap;
       });
     });
   }
@@ -92,11 +148,6 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   Future<List<Rekap>> getSingleRekap(id) {
     return database.getSingleRekaps(id);
-  }
-
-  Future<Map<String, double>> datamap() async {
-    final Map<String, double> dataMap = await database.getMapFromDatabase();
-    return dataMap;
   }
 
   @override
@@ -194,7 +245,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                               children: [
                                 // Kalo Realtime
                                 if (r == 1) ...[
-                                  (_dataMap.isEmpty)
+                                  (_dataMapChart.isEmpty)
                                       ? Padding(
                                           padding:
                                               const EdgeInsets.only(top: 85),
@@ -215,7 +266,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                           padding:
                                               const EdgeInsets.only(top: 35),
                                           child: PieChart(
-                                            dataMap: _dataMap,
+                                            dataMap: _dataMapChart,
                                             chartRadius: MediaQuery.of(context)
                                                     .size
                                                     .width /
@@ -238,260 +289,179 @@ class _DetailRekapsStat extends State<DetailRekap>
                                 // Kalo Kategori
                                 else if (r == 2) ...[
                                   Expanded(
-                                      child: FutureBuilder<List<Rekap>>(
-                                    future: getSingleRekap(id),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      } else {
-                                        if (snapshot.hasData) {
-                                          if (snapshot.data!.length > 0) {
-                                            return ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: snapshot.data!.length,
-                                              itemBuilder: (context, index) {
-                                                String startDate =
-                                                    DateFormat('dd-MMMM-yyyy')
-                                                        .format(snapshot
-                                                            .data![index]
-                                                            .startDate);
-                                                String endDate =
-                                                    DateFormat('dd-MMMM-yyyy')
-                                                        .format(snapshot
-                                                            .data![index]
-                                                            .endDate);
-                                                if (!isUpdate) {
-                                                  update(
-                                                      snapshot.data![index].id,
-                                                      snapshot.data![index]
-                                                          .startDate,
-                                                      snapshot.data![index]
-                                                          .endDate);
-                                                  isUpdate = true;
-                                                }
-
-                                                return SingleChildScrollView(
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(height: 35),
-                                                      Text(
-                                                        snapshot
-                                                            .data![index].name
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      SizedBox(height: 20),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text("Durasi "),
-                                                            Text(startDate +
-                                                                " ~ " +
-                                                                endDate),
-                                                          ]),
-                                                      SizedBox(height: 15),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "Total Pengeluaran "),
-                                                            Text("Rp." +
-                                                                snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .totalExpense
-                                                                    .toString()),
-                                                          ]),
-                                                      SizedBox(height: 15),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "Total Pemasukan "),
-                                                            Text("Rp." +
-                                                                snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .totalIncome
-                                                                    .toString()),
-                                                          ]),
-                                                      SizedBox(height: 15),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "Rata-Rata Harian "),
-                                                            Text("Rp." +
-                                                                snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .totalIncome
-                                                                    .toString()),
-                                                          ]),
-                                                      SizedBox(height: 15),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text("Sisa "),
-                                                            Text("Rp." +
-                                                                snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .sisa
-                                                                    .toString()),
-                                                          ]),
-                                                      SizedBox(height: 15),
-                                                      Text(
-                                                        "Pengeluaran Berdasarkan Kategori",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      SizedBox(height: 20),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "Belanja Bulanan "),
-                                                            Text("XXX")
-                                                          ]),
-                                                      SizedBox(height: 7),
-                                                      new LinearPercentIndicator(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.85,
-                                                        barRadius: const Radius
-                                                            .circular(16),
-                                                        lineHeight: 8.0,
-                                                        percent: 0.5,
-                                                        progressColor:
-                                                            Colors.red,
-                                                      ),
-                                                      SizedBox(height: 25),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "Makan Dan Minum "),
-                                                            Text("XXX")
-                                                          ]),
-                                                      SizedBox(height: 7),
-                                                      new LinearPercentIndicator(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.85,
-                                                        barRadius: const Radius
-                                                            .circular(16),
-                                                        lineHeight: 8.0,
-                                                        percent: 0.5,
-                                                        progressColor:
-                                                            Colors.red,
-                                                      ),
-                                                      SizedBox(height: 15),
-                                                      Text(
-                                                        "Pemasukan Berdasarkan Kategori",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      SizedBox(height: 20),
-                                                      Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                "Nama Kategori Pemasukan "),
-                                                            Text("XXX")
-                                                          ]),
-                                                      SizedBox(height: 7),
-                                                      new LinearPercentIndicator(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.85,
-                                                        lineHeight: 8.0,
-                                                        barRadius: const Radius
-                                                            .circular(16),
-                                                        percent: 0.5,
-                                                        progressColor:
-                                                            Colors.green,
-                                                      ),
-                                                      SizedBox(height: 15),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          } else {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 85),
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(height: 35),
-                                                  Image.asset(
-                                                    'assets/img/tes.png',
-                                                    width: 200,
-                                                  ),
-                                                  Text(
-                                                    "Belum ada transaksi pada bulan ini",
-                                                    style: GoogleFonts.inder(),
-                                                  ),
-                                                ],
+                                      child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 35),
+                                        Text(
+                                          name,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(height: 20),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Durasi "),
+                                              Text(startDate + " ~ " + endDate),
+                                            ]),
+                                        SizedBox(height: 15),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Total Pengeluaran "),
+                                              Text(
+                                                "Rp." +
+                                                    (NumberFormat.currency(
+                                                      locale: 'id',
+                                                      decimalDigits: 0,
+                                                    ).format(
+                                                      totalExpense,
+                                                    )).replaceAll('IDR', ''),
                                               ),
-                                            );
-                                          }
-                                        } else {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 85),
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  'assets/img/tes.png',
-                                                  width: 200,
-                                                ),
-                                                Text(
-                                                  "Tidak Ada Data",
-                                                  style: GoogleFonts.inder(),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                                  ))
-
-                                  // Kalo Custom
+                                            ]),
+                                        SizedBox(height: 15),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Total Pemasukan "),
+                                              Text(
+                                                "Rp." +
+                                                    (NumberFormat.currency(
+                                                      locale: 'id',
+                                                      decimalDigits: 0,
+                                                    ).format(
+                                                      totalIncome,
+                                                    )).replaceAll('IDR', ''),
+                                              ),
+                                            ]),
+                                        SizedBox(height: 15),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Rata-Rata Harian "),
+                                              Text(
+                                                "Rp." +
+                                                    (NumberFormat.currency(
+                                                      locale: 'id',
+                                                      decimalDigits: 0,
+                                                    ).format(
+                                                      dailyAverage,
+                                                    )).replaceAll('IDR', ''),
+                                              ),
+                                            ]),
+                                        SizedBox(height: 15),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Sisa "),
+                                              Text(
+                                                "Rp." +
+                                                    (NumberFormat.currency(
+                                                      locale: 'id',
+                                                      decimalDigits: 0,
+                                                    ).format(
+                                                      totalIncome,
+                                                    )).replaceAll('IDR', ''),
+                                              ),
+                                            ]),
+                                        SizedBox(height: 15),
+                                        Text(
+                                          "Pengeluaran Berdasarkan Kategori",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: _dataMapCategory.length,
+                                            itemBuilder: (context, index) {
+                                              String key = _dataMapCategory.keys
+                                                  .elementAt(index);
+                                              return Column(
+                                                children: [
+                                                  SizedBox(height: 20),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(""),
+                                                        Text(_dataMapCategory[
+                                                                "Pemasukan"]![
+                                                            "Belanja_Bulanan"])
+                                                      ]),
+                                                  SizedBox(height: 7),
+                                                  new LinearPercentIndicator(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.85,
+                                                    barRadius:
+                                                        const Radius.circular(
+                                                            16),
+                                                    lineHeight: 8.0,
+                                                    percent: 0.5,
+                                                    progressColor: Colors.red,
+                                                  ),
+                                                  SizedBox(height: 25),
+                                                ],
+                                              );
+                                            }),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Makan Dan Minum "),
+                                              Text("XXX")
+                                            ]),
+                                        SizedBox(height: 7),
+                                        new LinearPercentIndicator(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.85,
+                                          barRadius: const Radius.circular(16),
+                                          lineHeight: 8.0,
+                                          percent: 0.5,
+                                          progressColor: Colors.red,
+                                        ),
+                                        SizedBox(height: 15),
+                                        Text(
+                                          "Pemasukan Berdasarkan Kategori",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(height: 20),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Nama Kategori Pemasukan "),
+                                              Text("XXX")
+                                            ]),
+                                        SizedBox(height: 7),
+                                        new LinearPercentIndicator(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.85,
+                                          lineHeight: 8.0,
+                                          barRadius: const Radius.circular(16),
+                                          percent: 0.5,
+                                          progressColor: Colors.green,
+                                        ),
+                                        SizedBox(height: 15),
+                                      ],
+                                    ),
+                                  )
+                                      // Kalo Custom
+                                      )
                                 ] else if (r == 3) ...[
                                   Expanded(
                                       child: StreamBuilder<List<Rekap>>(
