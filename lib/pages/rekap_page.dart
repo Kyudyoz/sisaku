@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
 import 'package:sisaku/models/database.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/detail_rekaps.dart';
@@ -686,6 +686,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                                       ),
                                                                                     ),
                                                                                     ElevatedButton(
+                                                                                      style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(primary)),
                                                                                       onPressed: () {
                                                                                         Navigator.of(context, rootNavigator: true).pop('dialog');
                                                                                         database.deleteRekap(snapshot.data![index].id);
@@ -859,7 +860,7 @@ class _RekapPageState extends State<RekapPage> {
                                 padding: const EdgeInsets.fromLTRB(0, 0, 8, 30),
                                 child: FloatingActionButton(
                                   onPressed: () {
-                                    Navigator.pushReplacement(
+                                    Navigator.push(
                                       context,
                                       // DetailPage adalah halaman yang dituju
                                       MaterialPageRoute(

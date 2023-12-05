@@ -3,8 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:sisaku/models/database.dart';
 
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
 import 'package:sisaku/models/transaction_with_category.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/home_page.dart';
@@ -20,6 +21,7 @@ class GalleryPage extends StatefulWidget {
 
 class _GalleryPageState extends State<GalleryPage> {
   late int type;
+  final AppDb database = AppDb();
 
   void initState() {
     updateType(1);

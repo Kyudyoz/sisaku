@@ -8,7 +8,7 @@ import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
 import 'package:sisaku/widgets/image_input.dart';
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
 import 'dart:io';
 import 'package:sisaku/models/database.dart';
 import 'package:sisaku/models/transaction_with_category.dart';
@@ -148,8 +148,10 @@ class _TransactionPageState extends State<TransactionPage> {
                     ),
                     TextFormField(
                       controller: categoryNameController,
+                      cursorColor: primary,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
+                          borderSide: BorderSide(color: primary),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         hintText: "Tidak Boleh Kosong",
@@ -160,6 +162,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     ),
                     ElevatedButton(
                       style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(primary),
                         shape: MaterialStatePropertyAll(
                           ContinuousRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -343,8 +346,11 @@ class _TransactionPageState extends State<TransactionPage> {
                             ),
                             child: TextFormField(
                               controller: deskripsiController,
+                              cursorColor: primary,
                               decoration: InputDecoration(
-                                border: UnderlineInputBorder(),
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: primary),
+                                ),
                                 labelText: 'Deskripsi',
                               ),
                             ),
@@ -356,8 +362,11 @@ class _TransactionPageState extends State<TransactionPage> {
                             child: TextFormField(
                               controller: amountController,
                               keyboardType: TextInputType.number,
+                              cursorColor: primary,
                               decoration: InputDecoration(
-                                border: UnderlineInputBorder(),
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: primary),
+                                ),
                                 labelText: 'Jumlah Uang',
                               ),
                             ),
@@ -372,7 +381,11 @@ class _TransactionPageState extends State<TransactionPage> {
                             child: TextFormField(
                               readOnly: true,
                               controller: dateController,
+                              cursorColor: primary,
                               decoration: InputDecoration(
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: primary),
+                                ),
                                 labelText: 'Pilih Tanggal',
                                 suffixIcon: Icon(
                                   Icons.calendar_month_rounded,

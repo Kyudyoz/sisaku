@@ -7,7 +7,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sisaku/models/database.dart';
 import 'package:sisaku/models/transaction_with_category.dart';
@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     updateView(selectedDate);
     print(selectedDate);
     _loadData();
+    loadData();
     super.initState();
   }
 
@@ -106,9 +107,7 @@ class _HomePageState extends State<HomePage> {
               color: home,
               fontSize: 18,
             ),
-            weekendTextStyle: TextStyle(
-              color: Colors.red,
-            ),
+            weekendTextStyle: GoogleFonts.inder(color: base),
             thisMonthDayBorderColor: base,
             headerTextStyle: GoogleFonts.inder(
               color: base,
@@ -126,6 +125,7 @@ class _HomePageState extends State<HomePage> {
             markedDateShowIcon: true,
             firstDayOfWeek: 1,
             pageSnapping: true,
+            todayTextStyle: GoogleFonts.inder(color: Colors.black),
             markedDateIconMaxShown: 2,
             headerText: '${DateFormat.yMMM().format(selectedDate)}',
             selectedDayTextStyle: GoogleFonts.inder(
@@ -485,6 +485,9 @@ class _HomePageState extends State<HomePage> {
                                                                               ),
                                                                             ),
                                                                             ElevatedButton(
+                                                                              style: ButtonStyle(
+                                                                                backgroundColor: MaterialStatePropertyAll(primary),
+                                                                              ),
                                                                               onPressed: () async {
                                                                                 // Navigator.of(
                                                                                 //         context,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sisaku/pages/home_page.dart';
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
+import 'pages/setting_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +15,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

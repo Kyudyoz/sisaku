@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
+import 'setting_page.dart';
 
 import 'package:sisaku/pages/rekap_page.dart';
 

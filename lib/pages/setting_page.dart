@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sisaku/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:sisaku/colors.dart';
 import 'package:sisaku/models/database.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/home_page.dart';
@@ -15,6 +16,14 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   final AppDb database = AppDb();
+
+  @override
+  void initState() {
+    super.initState();
+
+    loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +63,6 @@ class _SettingPageState extends State<SettingPage> {
                         padding: EdgeInsets.all(45),
                         child: Column(
                           children: [
-                            // Restore Purchased Items
-
                             // Remove Ads
                             Row(children: [
                               Container(
@@ -95,8 +102,6 @@ class _SettingPageState extends State<SettingPage> {
                                   onPressed: () {}),
                             ]),
                             SizedBox(height: 18),
-
-                            // Clear Data
                             Row(children: [
                               Container(
                                 decoration: BoxDecoration(
@@ -198,7 +203,72 @@ class _SettingPageState extends State<SettingPage> {
                                   }),
                             ]),
                             SizedBox(height: 18),
-
+                            Row(children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      color: primary,
+                                      borderRadius: BorderRadius.circular(3)),
+                                  child: Icon(
+                                    Icons.brush_rounded,
+                                    color: base,
+                                    size: 27,
+                                  )),
+                              SizedBox(width: 20),
+                              TextButton(
+                                  child: Text("Tema Warna"),
+                                  style: TextButton.styleFrom(
+                                      foregroundColor: Colors.black),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Pilih Warna"),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              RadioListTile.adaptive(
+                                                value: 0,
+                                                groupValue: _kode,
+                                                onChanged: (newKode) {
+                                                  setState(() {
+                                                    _kode = newKode!;
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop('dialog');
+                                                  });
+                                                  saveData();
+                                                },
+                                                title: Text("Default",
+                                                    style: GoogleFonts.inder()),
+                                                activeColor: defaultTheme[0],
+                                                selected: true,
+                                              ),
+                                              RadioListTile.adaptive(
+                                                value: 1,
+                                                groupValue: _kode,
+                                                onChanged: (newKode) {
+                                                  setState(() {
+                                                    _kode = newKode!;
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop('dialog');
+                                                  });
+                                                  saveData();
+                                                },
+                                                title: Text("Magenta",
+                                                    style: GoogleFonts.inder()),
+                                                activeColor: defaultTheme[1],
+                                                selected: true,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }),
+                            ]),
+                            SizedBox(height: 18),
                             // Remider Notification
                             Row(children: [
                               Container(
@@ -218,77 +288,6 @@ class _SettingPageState extends State<SettingPage> {
                                   onPressed: () {}),
                             ]),
                             SizedBox(height: 18),
-
-                            // Theme Color
-                            Row(children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  child: Icon(
-                                    Icons.brush_rounded,
-                                    color: base,
-                                    size: 27,
-                                  )),
-                              SizedBox(width: 20),
-                              TextButton(
-                                  child: Text("Tema Warna"),
-                                  style: TextButton.styleFrom(
-                                      foregroundColor: Colors.black),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            alignment: Alignment.center,
-                                            title: Text(
-                                              "Pilih Warna",
-                                              style: GoogleFonts.inder(
-                                                  color: Colors.black),
-                                            ),
-                                            content: SingleChildScrollView(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      IconButton(
-                                                        onPressed: () {},
-                                                        icon:
-                                                            Icon(Icons.circle),
-                                                        color: Color.fromARGB(
-                                                            255, 0, 171, 194),
-                                                      ),
-                                                      Text("Default",
-                                                          style: GoogleFonts
-                                                              .inder()),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      IconButton(
-                                                        onPressed: () {},
-                                                        icon:
-                                                            Icon(Icons.circle),
-                                                        color: Color.fromARGB(
-                                                            255, 230, 57, 230),
-                                                      ),
-                                                      Text("Magenta",
-                                                          style: GoogleFonts
-                                                              .inder()),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        });
-                                  }),
-                            ]),
-                            SizedBox(height: 18),
-
                             // Language
                             Row(children: [
                               Container(
@@ -363,7 +362,7 @@ class _SettingPageState extends State<SettingPage> {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -451,3 +450,44 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 }
+
+SharedPreferences? _sharedPreferences;
+late int _kode = 0;
+
+// Fungsi untuk menyimpan data ke `SharedPreferences`
+void saveData() async {
+  // Buat objek `SharedPreferences`
+  _sharedPreferences = await SharedPreferences.getInstance();
+  // Simpan data ke `SharedPreferences`
+  _sharedPreferences?.setInt("kode", _kode);
+}
+
+// Fungsi untuk mengambil data dari `SharedPreferences`
+void loadData() async {
+  // Buat objek `SharedPreferences`
+  _sharedPreferences = await SharedPreferences.getInstance();
+  // Ambil data dari `SharedPreferences`
+  _kode = _sharedPreferences?.getInt("kode") ?? 0;
+}
+
+Color get primary => _getPrimary(_kode);
+
+Color _getPrimary(int kode) {
+  switch (kode) {
+    case 0:
+      return defaultTheme[0];
+    case 1:
+      return defaultTheme[1];
+    default:
+      return defaultTheme[0];
+  }
+}
+
+const defaultTheme = [
+  Color.fromARGB(255, 0, 171, 194),
+  Color.fromARGB(255, 230, 57, 230),
+];
+
+const secondary = Color.fromARGB(255, 151, 221, 230);
+const base = Color.fromARGB(255, 243, 243, 243);
+const home = Color.fromARGB(162, 0, 35, 39);

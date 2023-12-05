@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
 import 'package:sisaku/models/database.dart';
 import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
@@ -78,8 +78,10 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                     TextFormField(
                       controller: categoryNameController,
+                      cursorColor: primary,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
+                          borderSide: BorderSide(color: primary),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         hintText: "Tidak Boleh Kosong",
@@ -90,6 +92,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                     ElevatedButton(
                       style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(primary),
                         shape: MaterialStatePropertyAll(
                           ContinuousRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -378,6 +381,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             ),
                                                                           ),
                                                                           ElevatedButton(
+                                                                            style:
+                                                                                ButtonStyle(
+                                                                              backgroundColor: MaterialStatePropertyAll(primary),
+                                                                            ),
                                                                             onPressed:
                                                                                 () {
                                                                               Navigator.of(context, rootNavigator: true).pop('dialog');
