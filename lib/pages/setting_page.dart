@@ -261,6 +261,24 @@ class _SettingPageState extends State<SettingPage> {
                                                 activeColor: defaultTheme[1],
                                                 selected: true,
                                               ),
+                                              RadioListTile.adaptive(
+                                                value: 2,
+                                                groupValue: _kode,
+                                                onChanged: (newKode) {
+                                                  setState(() {
+                                                    _kode = newKode!;
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop('dialog');
+                                                  });
+                                                  saveData();
+                                                },
+                                                title: Text("Green",
+                                                    style: GoogleFonts.inder()),
+                                                activeColor: defaultTheme[2],
+                                                selected: true,
+                                              ),
+                                            
                                             ],
                                           ),
                                         );
@@ -473,19 +491,17 @@ void loadData() async {
 Color get primary => _getPrimary(_kode);
 
 Color _getPrimary(int kode) {
-  switch (kode) {
-    case 0:
-      return defaultTheme[0];
-    case 1:
-      return defaultTheme[1];
-    default:
-      return defaultTheme[0];
-  }
+  
+      return defaultTheme[kode];
+  
+  
 }
 
 const defaultTheme = [
   Color.fromARGB(255, 0, 171, 194),
-  Color.fromARGB(255, 230, 57, 230),
+  Color.fromARGB(255, 188, 43, 216),
+  Color.fromARGB(255, 62, 166, 106),
+
 ];
 
 const secondary = Color.fromARGB(255, 151, 221, 230);

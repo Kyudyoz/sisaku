@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:sisaku/colors.dart';
+// import 'package:sisaku/colors.dart';
+import 'package:sisaku/pages/setting_page.dart';
+
 import 'package:sisaku/models/database.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'add+edit_rekap.dart';
