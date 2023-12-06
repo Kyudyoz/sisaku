@@ -65,12 +65,7 @@ class _DetailRekapsStat extends State<DetailRekap>
     setState(() {});
   }
 
-  Future<Map<String, List>?> getDataMapCategory(
-      DateTime startDate, DateTime endDate) async {
-    final dataMap = await database.getCategoryNameByRekaps(startDate, endDate);
 
-    return dataMap;
-  }
 
   void updateRekapView(Rekap rekap) {
     id = rekap.id;
@@ -93,11 +88,7 @@ class _DetailRekapsStat extends State<DetailRekap>
     print('ini id $id');
   }
 
-  Future<Map<String, double>> datamap() async {
-    final Map<String, double> dataMap = await database.getMapFromDatabase();
-
-    return dataMap;
-  }
+//  getCategoryNameByRekaps
 
   double getDailyAverage(int totalExpense, int totalIncome) {
     dailyAverage = (totalExpense + totalIncome) / totalTransactions;
@@ -122,6 +113,11 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   double totalExpenseAmounts = 0;
   double totalIncomeAmounts = 0;
+  late Map<String, double> _dataMap = {};
+  Future<Map<String, double>> datamap() async {
+    final Map<String, double> dataMap = await database.getMapFromDatabase();
+    return dataMap;
+  }
 
   @override
   void initState() {
@@ -129,18 +125,21 @@ class _DetailRekapsStat extends State<DetailRekap>
       updateRekapView(widget.rekap!);
     }
     super.initState();
-    getDataMapCategory(dbStartDate, dbEndDate).then((datamap) {
-      setState(() {
-        _dataMapCategory = datamap!;
-        print("Ini dataMap Category  $_dataMapCategory");
-      });
-    });
-    final data = _dataMapCategory["Pemasukan"];
-    print("Ini dataMap Category  $_dataMapCategory");
-    print("Tes Hasil nama value $data");
-    getDailyAverage(totalExpense, totalIncome);
-    updateR(1);
 
+    // getDataMapCategory(dbStartDate, dbEndDate).then((datamap) {
+    //   setState(() {
+    //     _dataMapCategory = datamap as Map<String, List>;
+    //     print("Ini dataMap Category  $_dataMapCategory");
+    //   });
+    // });
+
+    // final data = _dataMapCategory["Pemasukan"];
+    // print("Ini dataMap Category  $_dataMapCategory");
+    // print("Tes Hasil nama value $data");
+    getDailyAverage(totalExpense, totalIncome);
+    updateR(2);
+
+    print("ini");
     _tabController = TabController(length: 3, vsync: this);
 
     _loadData();
@@ -302,220 +301,262 @@ class _DetailRekapsStat extends State<DetailRekap>
                                 // Kalo Kategori
                                 else if (r == 2) ...[
                                   Expanded(
-                                      child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        SizedBox(height: 35),
-                                        Text(
-                                          name,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(height: 20),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Durasi "),
-                                              Text(startDate + " ~ " + endDate),
-                                            ]),
-                                        SizedBox(height: 15),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Total Pengeluaran "),
-                                              Text(
-                                                "Rp." +
-                                                    (NumberFormat.currency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0,
-                                                    ).format(
-                                                      totalExpense,
-                                                    )).replaceAll('IDR', ''),
-                                              ),
-                                            ]),
-                                        SizedBox(height: 15),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Total Pemasukan "),
-                                              Text(
-                                                "Rp." +
-                                                    (NumberFormat.currency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0,
-                                                    ).format(
-                                                      totalIncome,
-                                                    )).replaceAll('IDR', ''),
-                                              ),
-                                            ]),
-                                        SizedBox(height: 15),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Rata-Rata Harian "),
-                                              Text(
-                                                "Rp." +
-                                                    (NumberFormat.currency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0,
-                                                    ).format(
-                                                      dailyAverage,
-                                                    )).replaceAll('IDR', ''),
-                                              ),
-                                            ]),
-                                        SizedBox(height: 15),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Sisa "),
-                                              Text(
-                                                "Rp." +
-                                                    (NumberFormat.currency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0,
-                                                    ).format(
-                                                      totalIncome,
-                                                    )).replaceAll('IDR', ''),
-                                              ),
-                                            ]),
-                                        SizedBox(height: 15),
-                                        Text(
-                                          "Pengeluaran Berdasarkan Kategori",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-
-                                        // Data dari Database
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              _dataMapCategory["expenseName"]
-                                                      ?.length ??
-                                                  0,
-                                          itemBuilder: (context, index) {
-                                            final expenseName =
-                                                _dataMapCategory["expenseName"]
-                                                        ?[index] ??
-                                                    '';
-                                            final expenseAmount =
-                                                _dataMapCategory[
-                                                            "expenseAmount"]
-                                                        ?[index] ??
-                                                    0;
-
-                                            totalExpenseAmounts +=
-                                                expenseAmount.toDouble();
-                                            return Column(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 35),
+                                          Text(
+                                            name,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 20),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
                                               children: [
-                                                SizedBox(height: 20),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                        expenseName), // Nama kategori expense
-                                                    Text("Rp." +
-                                                        (NumberFormat.currency(
-                                                          locale: 'id',
-                                                          decimalDigits: 0,
-                                                        ).format(
-                                                          expenseAmount,
-                                                        )).replaceAll('IDR',
-                                                            '')), // Total Expense
-                                                  ],
-                                                ),
-                                                SizedBox(height: 7),
-                                                LinearPercentIndicator(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.85,
-                                                  barRadius:
-                                                      const Radius.circular(16),
-                                                  lineHeight: 8.0,
-                                                  percent: calculatePercentage(
-                                                      expenseAmount.toDouble(),
-                                                      totalExpenseAmounts), // Ganti nilai persentase sesuai kebutuhan
-                                                  progressColor: Colors.red,
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
-
-                                        // Mapping Data Income
-                                        SizedBox(height: 25),
-                                        Text(
-                                          "Pemasukan Berdasarkan Kategori",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              _dataMapCategory["incomeName"]
-                                                      ?.length ??
-                                                  0,
-                                          itemBuilder: (context, index) {
-                                            final incomeName =
-                                                _dataMapCategory["incomeName"]
-                                                        ?[index] ??
-                                                    '';
-                                            final incomeAmount =
-                                                _dataMapCategory["incomeAmount"]
-                                                        ?[index] ??
-                                                    0;
-                                            totalExpenseAmounts +=
-                                                incomeAmount.toDouble();
-                                            return Column(
+                                                Text("Durasi "),
+                                                Text(startDate + " ~ " + endDate),
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
                                               children: [
-                                                SizedBox(height: 20),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                        incomeName), // Nama kategori income
-                                                    Text("Rp." +
-                                                        (NumberFormat.currency(
-                                                          locale: 'id',
-                                                          decimalDigits: 0,
-                                                        ).format(
-                                                          incomeAmount,
-                                                        )).replaceAll('IDR',
-                                                            '')), // Total Income
-                                                  ],
+                                                Text("Total Pengeluaran "),
+                                                Text(
+                                                  "Rp." +
+                                                      (NumberFormat.currency(
+                                                        locale: 'id',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        totalExpense,
+                                                      )).replaceAll('IDR', ''),
                                                 ),
-                                                SizedBox(height: 7),
-                                                LinearPercentIndicator(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.85,
-                                                  barRadius:
-                                                      const Radius.circular(16),
-                                                  lineHeight: 8.0,
-                                                  percent: calculatePercentage(
-                                                      incomeAmount.toDouble(),
-                                                      totalExpenseAmounts), // Ganti nilai persentase sesuai kebutuhan
-                                                  progressColor: Colors.red,
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text("Total Pemasukan "),
+                                                Text(
+                                                  "Rp." +
+                                                      (NumberFormat.currency(
+                                                        locale: 'id',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        totalIncome,
+                                                      )).replaceAll('IDR', ''),
                                                 ),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                        SizedBox(height: 25),
-                                      ],
-                                    ),
-                                  )
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text("Rata-Rata Harian "),
+                                                Text(
+                                                  "Rp." +
+                                                      (NumberFormat.currency(
+                                                        locale: 'id',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        dailyAverage,
+                                                      )).replaceAll('IDR', ''),
+                                                ),
+                                              ]),
+                                          SizedBox(height: 15),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text("Sisa "),
+                                                Text(
+                                                  "Rp." +
+                                                      (NumberFormat.currency(
+                                                        locale: 'id',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        totalIncome,
+                                                      )).replaceAll('IDR', ''),
+                                                ),
+                                              ]),
+                                          SizedBox(height: 27),
+                                          Text(
+                                            "Pengeluaran Berdasarkan Kategori",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 10),
+
+                                          // ---------------------------> Mapping data Expense <---------------------------------------
+                                          
+                                          Expanded(
+                                            child: FutureBuilder<List<Map<String, Object>?>>(
+                                                future: database.getExpCatNameByRekaps(dbStartDate, dbEndDate),
+                                                builder: (context, snapshot)  {
+                                                  final expenseCategory = snapshot.data;
+                                                  print("isi  category $expenseCategory");
+                                                  // final expenseCategory =
+                                                  //     snapshot.data![1];
+                                          
+                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                    return CircularProgressIndicator();
+                                                  } else {
+
+                                                  if (snapshot.hasData) {
+                                                     if (snapshot.data!.length > 0) {
+                                                     return ListView.builder(
+                                                      itemCount: snapshot.data!.length, itemBuilder: (context, index) {
+                                                       
+                                                        var expenseNames = snapshot.data![index]!["name"];
+                                                        var expenseAmount = snapshot.data![index]!["totalAmount"];
+                                                        print("xpense $expenseNames");
+                                                        print("amount $expenseAmount");
+
+
+                                                        
+
+                                                        // Convert to Rp
+                                                        var amountString = (NumberFormat.currency(
+                                                                        locale:'id',
+                                                                        decimalDigits:
+                                                                        0,).format(expenseAmount)).replaceAll('IDR','');
+                                                      
+
+                                                        // Kalo Pengeluaran
+                                                           return SingleChildScrollView(
+                                                             child: Column(
+                                                               children: [
+                                                                 SizedBox(
+                                                                     height: 20),
+                                                                 Row(
+                                                                   mainAxisAlignment:
+                                                                       MainAxisAlignment
+                                                                           .spaceBetween,
+                                                                   children: [
+                                                                     Text(expenseNames.toString()), // Nama kategori income
+                                                                     Text(
+                                                                       "Rp." + amountString
+                                                                     ), // Total Expense
+                                                                   ],
+                                                                 ),
+                                                                 SizedBox(height: 7),
+                                                                 LinearPercentIndicator(
+                                                                   width: MediaQuery.of(context).size.width * 0.85,
+                                                                   barRadius:const Radius.circular(16),
+                                                                   lineHeight: 8.0,
+                                                                   percent:
+                                                                       calculatePercentage(
+                                                                     (expenseAmount as num).toDouble(),
+                                                                     totalExpense.toDouble(),
+                                                                   ), // Ganti nilai persentase sesuai kebutuhan
+                                                                   progressColor:
+                                                                       Colors.red,
+                                                                 ),
+                                                               ],
+                                                             ),
+                                                           );                                         
+                                                      } 
+                                                     );
+                                                     
+                                                     }
+                                                  } return Text("data");
+                                                  }
+                                                  }),
+                                          ),
+                                          
+                                           SizedBox(height: 27),
+                                          Text(
+                                            "Pemasukan Berdasarkan Kategori",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 10),
+                                          
+                                          // ---------------------------> Mapping data Income <---------------------------------------
+                                          
+                                          Expanded(
+                                            child: FutureBuilder<List<Map<String, Object>?>>(
+                                                future: database.getIncCatNameByRekaps(dbStartDate, dbEndDate),
+                                                builder: (context, snapshot)  {
+                                                  final incomeCategory = snapshot.data;
+                                                  print("isi  category $incomeCategory");
+                                                  // final expenseCategory =
+                                                  //     snapshot.data![1];
+                                          
+                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                    return CircularProgressIndicator();
+                                                  } else {
+
+                                                  if (snapshot.hasData) {
+                                                     if (snapshot.data!.length > 0) {
+                                                     return ListView.builder(
+                                                      itemCount: snapshot.data!.length, itemBuilder: (context, index) {
+                                                       
+                                                        var incomeNames = snapshot.data![index]!["name"];
+                                                        var incomeAmount = snapshot.data![index]!["totalAmount"];
+                                                        print("xpense $incomeNames");
+                                                        print("amount $incomeAmount");
+
+
+
+
+                                                        // Convert to Rp
+                                                        var amountString = (NumberFormat.currency(
+                                                                        locale:'id',
+                                                                        decimalDigits:
+                                                                        0,).format(incomeAmount)).replaceAll('IDR','');
+                                                      
+
+                                                        // Kalo Pengeluaran
+                                                           return SingleChildScrollView(
+                                                             child: Column(
+                                                               children: [
+                                                                 SizedBox(
+                                                                     height: 20),
+                                                                 Row(
+                                                                   mainAxisAlignment:
+                                                                       MainAxisAlignment
+                                                                           .spaceBetween,
+                                                                   children: [
+                                                                     Text(incomeNames.toString()), // Nama kategori income
+                                                                     Text(
+                                                                       "Rp." + amountString
+                                                                     ), // Total Income
+                                                                   ],
+                                                                 ),
+                                                                 SizedBox(height: 7),
+                                                                 LinearPercentIndicator(
+                                                                   width: MediaQuery.of(context).size.width * 0.85,
+                                                                   barRadius:const Radius.circular(16),
+                                                                   lineHeight: 8.0,
+                                                                   percent:
+                                                                       calculatePercentage(
+                                                                     (incomeAmount as num).toDouble(),
+                                                                     totalIncome.toDouble(),
+                                                                   ), // Ganti nilai persentase sesuai kebutuhan
+                                                                   progressColor:
+                                                                       Colors.green,
+                                                                 ),
+                                                               ],
+                                                             ),
+                                                           );                                         
+                                                      } 
+                                                     );
+                                                     
+                                                     }
+                                                  } return Text("data");
+                                                  }
+                                                  }),
+                                          ),
+                                     
+                                          SizedBox(height: 25),
+                                    
+                                        ],
+                                      )
                                       // Kalo Custom
+
                                       )
                                 ] else if (r == 3) ...[
                                   Expanded(

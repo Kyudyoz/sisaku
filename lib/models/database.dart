@@ -207,91 +207,98 @@ class AppDb extends _$AppDb {
   }
 
   // Get Category Name by Id(Return String) For Rekaps
-  Future<Map<String, List>?> getCategoryNameByRekaps(
+  Future<List<Map<String, Object>?>> getIncCatNameByRekaps(
       DateTime start, DateTime end) async {
-    final getTransactions = await getTransactionsInDateRange(start, end);
+    
+    final query = customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'WHERE transactions.transaction_date BETWEEN :startDate AND :endDate '
+      'AND categories.type = 1 '
+      'GROUP BY categories.name',
+      variables: [
+        Variable.withDateTime(start),
+        Variable.withDateTime(end),
+      ],
+      readsFrom: {transactions, categories},
+    );
 
-    Map<String, List> dataMap = {
-      "incomeName": [],
-      "incomeAmount": [],
-      "expenseName": [],
-      "expenseAmount": []
-    };
+    final result = await query.map((row) {
+      final name = row.read<String>('name');
+      final totalAmount = row.read<int>('totalAmount');
+      final type = row.read<int>('type'); // Ganti dengan tipe data yang sesuai
+      return {
+        'name': name,
+        'totalAmount': totalAmount,
+        'type': type,
+        //
+        //[{'name': name,
+        // 'totalAmount': totalAmount
+        // }, {}]
+      };
+    }).get();
+    // Pisahkan hasil berdasarkan type
+    // final pemasukan = result.where((item) => item['type'] == 1).toList();
+    // final pengeluaran = result.where((item) => item['type'] == 2).toList();
 
-    getCategoryType(categoryId) async {
-      final type = await getCategoryTypeById(categoryId);
-      return type;
-    }
-
-// Set untuk menyimpan nama kategori yang sudah ada
-    Set<String> uniqueCategoryNames = {};
-
-// Ngedapatin semua transaksi berdasarkan rekap dan looping
-    for (var transaction in getTransactions) {
-      // Ngedapatin Amount
-      int idCategory = transaction.data["category_id"];
-      print("isi Id Kategori " + idCategory.toString());
-
-      // Ngedapatin Amount
-      int amount = transaction.data["amount"];
-      print("isi Data Amount begini " + amount.toString());
-
-      // Ngedapatin amount dari setiap kategori
-      int incomeCategory = 0;
-      int expenseCategory = 0;
-
-      final query = customSelect(
-        'SELECT DISTINCT categories.name AS name FROM transactions '
-        'INNER JOIN categories ON transactions.category_id = categories.id '
-        'WHERE transactions.category_id = ?',
-        variables: [Variable.withInt(idCategory)],
-        readsFrom: {transactions, categories},
-      );
-
-      // Tes
-      final name =
-          await query.map((row) => row.read<String>('name')).getSingle();
-      print("Isi nama kategori ==> $name");
-
-      // Kalo Pemasukan/Income
-      var type = await getCategoryType(idCategory);
-      if (type == 1) {
-        print("Isi nama kategori Pemasukan $name");
-        // Menambahkan amount
-
-        // Jika nama kategori belum ada dalam Set, tambahkan nama kategori ke Set dan tambahkan ke Map
-        if (!uniqueCategoryNames.contains(name)) {
-          uniqueCategoryNames.add(name);
-          // Menambah data expenseName
-          dataMap["incomeName"]?.add(name);
-        }
-
-        incomeCategory += amount;
-        dataMap["incomeAmount"]?.add(incomeCategory);
-
-        // Menambah data incomeName & Income Amount
-      } else if (type == 2) {
-        print("Isi nama kategori Pengeluaran $name");
-
-        // Jika nama kategori belum ada dalam Set, tambahkan nama kategori ke Set dan tambahkan ke Map
-        if (!uniqueCategoryNames.contains(name)) {
-          uniqueCategoryNames.add(name);
-          // Menambah data expenseName
-          dataMap["expenseName"]?.add(name);
-        }
-
-        // Menambahkan amount
-        expenseCategory += amount;
-        // Menambah data Expense Amount
-        dataMap["expenseAmount"]?.add(expenseCategory);
-      } else {
-        print("Data Kategori tidak ditemukan?");
-      }
-    }
-    print("Unique Category Names: $uniqueCategoryNames");
-    print("Hasil akhir datamap : === $dataMap");
-    return dataMap;
+    // print("Pemasukan: $pemasukan");
+    // print("Pengeluaran: $pengeluaran");
+    print(
+        "===================================================================================================================================================================");
+    print("result IncCatName dari database");
+    return result;
   }
+
+  // Get Expense Category Name  For Rekaps
+  Future<List<Map<String, Object>?>> getExpCatNameByRekaps(
+      DateTime start, DateTime end) async {
+    // Untuk mapping data
+    // Map<String, List> dataMap = {
+    //   "incomeName": [],
+    //   "incomeAmount": [],
+    //   "expenseName": [],
+    //   "expenseAmount": []
+    // };
+
+    final query = customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'WHERE transactions.transaction_date BETWEEN :startDate AND :endDate '
+      'AND categories.type = 2 '
+      'GROUP BY categories.name',
+      variables: [
+        Variable.withDateTime(start),
+        Variable.withDateTime(end),
+      ],
+      readsFrom: {transactions, categories},
+    );
+
+    final result = await query.map((row) {
+      final name = row.read<String>('name');
+      final totalAmount = row.read<int>('totalAmount');
+      final type = row.read<int>('type');
+      // final isiTipe = row.read<int>('type');
+       // Ganti dengan tipe data yang sesuai
+      if(type == 2) {
+        return {
+        'name': name,
+        'totalAmount': totalAmount,
+        'type': type,
+       };
+      } 
+     
+      
+    }).get();
+    
+    print(
+        "===================================================================================================================================================================");
+    print("result dari database");
+    return result;
+  }
+
+
 
 // Rekap
 
@@ -682,3 +689,157 @@ LazyDatabase _openConnection() {
     return NativeDatabase.createInBackground(file);
   });
 }
+
+
+
+// Kode gagal
+//   Future<Map<String, List>?> getCategoryNameByRekaps(
+//       DateTime start, DateTime end) async {
+//     final getTransactions = await getTransactionsInDateRange(start, end);
+
+//     Map<String, List> dataMap = {
+//       "incomeName": [],
+//       "incomeAmount": [],
+//       "expenseName": [],
+//       "expenseAmount": []
+//     };
+
+//     getCategoryType(categoryId) async {
+//       final type = await getCategoryTypeById(categoryId);
+//       return type;
+//     }
+
+// // Set untuk menyimpan nama kategori yang sudah ada
+//     Set<String> uniqueIncomeNames = {};
+//     Set<String> uniqueExpenseNames = {};
+
+// // Ngedapatin semua transaksi berdasarkan rekap dan looping
+
+//     for (var transaction in getTransactions) {
+//       // Ngedapatin Amount
+//       int index = 1;
+//       int idCategory = transaction.data["category_id"];
+//       // print("isi Id Kategori " + idCategory.toString());
+
+//       // Ngedapatin Amount
+//       int amount = transaction.data["amount"];
+//       // print("isi Data Amount begini " + amount.toString());
+
+//       // Ngedapatin amount dari setiap kategori
+//       int incomeCategory = 0;
+//       int expenseCategory = 0;
+
+//       final query = customSelect(
+//         'SELECT DISTINCT categories.name AS name FROM transactions '
+//         'INNER JOIN categories ON transactions.category_id = categories.id '
+//         'WHERE transactions.category_id = ?',
+//         variables: [Variable.withInt(idCategory)],
+//         readsFrom: {transactions, categories},
+//       );
+
+//       // Tes
+//       final name =
+//           await query.map((row) => row.read<String>('name')).getSingle();
+//       // print("Isi nama kategori ==> $name");
+
+//       var type = await getCategoryType(idCategory);
+
+//       List oldDataIncome = uniqueIncomeNames.toList();
+//       List oldDataExpense = uniqueExpenseNames.toList();
+//       // int tes = uniqueIncomeNames.toList().indexOf(name);
+//       // Kalo Pemasukan/Income
+//       if (type == 1) {
+//         print("Nama Income = $name");
+//         print("Unique Income Names: $uniqueIncomeNames");
+//         print("Income Amount skrg : " + dataMap["incomeAmount"].toString());
+//         int nilaiLama = 0;
+
+//         if (!uniqueIncomeNames.contains(name)) {
+//           uniqueIncomeNames.add(name);
+//           // Menambah data expenseName
+//           incomeCategory += amount;
+//           nilaiLama = amount;
+//           dataMap["incomeName"]?.add(name);
+//           dataMap["incomeAmount"]?.add(incomeCategory);
+//         } else {
+//           // Jika sudah ada Nama Kategori, tapi transaksi beda, index sebelumnya maka akan diupdate
+//           // Tetap ditambahkan
+//           int indeks = uniqueIncomeNames.toList().indexOf(name);
+
+//           // String indexLama = indeks.toString();
+//           // }
+//           // nilaiLama =
+//           // Kalo income amount masih kosong otomatis tambahkan tanpa nama
+//           if (dataMap["incomeAmount"]!.length == 0) {
+//             dataMap["incomeAmount"]?.add(incomeCategory);
+//             nilaiLama = amount;
+//           }
+
+//           // Tambah dengan nilai lama dengan key index
+//           incomeCategory = amount;
+//           // final namaKey = oldDataIncome[]
+//           nilaiLama = dataMap["incomeAmount"]?[indeks];
+//           int totalNilaiBaru = nilaiLama + incomeCategory;
+//           dataMap["incomeAmount"]?[indeks] = totalNilaiBaru;
+
+//           final tes = dataMap["incomeAmount"]?[indeks];
+//           print("Isi indekss $indeks");
+//           print("Isi dataMap[" "] $tes");
+//         }
+//         print("nilai lama  : $nilaiLama");
+//       }
+
+//       // Kalo Pengeluaran
+//       else if (type == 2) {
+//         print("Nama Expense: $name");
+//         print("Unique Expense Names: $uniqueExpenseNames");
+//         print("Expense Amount skrg : " + dataMap["expenseAmount"].toString());
+
+//         // Menambahkan amount
+
+// // Untuk menjadikan amountExpense jadi sama index dengan expenseName
+
+//         // Jika nama kategori belum ada dalam Set, tambahkan nama kategori ke Set dan tambahkan ke Map
+//         int nilaiLama = 0;
+//         if (!uniqueExpenseNames.contains(name)) {
+//           uniqueExpenseNames.add(name);
+//           // Menambah data expenseName
+//           expenseCategory += amount;
+//           nilaiLama = amount;
+//           dataMap["expenseName"]?.add(name);
+//           dataMap["expenseAmount"]?.add(expenseCategory);
+//         } else {
+//           // Jika sudah ada Nama Kategori, tapi transaksi beda, index sebelumnya maka akan diupdate
+//           // Tetap ditambahkan
+//           int indeks = uniqueExpenseNames.toList().indexOf(name);
+//           // if(dataMap["expenseAmount"]) {
+
+//           // }
+//           // nilaiLama =
+
+//           if (dataMap["expenseAmount"]!.length == 0) {
+//             dataMap["expenseAmount"]?.add(expenseCategory);
+//             nilaiLama = amount;
+//           }
+
+//           // Tambah dengan nilai lama dengan key index
+//           nilaiLama = oldDataExpense[0];
+//           incomeCategory = amount;
+//           int totalNilaiBaru = nilaiLama + expenseCategory;
+//           dataMap["expenseAmount"]?[indeks] = totalNilaiBaru;
+
+//           final tes = dataMap["expenseAmount"]?[indeks];
+//           print("Isi indekss $indeks");
+//           print("Isi dataMap[" "] $tes");
+//         }
+//         print("nilai lama  : $nilaiLama");
+//       } else {
+//         print("ntahla");
+//       }
+
+//       index++;
+//     }
+
+//     print("Hasil akhir datamap : === $dataMap");
+//     return dataMap;
+//   }
