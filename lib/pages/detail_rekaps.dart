@@ -415,10 +415,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                         print("amount $expenseAmount");
 
 
-                                                        if (expenseAmount != null) {
-                                                          // Konversi tipe Object? menjadi num
-                                                          totalExpenseAmounts += (expenseAmount as num);
-                                                        }
+                                                        
 
                                                         // Convert to Rp
                                                         var amountString = (NumberFormat.currency(
@@ -452,7 +449,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                    percent:
                                                                        calculatePercentage(
                                                                      (expenseAmount as num).toDouble(),
-                                                                     totalExpenseAmounts,
+                                                                     totalExpense.toDouble(),
                                                                    ), // Ganti nilai persentase sesuai kebutuhan
                                                                    progressColor:
                                                                        Colors.red,
@@ -503,10 +500,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                         print("amount $incomeAmount");
 
 
-                                                        if (incomeAmount != null) {
-                                                          // Konversi tipe Object? menjadi num
-                                                          totalIncomeAmounts += (incomeAmount as num);
-                                                        }
+
 
                                                         // Convert to Rp
                                                         var amountString = (NumberFormat.currency(
@@ -540,7 +534,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                    percent:
                                                                        calculatePercentage(
                                                                      (incomeAmount as num).toDouble(),
-                                                                     totalIncomeAmounts,
+                                                                     totalIncome.toDouble(),
                                                                    ), // Ganti nilai persentase sesuai kebutuhan
                                                                    progressColor:
                                                                        Colors.green,
