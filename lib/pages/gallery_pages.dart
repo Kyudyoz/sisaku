@@ -184,7 +184,9 @@ class _GalleryPageState extends State<GalleryPage> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation<Color>(primary)),
                             );
                           } else {
                             if (snapshot.hasData) {
@@ -555,7 +557,9 @@ class _GalleryPageState extends State<GalleryPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
                   );
                 },

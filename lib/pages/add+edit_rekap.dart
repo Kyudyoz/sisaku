@@ -61,180 +61,205 @@ class _AddEditRekapState extends State<AddEditRekap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize:
-              Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            color: primary,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 27,
-                    )),
-                SizedBox(
-                  width: 80,
-                ),
-                Text(
-                  "Tambah Rekap",
-                  style: GoogleFonts.inder(
-                    fontSize: 18,
-                    color: base,
-                  ),
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        backgroundColor: primary,
+        title: Text(
+          "Tambah Rekap",
+          style: GoogleFonts.inder(
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+            color: base,
           ),
         ),
-        body: SafeArea(
-            child: Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 15),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                        ),
-                        child: TextFormField(
-                          controller: namaRekapController,
-                          decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Deskripsi',
-                          ),
-                        ),
-                      ),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(Icons.arrow_back_ios_new_outlined, color: base),
+        ),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10.0, bottom: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                ),
+                child: TextFormField(
+                  controller: namaRekapController,
+                  cursorColor: primary,
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: primary)),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: primary),
+                    ),
+                    labelStyle: TextStyle(color: primary),
+                    labelText: 'Deskripsi',
+                  ),
+                ),
+              ),
 
-                      // =>Start Date
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: TextFormField(
-                          readOnly: true,
-                          controller: startDateController,
-                          decoration: InputDecoration(
-                            labelText: 'Pilih Tanggal',
-                            suffixIcon: Icon(
-                              Icons.calendar_month_rounded,
-                              color: primary,
-                            ),
-                          ),
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialEntryMode:
-                                  DatePickerEntryMode.calendarOnly,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime(2099),
-                            );
-
-                            if (pickedDate != Null) {
-                              String formattedDate = DateFormat('dd-MMMM-yyyy')
-                                  .format(pickedDate!);
-                              startDateController.text = formattedDate;
-                              String data =
-                                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                              setState(() {
-                                dbStartDate = data;
-                              });
-                            }
-                          },
-                        ),
-                      ),
-
-                      // EndDate
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: TextFormField(
-                          readOnly: true,
-                          controller: endDateController,
-                          decoration: InputDecoration(
-                            labelText: 'Pilih Tanggal',
-                            suffixIcon: Icon(
-                              Icons.calendar_month_rounded,
-                              color: primary,
-                            ),
-                          ),
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialEntryMode:
-                                  DatePickerEntryMode.calendarOnly,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime(2099),
-                            );
-
-                            if (pickedDate != Null) {
-                              String formattedDate = DateFormat('dd-MMMM-yyyy')
-                                  .format(pickedDate!);
-                              endDateController.text = formattedDate;
-                              String data =
-                                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                              setState(() {
-                                dbEndDate = data;
-                              });
-                            }
-                          },
-                        ),
-                      ),
-
-                      // Button Save
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: TextButton(
-                          onPressed: () async {
-                            print("dbStart Date" + dbStartDate);
-                            print("dbEnd Date" + dbEndDate);
-
-                            // Memproses CRUD
-                            (widget.rekap == null)
-                                ? await insert(
-                                    namaRekapController.text,
-                                    DateTime.parse(dbStartDate),
-                                    DateTime.parse(dbEndDate),
-                                  )
-                                : await update(
-                                    widget.rekap!.id,
-                                    namaRekapController.text,
-                                    DateTime.parse(dbStartDate),
-                                    DateTime.parse(dbEndDate),
-                                  );
-
-                            print("CRUD Berhasil ??");
-                            await Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RekapPage(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Simpan",
-                            style: GoogleFonts.inder(
-                              color: base,
-                              fontSize: 15,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                // (isExpense) ? MaterialStateProperty.all<Color>(Colors.red) :
-                                MaterialStateProperty.all<Color>(primary),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+              // =>Start Date
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextFormField(
+                  readOnly: true,
+                  controller: startDateController,
+                  cursorColor: primary,
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: primary)),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: primary),
+                    ),
+                    labelStyle: TextStyle(color: primary),
+                    labelText: 'Pilih Tanggal',
+                    suffixIcon: Icon(
+                      Icons.calendar_month_rounded,
+                      color: primary,
+                    ),
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2099),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                primary: primary,
                               ),
                             ),
-                          ),
-                        ),
-                      )
-                    ]))));
+                            child: child!,
+                          );
+                        });
+
+                    if (pickedDate != Null) {
+                      String formattedDate =
+                          DateFormat('dd-MMMM-yyyy').format(pickedDate!);
+                      startDateController.text = formattedDate;
+                      String data = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      setState(() {
+                        dbStartDate = data;
+                      });
+                    }
+                  },
+                ),
+              ),
+
+              // EndDate
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextFormField(
+                  readOnly: true,
+                  controller: endDateController,
+                  cursorColor: primary,
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: primary)),
+                    border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: primary),
+                    ),
+                    labelStyle: TextStyle(color: primary),
+                    labelText: 'Pilih Tanggal',
+                    suffixIcon: Icon(
+                      Icons.calendar_month_rounded,
+                      color: primary,
+                    ),
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialEntryMode: DatePickerEntryMode.calendarOnly,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2099),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                primary: primary,
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        });
+
+                    if (pickedDate != Null) {
+                      String formattedDate =
+                          DateFormat('dd-MMMM-yyyy').format(pickedDate!);
+                      endDateController.text = formattedDate;
+                      String data = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      setState(() {
+                        dbEndDate = data;
+                      });
+                    }
+                  },
+                ),
+              ),
+
+              // Button Save
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextButton(
+                  onPressed: () async {
+                    print("dbStart Date" + dbStartDate);
+                    print("dbEnd Date" + dbEndDate);
+
+                    // Memproses CRUD
+                    (widget.rekap == null)
+                        ? await insert(
+                            namaRekapController.text,
+                            DateTime.parse(dbStartDate),
+                            DateTime.parse(dbEndDate),
+                          )
+                        : await update(
+                            widget.rekap!.id,
+                            namaRekapController.text,
+                            DateTime.parse(dbStartDate),
+                            DateTime.parse(dbEndDate),
+                          );
+
+                    print("CRUD Berhasil ??");
+                    final route = MaterialPageRoute(
+                      builder: (context) => RekapPage(
+                        r: 3,
+                      ),
+                    );
+                    Navigator.of(context)
+                        .pushAndRemoveUntil(route, (route) => false);
+                  },
+                  child: Text(
+                    "Simpan",
+                    style: GoogleFonts.inder(
+                      color: base,
+                      fontSize: 15,
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        // (isExpense) ? MaterialStateProperty.all<Color>(Colors.red) :
+                        MaterialStateProperty.all<Color>(primary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

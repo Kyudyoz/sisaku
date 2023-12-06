@@ -67,8 +67,6 @@ class _DetailRekapsStat extends State<DetailRekap>
     setState(() {});
   }
 
-
-
   void updateRekapView(Rekap rekap) {
     id = rekap.id;
     name = rekap.name;
@@ -101,7 +99,6 @@ class _DetailRekapsStat extends State<DetailRekap>
     setState(() {
       r = index + 1;
     });
-    setState(() {});
   }
 
   // Kalkulasi persen berdasarkan kategori
@@ -139,11 +136,11 @@ class _DetailRekapsStat extends State<DetailRekap>
     // print("Ini dataMap Category  $_dataMapCategory");
     // print("Tes Hasil nama value $data");
     getDailyAverage(totalExpense, totalIncome);
-    updateR(2);
 
     print("ini");
     _tabController = TabController(length: 3, vsync: this);
 
+    updateR(0);
     _loadData();
     datamap().then((dataMap) {
       setState(() {
@@ -178,6 +175,7 @@ class _DetailRekapsStat extends State<DetailRekap>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: primary,
           title: Text(
             "Detail Rekap",
             style: GoogleFonts.inder(
@@ -243,11 +241,9 @@ class _DetailRekapsStat extends State<DetailRekap>
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: base,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
+                    color: (primary == defaultTheme[2])
+                        ? Colors.black
+                        : Colors.white,
                   ),
                   child: SafeArea(
                     child: Padding(
@@ -304,259 +300,324 @@ class _DetailRekapsStat extends State<DetailRekap>
                                 else if (r == 2) ...[
                                   Expanded(
                                       child: Column(
-                                        children: [
-                                          SizedBox(height: 35),
-                                          Text(
-                                            name,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(height: 20),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text("Durasi "),
-                                                Text(startDate + " ~ " + endDate),
-                                              ]),
-                                          SizedBox(height: 15),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text("Total Pengeluaran "),
-                                                Text(
-                                                  "Rp." +
-                                                      (NumberFormat.currency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0,
-                                                      ).format(
-                                                        totalExpense,
-                                                      )).replaceAll('IDR', ''),
-                                                ),
-                                              ]),
-                                          SizedBox(height: 15),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text("Total Pemasukan "),
-                                                Text(
-                                                  "Rp." +
-                                                      (NumberFormat.currency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0,
-                                                      ).format(
-                                                        totalIncome,
-                                                      )).replaceAll('IDR', ''),
-                                                ),
-                                              ]),
-                                          SizedBox(height: 15),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text("Rata-Rata Harian "),
-                                                Text(
-                                                  "Rp." +
-                                                      (NumberFormat.currency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0,
-                                                      ).format(
-                                                        dailyAverage,
-                                                      )).replaceAll('IDR', ''),
-                                                ),
-                                              ]),
-                                          SizedBox(height: 15),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text("Sisa "),
-                                                Text(
-                                                  "Rp." +
-                                                      (NumberFormat.currency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0,
-                                                      ).format(
-                                                        totalIncome,
-                                                      )).replaceAll('IDR', ''),
-                                                ),
-                                              ]),
-                                          SizedBox(height: 27),
-                                          Text(
-                                            "Pengeluaran Berdasarkan Kategori",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(height: 10),
+                                    children: [
+                                      SizedBox(height: 35),
+                                      Text(
+                                        name,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 20),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Durasi "),
+                                            Text(startDate + " ~ " + endDate),
+                                          ]),
+                                      SizedBox(height: 15),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Total Pengeluaran "),
+                                            Text(
+                                              "Rp." +
+                                                  (NumberFormat.currency(
+                                                    locale: 'id',
+                                                    decimalDigits: 0,
+                                                  ).format(
+                                                    totalExpense,
+                                                  )).replaceAll('IDR', ''),
+                                            ),
+                                          ]),
+                                      SizedBox(height: 15),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Total Pemasukan "),
+                                            Text(
+                                              "Rp." +
+                                                  (NumberFormat.currency(
+                                                    locale: 'id',
+                                                    decimalDigits: 0,
+                                                  ).format(
+                                                    totalIncome,
+                                                  )).replaceAll('IDR', ''),
+                                            ),
+                                          ]),
+                                      SizedBox(height: 15),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Rata-Rata Harian "),
+                                            Text(
+                                              "Rp." +
+                                                  (NumberFormat.currency(
+                                                    locale: 'id',
+                                                    decimalDigits: 0,
+                                                  ).format(
+                                                    dailyAverage,
+                                                  )).replaceAll('IDR', ''),
+                                            ),
+                                          ]),
+                                      SizedBox(height: 15),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text("Sisa "),
+                                            Text(
+                                              "Rp." +
+                                                  (NumberFormat.currency(
+                                                    locale: 'id',
+                                                    decimalDigits: 0,
+                                                  ).format(
+                                                    totalIncome,
+                                                  )).replaceAll('IDR', ''),
+                                            ),
+                                          ]),
+                                      SizedBox(height: 27),
+                                      Text(
+                                        "Pengeluaran Berdasarkan Kategori",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 10),
 
-                                          // ---------------------------> Mapping data Expense <---------------------------------------
-                                          
-                                          Expanded(
-                                            child: FutureBuilder<List<Map<String, Object>?>>(
-                                                future: database.getExpCatNameByRekaps(dbStartDate, dbEndDate),
-                                                builder: (context, snapshot)  {
-                                                  final expenseCategory = snapshot.data;
-                                                  print("isi  category $expenseCategory");
-                                                  // final expenseCategory =
-                                                  //     snapshot.data![1];
-                                          
-                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                    return CircularProgressIndicator();
-                                                  } else {
+                                      // ---------------------------> Mapping data Expense <---------------------------------------
 
-                                                  if (snapshot.hasData) {
-                                                     if (snapshot.data!.length > 0) {
-                                                     return ListView.builder(
-                                                      itemCount: snapshot.data!.length, itemBuilder: (context, index) {
-                                                       
-                                                        var expenseNames = snapshot.data![index]!["name"];
-                                                        var expenseAmount = snapshot.data![index]!["totalAmount"];
-                                                        print("xpense $expenseNames");
-                                                        print("amount $expenseAmount");
+                                      Expanded(
+                                        child: FutureBuilder<
+                                                List<Map<String, Object>?>>(
+                                            future:
+                                                database.getExpCatNameByRekaps(
+                                                    dbStartDate, dbEndDate),
+                                            builder: (context, snapshot) {
+                                              final expenseCategory =
+                                                  snapshot.data;
+                                              print(
+                                                  "isi  category $expenseCategory");
+                                              // final expenseCategory =
+                                              //     snapshot.data![1];
 
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(primary));
+                                              } else {
+                                                if (snapshot.hasData) {
+                                                  if (snapshot.data!.length >
+                                                      0) {
+                                                    return ListView.builder(
+                                                        itemCount: snapshot
+                                                            .data!.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          var expenseNames =
+                                                              snapshot.data![
+                                                                      index]![
+                                                                  "name"];
+                                                          var expenseAmount =
+                                                              snapshot.data![
+                                                                      index]![
+                                                                  "totalAmount"];
+                                                          print(
+                                                              "xpense $expenseNames");
+                                                          print(
+                                                              "amount $expenseAmount");
 
-                                                        
+                                                          // Convert to Rp
+                                                          var amountString =
+                                                              (NumberFormat
+                                                                      .currency(
+                                                            locale: 'id',
+                                                            decimalDigits: 0,
+                                                          ).format(
+                                                                      expenseAmount))
+                                                                  .replaceAll(
+                                                                      'IDR',
+                                                                      '');
 
-                                                        // Convert to Rp
-                                                        var amountString = (NumberFormat.currency(
-                                                                        locale:'id',
-                                                                        decimalDigits:
-                                                                        0,).format(expenseAmount)).replaceAll('IDR','');
-                                                      
-
-                                                        // Kalo Pengeluaran
-                                                           return SingleChildScrollView(
-                                                             child: Column(
-                                                               children: [
-                                                                 SizedBox(
-                                                                     height: 20),
-                                                                 Row(
-                                                                   mainAxisAlignment:
-                                                                       MainAxisAlignment
-                                                                           .spaceBetween,
-                                                                   children: [
-                                                                     Text(expenseNames.toString()), // Nama kategori income
-                                                                     Text(
-                                                                       "Rp." + amountString
-                                                                     ), // Total Expense
-                                                                   ],
-                                                                 ),
-                                                                 SizedBox(height: 7),
-                                                                 LinearPercentIndicator(
-                                                                   width: MediaQuery.of(context).size.width * 0.85,
-                                                                   barRadius:const Radius.circular(16),
-                                                                   lineHeight: 8.0,
-                                                                   percent:
-                                                                       calculatePercentage(
-                                                                     (expenseAmount as num).toDouble(),
-                                                                     totalExpense.toDouble(),
-                                                                   ), // Ganti nilai persentase sesuai kebutuhan
-                                                                   progressColor:
-                                                                       Colors.red,
-                                                                 ),
-                                                               ],
-                                                             ),
-                                                           );                                         
-                                                      } 
-                                                     );
-                                                     
-                                                     }
-                                                  } return Text("data");
+                                                          // Kalo Pengeluaran
+                                                          return SingleChildScrollView(
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                    height: 20),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(expenseNames
+                                                                        .toString()), // Nama kategori income
+                                                                    Text("Rp." +
+                                                                        amountString), // Total Expense
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                    height: 7),
+                                                                LinearPercentIndicator(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.85,
+                                                                  barRadius:
+                                                                      const Radius
+                                                                          .circular(
+                                                                          16),
+                                                                  lineHeight:
+                                                                      8.0,
+                                                                  percent:
+                                                                      calculatePercentage(
+                                                                    (expenseAmount
+                                                                            as num)
+                                                                        .toDouble(),
+                                                                    totalExpense
+                                                                        .toDouble(),
+                                                                  ), // Ganti nilai persentase sesuai kebutuhan
+                                                                  progressColor:
+                                                                      Colors
+                                                                          .red,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        });
                                                   }
-                                                  }),
-                                          ),
-                                          
-                                           SizedBox(height: 27),
-                                          Text(
-                                            "Pemasukan Berdasarkan Kategori",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          SizedBox(height: 10),
-                                          
-                                          // ---------------------------> Mapping data Income <---------------------------------------
-                                          
-                                          Expanded(
-                                            child: FutureBuilder<List<Map<String, Object>?>>(
-                                                future: database.getIncCatNameByRekaps(dbStartDate, dbEndDate),
-                                                builder: (context, snapshot)  {
-                                                  final incomeCategory = snapshot.data;
-                                                  print("isi  category $incomeCategory");
-                                                  // final expenseCategory =
-                                                  //     snapshot.data![1];
-                                          
-                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                    return CircularProgressIndicator();
-                                                  } else {
+                                                }
+                                                return Text("data");
+                                              }
+                                            }),
+                                      ),
 
-                                                  if (snapshot.hasData) {
-                                                     if (snapshot.data!.length > 0) {
-                                                     return ListView.builder(
-                                                      itemCount: snapshot.data!.length, itemBuilder: (context, index) {
-                                                       
-                                                        var incomeNames = snapshot.data![index]!["name"];
-                                                        var incomeAmount = snapshot.data![index]!["totalAmount"];
-                                                        print("xpense $incomeNames");
-                                                        print("amount $incomeAmount");
+                                      SizedBox(height: 27),
+                                      Text(
+                                        "Pemasukan Berdasarkan Kategori",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 10),
 
+                                      // ---------------------------> Mapping data Income <---------------------------------------
 
+                                      Expanded(
+                                        child: FutureBuilder<
+                                                List<Map<String, Object>?>>(
+                                            future:
+                                                database.getIncCatNameByRekaps(
+                                                    dbStartDate, dbEndDate),
+                                            builder: (context, snapshot) {
+                                              final incomeCategory =
+                                                  snapshot.data;
+                                              print(
+                                                  "isi  category $incomeCategory");
+                                              // final expenseCategory =
+                                              //     snapshot.data![1];
 
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(primary));
+                                              } else {
+                                                if (snapshot.hasData) {
+                                                  if (snapshot.data!.length >
+                                                      0) {
+                                                    return ListView.builder(
+                                                        itemCount: snapshot
+                                                            .data!.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          var incomeNames =
+                                                              snapshot.data![
+                                                                      index]![
+                                                                  "name"];
+                                                          var incomeAmount =
+                                                              snapshot.data![
+                                                                      index]![
+                                                                  "totalAmount"];
+                                                          print(
+                                                              "xpense $incomeNames");
+                                                          print(
+                                                              "amount $incomeAmount");
 
-                                                        // Convert to Rp
-                                                        var amountString = (NumberFormat.currency(
-                                                                        locale:'id',
-                                                                        decimalDigits:
-                                                                        0,).format(incomeAmount)).replaceAll('IDR','');
-                                                      
+                                                          // Convert to Rp
+                                                          var amountString =
+                                                              (NumberFormat
+                                                                      .currency(
+                                                            locale: 'id',
+                                                            decimalDigits: 0,
+                                                          ).format(
+                                                                      incomeAmount))
+                                                                  .replaceAll(
+                                                                      'IDR',
+                                                                      '');
 
-                                                        // Kalo Pengeluaran
-                                                           return SingleChildScrollView(
-                                                             child: Column(
-                                                               children: [
-                                                                 SizedBox(
-                                                                     height: 20),
-                                                                 Row(
-                                                                   mainAxisAlignment:
-                                                                       MainAxisAlignment
-                                                                           .spaceBetween,
-                                                                   children: [
-                                                                     Text(incomeNames.toString()), // Nama kategori income
-                                                                     Text(
-                                                                       "Rp." + amountString
-                                                                     ), // Total Income
-                                                                   ],
-                                                                 ),
-                                                                 SizedBox(height: 7),
-                                                                 LinearPercentIndicator(
-                                                                   width: MediaQuery.of(context).size.width * 0.85,
-                                                                   barRadius:const Radius.circular(16),
-                                                                   lineHeight: 8.0,
-                                                                   percent:
-                                                                       calculatePercentage(
-                                                                     (incomeAmount as num).toDouble(),
-                                                                     totalIncome.toDouble(),
-                                                                   ), // Ganti nilai persentase sesuai kebutuhan
-                                                                   progressColor:
-                                                                       Colors.green,
-                                                                 ),
-                                                               ],
-                                                             ),
-                                                           );                                         
-                                                      } 
-                                                     );
-                                                     
-                                                     }
-                                                  } return Text("data");
+                                                          // Kalo Pengeluaran
+                                                          return SingleChildScrollView(
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                    height: 20),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(incomeNames
+                                                                        .toString()), // Nama kategori income
+                                                                    Text("Rp." +
+                                                                        amountString), // Total Income
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                    height: 7),
+                                                                LinearPercentIndicator(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.85,
+                                                                  barRadius:
+                                                                      const Radius
+                                                                          .circular(
+                                                                          16),
+                                                                  lineHeight:
+                                                                      8.0,
+                                                                  percent:
+                                                                      calculatePercentage(
+                                                                    (incomeAmount
+                                                                            as num)
+                                                                        .toDouble(),
+                                                                    totalIncome
+                                                                        .toDouble(),
+                                                                  ), // Ganti nilai persentase sesuai kebutuhan
+                                                                  progressColor:
+                                                                      Colors
+                                                                          .green,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        });
                                                   }
-                                                  }),
-                                          ),
-                                     
-                                          SizedBox(height: 25),
-                                    
-                                        ],
-                                      )
+                                                }
+                                                return Text("data");
+                                              }
+                                            }),
+                                      ),
+
+                                      SizedBox(height: 25),
+                                    ],
+                                  )
                                       // Kalo Custom
 
                                       )
@@ -568,7 +629,10 @@ class _DetailRekapsStat extends State<DetailRekap>
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
                                         return Center(
-                                          child: CircularProgressIndicator(),
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      primary)),
                                         );
                                       } else {
                                         if (snapshot.hasData) {
@@ -853,6 +917,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                 ],
                                 ElevatedButton(
                                   style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStatePropertyAll(primary),
                                     shape: MaterialStatePropertyAll(
                                       ContinuousRectangleBorder(
                                         borderRadius:

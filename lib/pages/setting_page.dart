@@ -167,6 +167,10 @@ class _SettingPageState extends State<SettingPage> {
                                                           ),
                                                         ),
                                                         ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStatePropertyAll(
+                                                                      primary)),
                                                           onPressed: () {
                                                             Navigator.of(
                                                                     context,
@@ -278,7 +282,6 @@ class _SettingPageState extends State<SettingPage> {
                                                 activeColor: defaultTheme[2],
                                                 selected: true,
                                               ),
-                                            
                                             ],
                                           ),
                                         );
@@ -437,7 +440,9 @@ class _SettingPageState extends State<SettingPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
                   );
                 },
@@ -449,13 +454,7 @@ class _SettingPageState extends State<SettingPage> {
             ),
             Expanded(
               child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => SettingPage(),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 icon: Icon(
                   Icons.settings,
                   color: primary,
@@ -491,17 +490,13 @@ void loadData() async {
 Color get primary => _getPrimary(_kode);
 
 Color _getPrimary(int kode) {
-  
-      return defaultTheme[kode];
-  
-  
+  return defaultTheme[kode];
 }
 
 const defaultTheme = [
   Color.fromARGB(255, 0, 171, 194),
   Color.fromARGB(255, 188, 43, 216),
   Color.fromARGB(255, 62, 166, 106),
-
 ];
 
 const secondary = Color.fromARGB(255, 151, 221, 230);

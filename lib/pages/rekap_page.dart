@@ -13,7 +13,8 @@ import 'add+edit_rekap.dart';
 import 'gallery_pages.dart';
 
 class RekapPage extends StatefulWidget {
-  const RekapPage({super.key});
+  final int r;
+  const RekapPage({super.key, required this.r});
 
   @override
   State<RekapPage> createState() => _RekapPageState();
@@ -21,7 +22,7 @@ class RekapPage extends StatefulWidget {
 
 class _RekapPageState extends State<RekapPage> {
   final AppDb database = AppDb();
-  late int r;
+  late int r = widget.r;
   bool isUpdate = false;
   // Map<String, double> dataMap = {
   //   "Balance": 253000,
@@ -35,7 +36,7 @@ class _RekapPageState extends State<RekapPage> {
   @override
   void initState() {
     super.initState();
-    updateR(1);
+    updateR(r);
     _loadData();
     datamap().then((dataMap) {
       setState(() {
@@ -262,7 +263,10 @@ class _RekapPageState extends State<RekapPage> {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
                                         return Center(
-                                          child: CircularProgressIndicator(),
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      primary)),
                                         );
                                       } else {
                                         if (snapshot.hasData) {
@@ -358,7 +362,10 @@ class _RekapPageState extends State<RekapPage> {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
                                       return Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    primary)),
                                       );
                                     } else {
                                       if (snapshot.hasData) {
@@ -540,7 +547,10 @@ class _RekapPageState extends State<RekapPage> {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
                                       return Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    primary)),
                                       );
                                     } else {
                                       if (snapshot.hasData) {
@@ -788,6 +798,9 @@ class _RekapPageState extends State<RekapPage> {
                                                 bottom: 85),
                                             child: Column(
                                               children: [
+                                                SizedBox(
+                                                  height: 35,
+                                                ),
                                                 Image.asset(
                                                   'assets/img/tes.png',
                                                   width: 200,
@@ -822,6 +835,35 @@ class _RekapPageState extends State<RekapPage> {
                                   },
                                 ))
                               ],
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Visibility(
+                                    visible: (r == 3) ? true : false,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 8, 30),
+                                      child: FloatingActionButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            // DetailPage adalah halaman yang dituju
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddEditRekap(rekap: null),
+                                            ),
+                                          );
+                                        },
+                                        backgroundColor: primary,
+                                        child: Icon(
+                                          Icons.add,
+                                          color: base,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -850,34 +892,6 @@ class _RekapPageState extends State<RekapPage> {
                               ),
                             ],
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: (r == 3) ? true : false,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 8, 30),
-                                child: FloatingActionButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      // DetailPage adalah halaman yang dituju
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddEditRekap(rekap: null),
-                                      ),
-                                    );
-                                  },
-                                  backgroundColor: primary,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: base,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -930,13 +944,7 @@ class _RekapPageState extends State<RekapPage> {
 
             Expanded(
               child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => RekapPage(),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 icon: Icon(
                   Icons.bar_chart,
                   color: primary,

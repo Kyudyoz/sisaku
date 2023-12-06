@@ -8,6 +8,7 @@ import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
 import 'package:sisaku/widgets/image_input.dart';
+
 // import 'package:sisaku/colors.dart';
 import 'dart:io';
 import 'package:sisaku/models/database.dart';
@@ -150,6 +151,10 @@ class _TransactionPageState extends State<TransactionPage> {
                       controller: categoryNameController,
                       cursorColor: primary,
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: primary),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: primary),
                           borderRadius: BorderRadius.circular(16),
@@ -348,10 +353,13 @@ class _TransactionPageState extends State<TransactionPage> {
                               controller: deskripsiController,
                               cursorColor: primary,
                               decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: primary)),
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: primary),
                                 ),
                                 labelText: 'Deskripsi',
+                                labelStyle: TextStyle(color: primary),
                               ),
                             ),
                           ),
@@ -364,10 +372,13 @@ class _TransactionPageState extends State<TransactionPage> {
                               keyboardType: TextInputType.number,
                               cursorColor: primary,
                               decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: primary)),
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: primary),
                                 ),
                                 labelText: 'Jumlah Uang',
+                                labelStyle: TextStyle(color: primary),
                               ),
                             ),
                           ),
@@ -383,9 +394,12 @@ class _TransactionPageState extends State<TransactionPage> {
                               controller: dateController,
                               cursorColor: primary,
                               decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: primary)),
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: primary),
                                 ),
+                                labelStyle: TextStyle(color: primary),
                                 labelText: 'Pilih Tanggal',
                                 suffixIcon: Icon(
                                   Icons.calendar_month_rounded,
@@ -394,13 +408,22 @@ class _TransactionPageState extends State<TransactionPage> {
                               ),
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialEntryMode:
-                                      DatePickerEntryMode.calendarOnly,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2020),
-                                  lastDate: DateTime(2099),
-                                );
+                                    context: context,
+                                    initialEntryMode:
+                                        DatePickerEntryMode.calendarOnly,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2020),
+                                    lastDate: DateTime(2099),
+                                    builder: (context, child) {
+                                      return Theme(
+                                        data: Theme.of(context).copyWith(
+                                          colorScheme: ColorScheme.light(
+                                            primary: primary,
+                                          ),
+                                        ),
+                                        child: child!,
+                                      );
+                                    });
 
                                 if (pickedDate != Null) {
                                   String formattedDate =
@@ -424,7 +447,9 @@ class _TransactionPageState extends State<TransactionPage> {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          primary)),
                                 );
                               } else {
                                 if (snapshot.hasData) {
@@ -434,7 +459,11 @@ class _TransactionPageState extends State<TransactionPage> {
                                           horizontal: 16.0),
                                       child: DropdownButtonFormField<Category>(
                                         decoration: InputDecoration(
-                                          hintText: 'Pilih Kategori',
+                                          labelStyle: TextStyle(color: primary),
+                                          labelText: 'Pilih Kategori',
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide:
+                                                  BorderSide(color: primary)),
                                         ),
                                         isExpanded: true,
                                         value: selectedCategory,
@@ -646,14 +675,16 @@ class _TransactionPageState extends State<TransactionPage> {
                                         print("Bulan: $month");
                                         await createMonthlyRekaps(year, month);
                                         // Navigator.pop(context);
-                                        await Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => HomePage(
-                                                selectedDate:
-                                                    DateTime.parse(dbDate)),
+
+                                        final route = MaterialPageRoute(
+                                          builder: (context) => HomePage(
+                                            selectedDate:
+                                                DateTime.parse(dbDate),
                                           ),
                                         );
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                route, (route) => false);
                                       },
                                       child: Text(
                                         'Simpan Transaksi',
@@ -736,7 +767,9 @@ class _TransactionPageState extends State<TransactionPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
                   );
                 },

@@ -304,7 +304,9 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RekapPage(),
+                                    builder: (context) => RekapPage(
+                                      r: 1,
+                                    ),
                                   ),
                                 );
                               },
@@ -321,241 +323,249 @@ class _HomePageState extends State<HomePage> {
                       ),
 
                       Expanded(
-                        child: StreamBuilder<List<TransactionWithCategory>>(
-                          stream: database.getTransactionByDate(selectedDate),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else {
-                              if (snapshot.hasData) {
-                                if (snapshot.data!.length > 0) {
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data!.length,
-                                      itemBuilder: (context, index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          child: SingleChildScrollView(
-                                            child: Card(
-                                              elevation: 10,
-                                              child: ListTile(
-                                                leading: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: StreamBuilder<List<TransactionWithCategory>>(
+                            stream: database.getTransactionByDate(selectedDate),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          primary)),
+                                );
+                              } else {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!.length > 0) {
+                                    return ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            child: SingleChildScrollView(
+                                              child: Card(
+                                                elevation: 10,
+                                                child: ListTile(
+                                                  leading: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                    child: (snapshot
+                                                                .data![index]
+                                                                .transaction
+                                                                .image !=
+                                                            null)
+                                                        ? Image.memory(
+                                                            snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .transaction
+                                                                    .image ??
+                                                                Uint8List(0),
+                                                            // width: 80,
+                                                            fit: BoxFit.cover,
+                                                            width: 80,
+                                                          )
+                                                        : Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                width: 80,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                    color: Color
+                                                                        .fromRGBO(
+                                                                            0,
+                                                                            0,
+                                                                            0,
+                                                                            0.1)),
+                                                                child: snapshot
+                                                                            .data![index]
+                                                                            .category
+                                                                            .type ==
+                                                                        2
+                                                                    ? Icon(
+                                                                        Icons
+                                                                            .upload_rounded,
+                                                                        color: Colors
+                                                                            .red,
+                                                                        size:
+                                                                            40,
+                                                                      )
+                                                                    : Icon(
+                                                                        Icons
+                                                                            .download_rounded,
+                                                                        color: Colors
+                                                                            .green,
+                                                                        size:
+                                                                            40,
+                                                                      ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                   ),
-                                                  child:
-                                                      (snapshot
-                                                                  .data![index]
-                                                                  .transaction
-                                                                  .image !=
-                                                              null)
-                                                          ? Image.memory(
-                                                              snapshot
-                                                                      .data![
-                                                                          index]
-                                                                      .transaction
-                                                                      .image ??
-                                                                  Uint8List(0),
-                                                              // width: 80,
-                                                              fit: BoxFit.cover,
-                                                              width: 80,
-                                                            )
-                                                          : Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                  width: 80,
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      color: Color
-                                                                          .fromRGBO(
-                                                                              0,
-                                                                              0,
-                                                                              0,
-                                                                              0.1)),
-                                                                  child: snapshot
-                                                                              .data![index]
-                                                                              .category
-                                                                              .type ==
-                                                                          2
-                                                                      ? Icon(
-                                                                          Icons
-                                                                              .upload_rounded,
-                                                                          color:
-                                                                              Colors.red,
-                                                                          size:
-                                                                              40,
-                                                                        )
-                                                                      : Icon(
-                                                                          Icons
-                                                                              .download_rounded,
-                                                                          color:
-                                                                              Colors.green,
-                                                                          size:
-                                                                              40,
-                                                                        ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                ),
-                                                title: Text(
-                                                  'Rp. ' +
-                                                      (NumberFormat.currency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0,
-                                                      ).format(
+                                                  title: Text(
+                                                    'Rp. ' +
+                                                        (NumberFormat.currency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0,
+                                                        ).format(
+                                                          snapshot
+                                                              .data![index]
+                                                              .transaction
+                                                              .amount,
+                                                        )).replaceAll(
+                                                            'IDR', ''),
+                                                  ),
+                                                  subtitle: Text(
+                                                    snapshot.data![index]
+                                                            .category.name +
+                                                        ' ( ' +
                                                         snapshot.data![index]
-                                                            .transaction.amount,
-                                                      )).replaceAll('IDR', ''),
-                                                ),
-                                                subtitle: Text(
-                                                  snapshot.data![index].category
-                                                          .name +
-                                                      ' ( ' +
-                                                      snapshot.data![index]
-                                                          .transaction.name +
-                                                      ' )',
-                                                ),
-                                                trailing: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    IconButton(
-                                                      icon: Icon(Icons.delete),
-                                                      onPressed: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                shadowColor:
-                                                                    Colors.red[
-                                                                        50],
-                                                                content:
-                                                                    SingleChildScrollView(
-                                                                  child: Center(
+                                                            .transaction.name +
+                                                        ' )',
+                                                  ),
+                                                  trailing: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      IconButton(
+                                                        icon:
+                                                            Icon(Icons.delete),
+                                                        onPressed: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertDialog(
+                                                                  shadowColor:
+                                                                      Colors.red[
+                                                                          50],
+                                                                  content:
+                                                                      SingleChildScrollView(
                                                                     child:
-                                                                        Column(
-                                                                      children: [
                                                                         Center(
-                                                                          child:
-                                                                              Text(
-                                                                            'Yakin ingin Hapus?',
-                                                                            style:
-                                                                                GoogleFonts.inder(
-                                                                              fontSize: 16,
-                                                                              fontWeight: FontWeight.bold,
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          Center(
+                                                                            child:
+                                                                                Text(
+                                                                              'Yakin ingin Hapus?',
+                                                                              style: GoogleFonts.inder(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              30,
-                                                                        ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.end,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.end,
-                                                                          children: [
-                                                                            TextButton(
-                                                                              onPressed: () {
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Text(
-                                                                                'Batal',
-                                                                                style: TextStyle(
-                                                                                  color: Colors.black,
+                                                                          SizedBox(
+                                                                            height:
+                                                                                30,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.end,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.end,
+                                                                            children: [
+                                                                              TextButton(
+                                                                                onPressed: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                child: Text(
+                                                                                  'Batal',
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.black,
+                                                                                  ),
                                                                                 ),
                                                                               ),
-                                                                            ),
-                                                                            ElevatedButton(
-                                                                              style: ButtonStyle(
-                                                                                backgroundColor: MaterialStatePropertyAll(primary),
-                                                                              ),
-                                                                              onPressed: () async {
-                                                                                // Navigator.of(
-                                                                                //         context,
-                                                                                //         rootNavigator:
-                                                                                //             true)
-                                                                                //     .pop();
-                                                                                await database.deleteTransactionRepo(snapshot.data![index].transaction.id);
-                                                                                // Navigator.of(context, rootNavigator: true).pop('dialog');
-                                                                                Navigator.of(context).pushReplacement(
-                                                                                  MaterialPageRoute(
-                                                                                    builder: (context) => HomePage(selectedDate: selectedDate),
-                                                                                  ),
-                                                                                );
+                                                                              ElevatedButton(
+                                                                                style: ButtonStyle(
+                                                                                  backgroundColor: MaterialStatePropertyAll(primary),
+                                                                                ),
+                                                                                onPressed: () async {
+                                                                                  // Navigator.of(
+                                                                                  //         context,
+                                                                                  //         rootNavigator:
+                                                                                  //             true)
+                                                                                  //     .pop();
+                                                                                  await database.deleteTransactionRepo(snapshot.data![index].transaction.id);
+                                                                                  // Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                                  Navigator.of(context).pushReplacement(
+                                                                                    MaterialPageRoute(
+                                                                                      builder: (context) => HomePage(selectedDate: selectedDate),
+                                                                                    ),
+                                                                                  );
 
-                                                                                setState(() {});
-                                                                              },
-                                                                              child: Text(
-                                                                                'Ya',
+                                                                                  setState(() {});
+                                                                                },
+                                                                                child: Text(
+                                                                                  'Ya',
+                                                                                ),
                                                                               ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              );
-                                                            });
-                                                      },
-                                                    ),
-                                                    // SizedBox(
-                                                    //   width: 1,
-                                                    // ),
-                                                    IconButton(
-                                                      icon: Icon(Icons.edit),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pushReplacement(
-                                                          MaterialPageRoute(
-                                                            builder: ((context) =>
-                                                                TransactionPage(
-                                                                  transactionWithCategory:
-                                                                      snapshot.data![
-                                                                          index],
-                                                                )),
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
+                                                                );
+                                                              });
+                                                        },
+                                                      ),
+                                                      // SizedBox(
+                                                      //   width: 1,
+                                                      // ),
+                                                      IconButton(
+                                                        icon: Icon(Icons.edit),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pushReplacement(
+                                                            MaterialPageRoute(
+                                                              builder:
+                                                                  ((context) =>
+                                                                      TransactionPage(
+                                                                        transactionWithCategory:
+                                                                            snapshot.data![index],
+                                                                      )),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      });
+                                          );
+                                        });
+                                  } else {
+                                    return Center(
+                                      child: Text('Tidak ada data'),
+                                    );
+                                  }
                                 } else {
                                   return Center(
                                     child: Text('Tidak ada data'),
                                   );
                                 }
-                              } else {
-                                return Center(
-                                  child: Text('Tidak ada data'),
-                                );
                               }
-                            }
-                          },
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -567,9 +577,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       backgroundColor: primary,
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) =>
                   TransactionPage(transactionWithCategory: null),
@@ -589,14 +600,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          HomePage(selectedDate: DateTime.now()),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 icon: Icon(
                   Icons.home,
                   color: primary,
@@ -627,7 +631,9 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
                   );
                 },

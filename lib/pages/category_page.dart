@@ -80,8 +80,11 @@ class _CategoryPageState extends State<CategoryPage> {
                       controller: categoryNameController,
                       cursorColor: primary,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
+                        focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: primary),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         hintText: "Tidak Boleh Kosong",
@@ -307,7 +310,9 @@ class _CategoryPageState extends State<CategoryPage> {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation<Color>(primary)),
                               );
                             } else {
                               if (snapshot.hasData) {
@@ -517,7 +522,9 @@ class _CategoryPageState extends State<CategoryPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
                   );
                 },
