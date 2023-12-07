@@ -15,6 +15,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+  final _formKey = GlobalKey<FormState>();
   late int type;
 
   void initState() {
@@ -50,8 +51,10 @@ class _CategoryPageState extends State<CategoryPage> {
   TextEditingController categoryNameController = TextEditingController();
   // Dialog
   void openDialog(Category? category) {
+    String text = 'Tambah';
     if (category != null) {
       categoryNameController.text = category.name;
+      text = 'Edit';
     }
     showDialog(
         context: context,
@@ -67,8 +70,8 @@ class _CategoryPageState extends State<CategoryPage> {
                   children: [
                     Text(
                       (type == 2)
-                          ? 'Tambah Kategori Pengeluaran'
-                          : 'Tambah kategori Pemasukan',
+                          ? '$text Kategori Pengeluaran'
+                          : '$text Kategori Pemasukan',
                       style: GoogleFonts.inder(
                         fontSize: 18,
                       ),
@@ -76,65 +79,100 @@ class _CategoryPageState extends State<CategoryPage> {
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      controller: categoryNameController,
-                      cursorColor: primary,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: primary),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: "Tidak Boleh Kosong",
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(primary),
-                        shape: MaterialStatePropertyAll(
-                          ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: categoryNameController,
+                            cursorColor: primary,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Form tidak boleh kosong';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: primary),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              labelText: "Nama Kategori",
+                              labelStyle: TextStyle(color: primary),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(primary),
+                              shape: MaterialStatePropertyAll(
+                                ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                if (category == null &&
+                                    categoryNameController.text != '') {
+                                  insert(
+                                    categoryNameController.text,
+                                    type,
+                                  );
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop('dialog');
+                                  setState(() {});
+                                  categoryNameController.clear();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Berhasil Tambah Kategori',
+                                        style: GoogleFonts.inder(color: base),
+                                      ),
+                                      backgroundColor: primary,
+                                    ),
+                                  );
+                                } else {
+                                  if (category != null &&
+                                      categoryNameController.text != '') {
+                                    update(
+                                      category.id,
+                                      categoryNameController.text,
+                                    );
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop('dialog');
+                                    setState(() {});
+                                    categoryNameController.clear();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Berhasil Edit Kategori',
+                                          style: GoogleFonts.inder(color: base),
+                                        ),
+                                        backgroundColor: primary,
+                                      ),
+                                    );
+                                  }
+                                }
+                              }
+                            },
+                            child: Text(
+                              'Simpan',
+                              style: GoogleFonts.inder(
+                                color: base,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        if (category == null &&
-                            categoryNameController.text != '') {
-                          insert(
-                            categoryNameController.text,
-                            type,
-                          );
-                          Navigator.of(context, rootNavigator: true)
-                              .pop('dialog');
-                          setState(() {});
-                          categoryNameController.clear();
-                        } else {
-                          if (category != null &&
-                              categoryNameController.text != '') {
-                            update(
-                              category.id,
-                              categoryNameController.text,
-                            );
-                            Navigator.of(context, rootNavigator: true)
-                                .pop('dialog');
-                            setState(() {});
-                            categoryNameController.clear();
-                          }
-                        }
-                      },
-                      child: Text(
-                        'Simpan',
-                        style: GoogleFonts.inder(
-                          color: base,
-                          fontSize: 12,
-                        ),
-                      ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -397,6 +435,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                               setState(() {
                                                                                 print("Berhasil Hapus");
                                                                               });
+                                                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                                                SnackBar(
+                                                                                    content: Text(
+                                                                                      'Berhasil Hapus Kategori',
+                                                                                      style: GoogleFonts.inder(color: base),
+                                                                                    ),
+                                                                                    backgroundColor: primary),
+                                                                              );
                                                                             },
                                                                             child:
                                                                                 Text(

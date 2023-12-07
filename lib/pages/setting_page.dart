@@ -183,6 +183,20 @@ class _SettingPageState extends State<SettingPage> {
                                                               print(
                                                                 "Berhasil Hapus Semua",
                                                               );
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                SnackBar(
+                                                                    content:
+                                                                        Text(
+                                                                      'Berhasil Hapus Semua Data',
+                                                                      style: GoogleFonts.inder(
+                                                                          color:
+                                                                              base),
+                                                                    ),
+                                                                    backgroundColor:
+                                                                        primary),
+                                                              );
                                                             });
                                                           },
                                                           child: Text(

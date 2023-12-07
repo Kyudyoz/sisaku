@@ -511,6 +511,14 @@ class _HomePageState extends State<HomePage> {
                                                                                       builder: (context) => HomePage(selectedDate: selectedDate),
                                                                                     ),
                                                                                   );
+                                                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                                                    SnackBar(
+                                                                                        content: Text(
+                                                                                          'Berhasil Hapus Transaksi',
+                                                                                          style: GoogleFonts.inder(color: base),
+                                                                                        ),
+                                                                                        backgroundColor: primary),
+                                                                                  );
 
                                                                                   setState(() {});
                                                                                 },
