@@ -305,23 +305,60 @@ class _SettingPageState extends State<SettingPage> {
                             ]),
                             SizedBox(height: 18),
                             // Remider Notification
-                            Row(children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  child: Icon(
-                                    Icons.notifications,
-                                    color: base,
-                                    size: 27,
-                                  )),
-                              SizedBox(width: 20),
-                              TextButton(
-                                  child: Text("Pengingat"),
-                                  style: TextButton.styleFrom(
-                                      foregroundColor: Colors.black),
-                                  onPressed: () {}),
-                            ]),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                          decoration: BoxDecoration(
+                                              color: primary,
+                                              borderRadius:
+                                                  BorderRadius.circular(3)),
+                                          child: Icon(
+                                            !isDark
+                                                ? Icons.light_mode_rounded
+                                                : Icons.dark_mode_rounded,
+                                            color: base,
+                                            size: 27,
+                                          )),
+                                      SizedBox(width: 20),
+                                      TextButton(
+                                          child: Text("Dark Mode"),
+                                          style: TextButton.styleFrom(
+                                              foregroundColor: Colors.black),
+                                          onPressed: () {
+                                            setState(() {
+                                              (isDark)
+                                                  ? isDark = false
+                                                  : isDark = true;
+                                              print(isDark);
+                                            });
+                                            saveData();
+                                          }),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Switch(
+                                        value: isDark,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            isDark = value;
+
+                                            print(isDark);
+                                          });
+                                          saveData();
+                                        },
+                                        inactiveTrackColor: Colors.grey,
+                                        activeColor: Colors.white,
+                                        activeTrackColor: primary,
+                                      ),
+                                    ],
+                                  ),
+                                ]),
                             SizedBox(height: 18),
                             // Language
                             Row(children: [
@@ -483,7 +520,9 @@ class _SettingPageState extends State<SettingPage> {
 }
 
 SharedPreferences? _sharedPreferences;
+
 late int _kode = 0;
+late bool isDark = false;
 
 // Fungsi untuk menyimpan data ke `SharedPreferences`
 void saveData() async {
@@ -491,6 +530,7 @@ void saveData() async {
   _sharedPreferences = await SharedPreferences.getInstance();
   // Simpan data ke `SharedPreferences`
   _sharedPreferences?.setInt("kode", _kode);
+  _sharedPreferences?.setBool("isDark", isDark);
 }
 
 // Fungsi untuk mengambil data dari `SharedPreferences`
@@ -499,6 +539,8 @@ void loadData() async {
   _sharedPreferences = await SharedPreferences.getInstance();
   // Ambil data dari `SharedPreferences`
   _kode = _sharedPreferences?.getInt("kode") ?? 0;
+  isDark = _sharedPreferences?.getBool("isDark") ?? false;
+  print(isDark);
 }
 
 Color get primary => _getPrimary(_kode);
