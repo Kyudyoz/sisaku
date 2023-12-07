@@ -99,14 +99,14 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets\img\splash.png
-  color_dark: "#121212"
-  image_dark: assets\img\splash.png
+  image: assets\img\logo3.png
+  color_dark: "#15292B"
+  image_dark: assets\img\logo3.png
 
   android_12:
     color: "#FFFFFF"
-    image: assets\img\splash.png
-    color_dark: "#121212"
-    image_dark: assets\img\splash.png
+    image: assets\img\logo3.png
+    color_dark: "#15292B"
+    image_dark: assets\img\logo3.png
 
   web: false
