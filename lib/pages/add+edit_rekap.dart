@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:sisaku/pages/category_page.dart';
+import 'package:sisaku/pages/home_page.dart';
 // import 'package:sisaku/colors.dart';
 import 'setting_page.dart';
 
@@ -258,6 +260,82 @@ class _AddEditRekapState extends State<AddEditRekap> {
               )
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HomePage(selectedDate: DateTime.now()),
+                      ),
+                      (route) => false);
+                },
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            // SizedBox(
+            //   width: 20,
+            // ),
+            Expanded(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPage(),
+                      ),
+                      (route) => false);
+                },
+                icon: Icon(
+                  Icons.list,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
+                    ),
+                    (route) => false,
+                  );
+                },
+                icon: Icon(
+                  Icons.bar_chart,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => SettingPage(),
+                    ),
+                    (route) => false,
+                  );
+                },
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

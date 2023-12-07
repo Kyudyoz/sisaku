@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sisaku/pages/home_page.dart';
 // import 'package:sisaku/colors.dart';
 import 'pages/setting_page.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
   runApp(MyApp());

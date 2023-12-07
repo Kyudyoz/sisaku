@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   int result1 = 0;
   int result2 = 0;
   late DateTime selectedDate = widget.selectedDate;
+
   void initState() {
     print(selectedDate);
     updateView(selectedDate);

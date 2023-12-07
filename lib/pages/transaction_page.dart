@@ -730,12 +730,12 @@ class _TransactionPageState extends State<TransactionPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          HomePage(selectedDate: DateTime.now()),
-                    ),
-                  );
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HomePage(selectedDate: DateTime.now()),
+                      ),
+                      (route) => false);
                 },
                 icon: Icon(
                   Icons.home,
@@ -749,11 +749,11 @@ class _TransactionPageState extends State<TransactionPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
-                    ),
-                  );
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPage(),
+                      ),
+                      (route) => false);
                 },
                 icon: Icon(
                   Icons.list,
@@ -765,12 +765,13 @@ class _TransactionPageState extends State<TransactionPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => RekapPage(
                         r: 1,
                       ),
                     ),
+                    (route) => false,
                   );
                 },
                 icon: Icon(
@@ -782,10 +783,11 @@ class _TransactionPageState extends State<TransactionPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => SettingPage(),
                     ),
+                    (route) => false,
                   );
                 },
                 icon: Icon(
