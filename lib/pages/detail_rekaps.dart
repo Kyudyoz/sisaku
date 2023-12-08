@@ -244,9 +244,7 @@ class _DetailRekapsStat extends State<DetailRekap>
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: (primary == defaultTheme[2])
-                      ? Colors.black
-                      : Colors.white,
+                  color: (isDark) ? background : Colors.white,
                 ),
                 child: SafeArea(
                   child: Padding(
@@ -258,43 +256,108 @@ class _DetailRekapsStat extends State<DetailRekap>
                             children: [
                               // Kalo Realtime
                               if (r == 1) ...[
-                                (_dataMapChart.isEmpty)
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(top: 85),
-                                        child: Column(
-                                          children: [
-                                            Image.asset(
-                                              'assets/img/tes.png',
-                                              width: 200,
+                                Expanded(
+                                  child: FutureBuilder<Map<String, double>>(
+                                    future: datamap(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      primary)),
+                                        );
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.length > 0) {
+                                            return ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: 1,
+                                              itemBuilder: (context, index) {
+                                                return Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 35),
+                                                      child: PieChart(
+                                                        dataMap: _dataMapChart,
+                                                        chartRadius:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                1.7,
+                                                        legendOptions:
+                                                            LegendOptions(
+                                                          legendTextStyle:
+                                                              GoogleFonts.inder(
+                                                                  color: isDark
+                                                                      ? base
+                                                                      : home),
+                                                          legendPosition:
+                                                              LegendPosition
+                                                                  .right,
+                                                        ),
+                                                        chartValuesOptions:
+                                                            ChartValuesOptions(
+                                                          showChartValuesInPercentage:
+                                                              true,
+                                                          decimalPlaces: 0,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 85),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height: 35),
+                                                  Image.asset(
+                                                    'assets/img/tes.png',
+                                                    width: 200,
+                                                  ),
+                                                  Text(
+                                                    "Belum ada transaksi",
+                                                    style: GoogleFonts.inder(
+                                                        color: isDark
+                                                            ? base
+                                                            : home),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 85),
+                                            child: Column(
+                                              children: [
+                                                Image.asset(
+                                                  'assets/img/tes.png',
+                                                  width: 200,
+                                                ),
+                                                Text(
+                                                  "Tidak Ada Data",
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "Tidak Ada Data",
-                                              style: GoogleFonts.inder(),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.only(top: 35),
-                                        child: PieChart(
-                                          dataMap: _dataMapChart,
-                                          chartRadius: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.7,
-                                          legendOptions: LegendOptions(
-                                            legendTextStyle:
-                                                GoogleFonts.inder(),
-                                            legendPosition:
-                                                LegendPosition.right,
-                                          ),
-                                          chartValuesOptions:
-                                              ChartValuesOptions(
-                                            showChartValuesInPercentage: true,
-                                            decimalPlaces: 0,
-                                          ),
-                                        ),
-                                      )
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                )
                               ]
 
                               // Kalo Kategori
@@ -313,15 +376,27 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Durasi "),
-                                          Text(startDate + " ~ " + endDate),
+                                          Text(
+                                            "Durasi ",
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
+                                          ),
+                                          Text(
+                                            startDate + " ~ " + endDate,
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
+                                          ),
                                         ]),
                                     SizedBox(height: 15),
                                     Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Total Pengeluaran "),
+                                          Text(
+                                            "Total Pengeluaran ",
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
+                                          ),
                                           Text(
                                             "Rp." +
                                                 (NumberFormat.currency(
@@ -330,6 +405,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                 ).format(
                                                   totalExpense,
                                                 )).replaceAll('IDR', ''),
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
                                           ),
                                         ]),
                                     SizedBox(height: 15),
@@ -337,7 +414,11 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Total Pemasukan "),
+                                          Text(
+                                            "Total Pemasukan ",
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
+                                          ),
                                           Text(
                                             "Rp." +
                                                 (NumberFormat.currency(
@@ -346,6 +427,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                 ).format(
                                                   totalIncome,
                                                 )).replaceAll('IDR', ''),
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
                                           ),
                                         ]),
                                     SizedBox(height: 15),
@@ -353,7 +436,11 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Rata-Rata Harian "),
+                                          Text(
+                                            "Rata-Rata Harian ",
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
+                                          ),
                                           Text(
                                             "Rp." +
                                                 (NumberFormat.currency(
@@ -362,6 +449,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                 ).format(
                                                   dailyAverage,
                                                 )).replaceAll('IDR', ''),
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
                                           ),
                                         ]),
                                     SizedBox(height: 15),
@@ -369,7 +458,11 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text("Sisa "),
+                                          Text(
+                                            "Sisa ",
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
+                                          ),
                                           Text(
                                             "Rp." +
                                                 (NumberFormat.currency(
@@ -378,13 +471,16 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                 ).format(
                                                   totalIncome,
                                                 )).replaceAll('IDR', ''),
+                                            style: TextStyle(
+                                                color: isDark ? base : home),
                                           ),
                                         ]),
                                     SizedBox(height: 27),
                                     Text(
                                       "Pengeluaran Berdasarkan Kategori",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark ? base : Colors.black),
                                     ),
                                     SizedBox(height: 10),
 
@@ -451,10 +547,22 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                     MainAxisAlignment
                                                                         .spaceBetween,
                                                                 children: [
-                                                                  Text(expenseNames
-                                                                      .toString()), // Nama kategori income
-                                                                  Text("Rp." +
-                                                                      amountString), // Total Expense
+                                                                  Text(
+                                                                    expenseNames
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Nama kategori income
+                                                                  Text(
+                                                                    "Rp." +
+                                                                        amountString,
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Total Expense
                                                                 ],
                                                               ),
                                                               SizedBox(
@@ -496,7 +604,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     Text(
                                       "Pemasukan Berdasarkan Kategori",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark ? base : Colors.black),
                                     ),
                                     SizedBox(height: 10),
 
@@ -668,7 +777,11 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .bold),
+                                                                        .bold,
+                                                                color: isDark
+                                                                    ? base
+                                                                    : Colors
+                                                                        .black),
                                                           ),
                                                           SizedBox(width: 35),
                                                         ],
@@ -731,6 +844,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                         (BuildContext
                                                                             context) {
                                                                       return AlertDialog(
+                                                                        backgroundColor: isDark
+                                                                            ? dialog
+                                                                            : Colors.white,
                                                                         shadowColor:
                                                                             Colors.red[50],
                                                                         content:
@@ -743,10 +859,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                                 Center(
                                                                                   child: Text(
                                                                                     'Yakin ingin Hapus?',
-                                                                                    style: GoogleFonts.inder(
-                                                                                      fontSize: 16,
-                                                                                      fontWeight: FontWeight.bold,
-                                                                                    ),
+                                                                                    style: GoogleFonts.inder(fontSize: 16, fontWeight: FontWeight.bold, color: isDark ? base : Colors.black),
                                                                                   ),
                                                                                 ),
                                                                                 SizedBox(
@@ -763,7 +876,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                                       child: Text(
                                                                                         'Batal',
                                                                                         style: GoogleFonts.inder(
-                                                                                          color: home,
+                                                                                          color: isDark ? base : home,
                                                                                           fontWeight: FontWeight.bold,
                                                                                         ),
                                                                                       ),
@@ -813,10 +926,22 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text("Durasi "),
-                                                        Text(startDate +
-                                                            " ~ " +
-                                                            endDate),
+                                                        Text(
+                                                          "Durasi ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          startDate +
+                                                              " ~ " +
+                                                              endDate,
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -825,12 +950,23 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            "Total Pengeluaran "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .totalExpense
-                                                                .toString()),
+                                                          "Total Pengeluaran ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalExpense
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -839,12 +975,23 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            "Total Pemasukan "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .totalIncome
-                                                                .toString()),
+                                                          "Total Pemasukan ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalIncome
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -852,12 +999,24 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text("Sisa "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .sisa
-                                                                .toString()),
+                                                        Text(
+                                                          "Sisa ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .sisa
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 30),
                                                 ],
@@ -876,7 +1035,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                 ),
                                                 Text(
                                                   "Tidak Ada Data",
-                                                  style: GoogleFonts.inder(),
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
                                                 ),
                                               ],
                                             ),
@@ -894,7 +1055,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                               ),
                                               Text(
                                                 "Tidak Ada Data",
-                                                style: GoogleFonts.inder(),
+                                                style: GoogleFonts.inder(
+                                                    color:
+                                                        isDark ? base : home),
                                               ),
                                             ],
                                           ),

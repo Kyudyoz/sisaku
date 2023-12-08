@@ -50,7 +50,7 @@ class _SettingPageState extends State<SettingPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -76,7 +76,11 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Hapus Iklan"),
+                                  child: Text(
+                                    "Hapus Iklan",
+                                    style: TextStyle(
+                                        color: isDark ? base : Colors.black),
+                                  ),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -96,7 +100,11 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Backup dan Restore Data"),
+                                  child: Text(
+                                    "Backup dan Restore Data",
+                                    style: TextStyle(
+                                        color: isDark ? base : Colors.black),
+                                  ),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -115,7 +123,11 @@ class _SettingPageState extends State<SettingPage> {
                               ),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Hapus Data"),
+                                  child: Text(
+                                    "Hapus Data",
+                                    style: TextStyle(
+                                        color: isDark ? base : Colors.black),
+                                  ),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {
@@ -123,6 +135,8 @@ class _SettingPageState extends State<SettingPage> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
+                                            backgroundColor:
+                                                isDark ? dialog : Colors.white,
                                             shadowColor: Colors.red[50],
                                             content: SingleChildScrollView(
                                               child: Center(
@@ -136,6 +150,9 @@ class _SettingPageState extends State<SettingPage> {
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.bold,
+                                                          color: isDark
+                                                              ? base
+                                                              : Colors.black,
                                                         ),
                                                       ),
                                                     ),
@@ -159,7 +176,9 @@ class _SettingPageState extends State<SettingPage> {
                                                             'Batal',
                                                             style: GoogleFonts
                                                                 .inder(
-                                                              color: home,
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -233,7 +252,11 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Tema Warna"),
+                                  child: Text(
+                                    "Tema Warna",
+                                    style: TextStyle(
+                                        color: isDark ? base : Colors.black),
+                                  ),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {
@@ -241,11 +264,23 @@ class _SettingPageState extends State<SettingPage> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text("Pilih Warna"),
+                                          backgroundColor:
+                                              isDark ? dialog : Colors.white,
+                                          title: Text(
+                                            "Pilih Warna",
+                                            style: TextStyle(
+                                                color: isDark
+                                                    ? base
+                                                    : Colors.black),
+                                          ),
                                           content: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               RadioListTile.adaptive(
+                                                tileColor: isDark ? base : home,
+                                                fillColor:
+                                                    MaterialStatePropertyAll(
+                                                        defaultTheme[0]),
                                                 value: 0,
                                                 groupValue: _kode,
                                                 onChanged: (newKode) {
@@ -263,6 +298,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 selected: true,
                                               ),
                                               RadioListTile.adaptive(
+                                                tileColor: isDark ? base : home,
+                                                fillColor:
+                                                    MaterialStatePropertyAll(
+                                                        defaultTheme[1]),
                                                 value: 1,
                                                 groupValue: _kode,
                                                 onChanged: (newKode) {
@@ -280,6 +319,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 selected: true,
                                               ),
                                               RadioListTile.adaptive(
+                                                tileColor: isDark ? base : home,
+                                                fillColor:
+                                                    MaterialStatePropertyAll(
+                                                        defaultTheme[2]),
                                                 value: 2,
                                                 groupValue: _kode,
                                                 onChanged: (newKode) {
@@ -325,7 +368,13 @@ class _SettingPageState extends State<SettingPage> {
                                           )),
                                       SizedBox(width: 20),
                                       TextButton(
-                                          child: Text("Dark Mode"),
+                                          child: Text(
+                                            "Dark Mode",
+                                            style: TextStyle(
+                                                color: isDark
+                                                    ? base
+                                                    : Colors.black),
+                                          ),
                                           style: TextButton.styleFrom(
                                               foregroundColor: Colors.black),
                                           onPressed: () {
@@ -373,7 +422,11 @@ class _SettingPageState extends State<SettingPage> {
                                   )),
                               SizedBox(width: 20),
                               TextButton(
-                                  child: Text("Bahasa"),
+                                  child: Text(
+                                    "Bahasa",
+                                    style: TextStyle(
+                                        color: isDark ? base : Colors.black),
+                                  ),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
                                   onPressed: () {}),
@@ -384,7 +437,11 @@ class _SettingPageState extends State<SettingPage> {
                             Center(
                               child: Column(
                                 children: [
-                                  Text("Ikuti Kami"),
+                                  Text(
+                                    "Ikuti Kami",
+                                    style: TextStyle(
+                                        color: isDark ? base : Colors.black),
+                                  ),
                                   SizedBox(height: 16),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

@@ -107,10 +107,11 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     decoration: InputDecoration(
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: primary)),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: primary),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: isDark ? base : home),
                       ),
-                      labelStyle: TextStyle(color: primary),
+                      labelStyle:
+                          TextStyle(color: isDark ? base : Colors.black),
                       labelText: 'Deskripsi',
                     ),
                   ),
@@ -132,10 +133,11 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     decoration: InputDecoration(
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: primary)),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: primary),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: isDark ? base : home),
                       ),
-                      labelStyle: TextStyle(color: primary),
+                      labelStyle:
+                          TextStyle(color: isDark ? base : Colors.black),
                       labelText: 'Pilih Tanggal',
                       suffixIcon: Icon(
                         Icons.calendar_month_rounded,
@@ -154,7 +156,11 @@ class _AddEditRekapState extends State<AddEditRekap> {
                               data: Theme.of(context).copyWith(
                                 colorScheme: ColorScheme.light(
                                   primary: primary,
+                                  onPrimary: base,
+                                  onSurface: isDark ? base : Colors.black,
                                 ),
+                                dialogBackgroundColor:
+                                    isDark ? card : Colors.white,
                               ),
                               child: child!,
                             );
@@ -190,10 +196,11 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     decoration: InputDecoration(
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: primary)),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: primary),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: isDark ? base : home),
                       ),
-                      labelStyle: TextStyle(color: primary),
+                      labelStyle:
+                          TextStyle(color: isDark ? base : Colors.black),
                       labelText: 'Pilih Tanggal',
                       suffixIcon: Icon(
                         Icons.calendar_month_rounded,
@@ -212,7 +219,11 @@ class _AddEditRekapState extends State<AddEditRekap> {
                               data: Theme.of(context).copyWith(
                                 colorScheme: ColorScheme.light(
                                   primary: primary,
+                                  onPrimary: base,
+                                  onSurface: isDark ? base : Colors.black,
                                 ),
+                                dialogBackgroundColor:
+                                    isDark ? card : Colors.white,
                               ),
                               child: child!,
                             );

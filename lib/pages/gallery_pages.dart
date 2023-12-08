@@ -67,7 +67,7 @@ class _GalleryPageState extends State<GalleryPage> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: base,
+                          color: isDark ? background : base,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(

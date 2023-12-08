@@ -101,11 +101,16 @@ class _CategoryPageState extends State<CategoryPage> {
                                 borderSide: BorderSide(color: primary),
                                 borderRadius: BorderRadius.circular(16),
                               ),
-                              border: OutlineInputBorder(
+                              enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(
+                                  color: isDark ? base : Colors.black,
+                                ),
                               ),
                               labelText: "Nama Kategori",
-                              labelStyle: TextStyle(color: primary),
+                              labelStyle: TextStyle(
+                                color: isDark ? base : Colors.black,
+                              ),
                             ),
                           ),
                           SizedBox(

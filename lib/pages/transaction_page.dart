@@ -134,6 +134,7 @@ class _TransactionPageState extends State<TransactionPage> {
         useSafeArea: true,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: isDark ? dialog : Colors.white,
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
@@ -147,6 +148,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           : '$text Kategori Pemasukan',
                       style: GoogleFonts.inder(
                         fontSize: 18,
+                        color: isDark ? base : Colors.black,
                       ),
                     ),
                     SizedBox(
@@ -157,11 +159,14 @@ class _TransactionPageState extends State<TransactionPage> {
                       child: Column(
                         children: [
                           TextFormField(
+                            style: TextStyle(
+                              color: isDark ? base : Colors.black,
+                            ),
                             controller: categoryNameController,
                             cursorColor: primary,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Form tidak boleh kosong';
+                                return 'Nama kategori tidak boleh kosong';
                               }
                               return null;
                             },
@@ -170,11 +175,15 @@ class _TransactionPageState extends State<TransactionPage> {
                                 borderSide: BorderSide(color: primary),
                                 borderRadius: BorderRadius.circular(16),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide(
+                                    color: isDark ? base : Colors.black,
+                                  )),
                               labelText: "Nama Kategori",
-                              labelStyle: TextStyle(color: primary),
+                              labelStyle: TextStyle(
+                                color: isDark ? base : Colors.black,
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -259,7 +268,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: base,
+                          color: isDark ? background : base,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -355,7 +364,7 @@ class _TransactionPageState extends State<TransactionPage> {
               child: Container(
                 padding: EdgeInsets.only(top: 0),
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -375,6 +384,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                 horizontal: 16.0,
                               ),
                               child: TextFormField(
+                                style: TextStyle(
+                                    color: isDark ? base : Colors.black),
                                 controller: deskripsiController,
                                 cursorColor: primary,
                                 validator: (value) {
@@ -386,11 +397,13 @@ class _TransactionPageState extends State<TransactionPage> {
                                 decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: primary)),
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: primary),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: isDark ? base : home),
                                   ),
                                   labelText: 'Deskripsi',
-                                  labelStyle: TextStyle(color: primary),
+                                  labelStyle: TextStyle(
+                                      color: isDark ? base : Colors.black),
                                 ),
                               ),
                             ),
@@ -399,6 +412,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                 horizontal: 16.0,
                               ),
                               child: TextFormField(
+                                style: TextStyle(
+                                    color: isDark ? base : Colors.black),
                                 controller: amountController,
                                 keyboardType: TextInputType.number,
                                 cursorColor: primary,
@@ -411,11 +426,13 @@ class _TransactionPageState extends State<TransactionPage> {
                                 decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: primary)),
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: primary),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: isDark ? base : home),
                                   ),
                                   labelText: 'Jumlah Uang',
-                                  labelStyle: TextStyle(color: primary),
+                                  labelStyle: TextStyle(
+                                      color: isDark ? base : Colors.black),
                                 ),
                               ),
                             ),
@@ -427,6 +444,8 @@ class _TransactionPageState extends State<TransactionPage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: TextFormField(
+                                style: TextStyle(
+                                    color: isDark ? base : Colors.black),
                                 readOnly: true,
                                 controller: dateController,
                                 cursorColor: primary,
@@ -439,10 +458,12 @@ class _TransactionPageState extends State<TransactionPage> {
                                 decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: primary)),
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: primary),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: isDark ? base : home),
                                   ),
-                                  labelStyle: TextStyle(color: primary),
+                                  labelStyle: TextStyle(
+                                      color: isDark ? base : Colors.black),
                                   labelText: 'Pilih Tanggal',
                                   suffixIcon: Icon(
                                     Icons.calendar_month_rounded,
@@ -462,7 +483,12 @@ class _TransactionPageState extends State<TransactionPage> {
                                           data: Theme.of(context).copyWith(
                                             colorScheme: ColorScheme.light(
                                               primary: primary,
+                                              onPrimary: base,
+                                              onSurface:
+                                                  isDark ? base : Colors.black,
                                             ),
+                                            dialogBackgroundColor:
+                                                isDark ? card : Colors.white,
                                           ),
                                           child: child!,
                                         );
@@ -503,6 +529,10 @@ class _TransactionPageState extends State<TransactionPage> {
                                             horizontal: 16.0),
                                         child:
                                             DropdownButtonFormField<Category>(
+                                          dropdownColor: isDark ? card : base,
+                                          style: TextStyle(
+                                              color:
+                                                  isDark ? base : Colors.black),
                                           validator: (value) {
                                             if (value == null) {
                                               return 'Kategori tidak boleh kosong';
@@ -510,8 +540,14 @@ class _TransactionPageState extends State<TransactionPage> {
                                             return null;
                                           },
                                           decoration: InputDecoration(
-                                            labelStyle:
-                                                TextStyle(color: primary),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: isDark ? base : home),
+                                            ),
+                                            labelStyle: TextStyle(
+                                                color: isDark
+                                                    ? base
+                                                    : Colors.black),
                                             labelText: 'Pilih Kategori',
                                             focusedBorder: UnderlineInputBorder(
                                                 borderSide:
@@ -550,7 +586,14 @@ class _TransactionPageState extends State<TransactionPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text('Kategori tidak ada'),
+                                              Text(
+                                                'Kategori tidak ada',
+                                                style: TextStyle(
+                                                  color: isDark
+                                                      ? base
+                                                      : Colors.black,
+                                                ),
+                                              ),
                                               ElevatedButton.icon(
                                                 onPressed: () {
                                                   // Navigator.pushReplacement(
@@ -601,7 +644,12 @@ class _TransactionPageState extends State<TransactionPage> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 24.0),
                                       child: Center(
-                                        child: Text('Database tidak ada'),
+                                        child: Text(
+                                          'Database tidak ada',
+                                          style: TextStyle(
+                                            color: isDark ? base : Colors.black,
+                                          ),
+                                        ),
                                       ),
                                     );
                                   }
@@ -626,7 +674,11 @@ class _TransactionPageState extends State<TransactionPage> {
                                             children: [
                                               Text(
                                                 "Gambar Lama",
-                                                style: GoogleFonts.montserrat(),
+                                                style: GoogleFonts.montserrat(
+                                                  color: isDark
+                                                      ? base
+                                                      : Colors.black,
+                                                ),
                                               ),
                                               SizedBox(
                                                 height: 10,
@@ -654,7 +706,10 @@ class _TransactionPageState extends State<TransactionPage> {
                                             children: [
                                               Text(
                                                 "Gambar Baru(opsional)",
-                                                style: GoogleFonts.montserrat(),
+                                                style: GoogleFonts.montserrat(
+                                                    color: isDark
+                                                        ? base
+                                                        : Colors.black),
                                               ),
                                               SizedBox(
                                                 height: 10,
@@ -677,7 +732,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                       children: [
                                         Text(
                                           "Gambar (opsional)",
-                                          style: GoogleFonts.montserrat(),
+                                          style: GoogleFonts.montserrat(
+                                              color:
+                                                  isDark ? base : Colors.black),
                                         ),
                                         SizedBox(
                                           height: 10,

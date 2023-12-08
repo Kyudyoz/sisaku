@@ -70,7 +70,10 @@ class _ImageInputState extends State<ImageInput> {
             child: _imageFile != null
                 ? Image.file(_imageFile!, fit: BoxFit.cover)
                 : Center(
-                    child: Text('Belum ada gambar'),
+                    child: Text(
+                      'Belum ada gambar',
+                      style: TextStyle(color: isDark ? base : Colors.black),
+                    ),
                   ),
           ),
           SizedBox(width: 20),

@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -171,9 +171,9 @@ class _HomePageState extends State<HomePage> {
                                 rest,
                               )).replaceAll('IDR', ''),
                           style: GoogleFonts.inder(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                          ),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              color: isDark ? base : Colors.black),
                         ),
                       ),
                       Padding(
@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                           width: double.infinity,
                           padding: EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            color: home,
+                            color: isDark ? card : home,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Row(
@@ -298,6 +298,7 @@ class _HomePageState extends State<HomePage> {
                               style: GoogleFonts.inder(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
+                                color: isDark ? base : Colors.black,
                               ),
                             ),
                             TextButton(
@@ -315,7 +316,8 @@ class _HomePageState extends State<HomePage> {
                                 'Lihat Semua',
                                 style: GoogleFonts.inder(
                                   fontSize: 14,
-                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w200,
+                                  color: isDark ? base : Colors.black54,
                                 ),
                               ),
                             ),
@@ -348,11 +350,13 @@ class _HomePageState extends State<HomePage> {
                                                 horizontal: 16),
                                             child: SingleChildScrollView(
                                               child: Card(
+                                                color: isDark ? card : base,
                                                 elevation: 10,
                                                 child: ListTile(
                                                   leading: Container(
                                                     decoration: BoxDecoration(
-                                                      color: Colors.white,
+                                                      color:
+                                                          isDark ? card : base,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8),
@@ -430,6 +434,10 @@ class _HomePageState extends State<HomePage> {
                                                               .amount,
                                                         )).replaceAll(
                                                             'IDR', ''),
+                                                    style: TextStyle(
+                                                        color: isDark
+                                                            ? base
+                                                            : Colors.black),
                                                   ),
                                                   subtitle: Text(
                                                     snapshot.data![index]
@@ -438,14 +446,22 @@ class _HomePageState extends State<HomePage> {
                                                         snapshot.data![index]
                                                             .transaction.name +
                                                         ' )',
+                                                    style: TextStyle(
+                                                        color: isDark
+                                                            ? base
+                                                            : Colors.black),
                                                   ),
                                                   trailing: Row(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
                                                     children: [
                                                       IconButton(
-                                                        icon:
-                                                            Icon(Icons.delete),
+                                                        icon: Icon(
+                                                          Icons.delete,
+                                                          color: isDark
+                                                              ? base
+                                                              : home,
+                                                        ),
                                                         onPressed: () {
                                                           showDialog(
                                                               context: context,
@@ -453,6 +469,10 @@ class _HomePageState extends State<HomePage> {
                                                                   (BuildContext
                                                                       context) {
                                                                 return AlertDialog(
+                                                                  backgroundColor: isDark
+                                                                      ? dialog
+                                                                      : Colors
+                                                                          .white,
                                                                   shadowColor:
                                                                       Colors.red[
                                                                           50],
@@ -470,6 +490,7 @@ class _HomePageState extends State<HomePage> {
                                                                               style: GoogleFonts.inder(
                                                                                 fontSize: 16,
                                                                                 fontWeight: FontWeight.bold,
+                                                                                color: isDark ? base : Colors.black,
                                                                               ),
                                                                             ),
                                                                           ),
@@ -490,7 +511,7 @@ class _HomePageState extends State<HomePage> {
                                                                                 child: Text(
                                                                                   'Batal',
                                                                                   style: TextStyle(
-                                                                                    color: Colors.black,
+                                                                                    color: isDark ? base : Colors.black,
                                                                                   ),
                                                                                 ),
                                                                               ),
@@ -540,10 +561,15 @@ class _HomePageState extends State<HomePage> {
                                                       //   width: 1,
                                                       // ),
                                                       IconButton(
-                                                        icon: Icon(Icons.edit),
+                                                        icon: Icon(
+                                                          Icons.edit,
+                                                          color: isDark
+                                                              ? base
+                                                              : home,
+                                                        ),
                                                         onPressed: () {
                                                           Navigator.of(context)
-                                                              .pushReplacement(
+                                                              .push(
                                                             MaterialPageRoute(
                                                               builder:
                                                                   ((context) =>
@@ -564,12 +590,22 @@ class _HomePageState extends State<HomePage> {
                                         });
                                   } else {
                                     return Center(
-                                      child: Text('Tidak ada data'),
+                                      child: Text(
+                                        'Tidak ada data',
+                                        style: TextStyle(
+                                          color: isDark ? base : home,
+                                        ),
+                                      ),
                                     );
                                   }
                                 } else {
                                   return Center(
-                                    child: Text('Tidak ada data'),
+                                    child: Text(
+                                      'Tidak ada data',
+                                      style: TextStyle(
+                                        color: isDark ? base : home,
+                                      ),
+                                    ),
                                   );
                                 }
                               }
