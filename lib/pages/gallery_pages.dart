@@ -514,6 +514,7 @@ class _GalleryPageState extends State<GalleryPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -529,7 +530,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -547,7 +548,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -565,7 +566,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -580,7 +581,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),

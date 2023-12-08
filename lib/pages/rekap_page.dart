@@ -904,6 +904,7 @@ class _RekapPageState extends State<RekapPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -919,7 +920,7 @@ class _RekapPageState extends State<RekapPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -937,7 +938,7 @@ class _RekapPageState extends State<RekapPage> {
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -962,7 +963,7 @@ class _RekapPageState extends State<RekapPage> {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),

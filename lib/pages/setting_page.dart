@@ -448,6 +448,7 @@ class _SettingPageState extends State<SettingPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -463,7 +464,7 @@ class _SettingPageState extends State<SettingPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -481,7 +482,7 @@ class _SettingPageState extends State<SettingPage> {
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -499,7 +500,7 @@ class _SettingPageState extends State<SettingPage> {
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -558,3 +559,7 @@ const defaultTheme = [
 const secondary = Color.fromARGB(255, 151, 221, 230);
 const base = Color.fromARGB(255, 243, 243, 243);
 const home = Color.fromARGB(162, 0, 35, 39);
+
+const background = Color.fromRGBO(24, 24, 24, 1);
+const card = Color.fromRGBO(61, 61, 61, 1);
+const dialog = Color.fromRGBO(33, 33, 33, 1);

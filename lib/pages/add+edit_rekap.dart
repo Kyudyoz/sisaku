@@ -312,6 +312,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -327,7 +328,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -345,7 +346,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -364,7 +365,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -380,7 +381,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),

@@ -971,6 +971,7 @@ class _DetailRekapsStat extends State<DetailRekap>
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -986,7 +987,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -1004,7 +1005,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -1023,7 +1024,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -1039,7 +1040,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),

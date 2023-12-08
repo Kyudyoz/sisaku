@@ -61,6 +61,7 @@ class _CategoryPageState extends State<CategoryPage> {
         useSafeArea: true,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: isDark ? dialog : Colors.white,
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
@@ -73,8 +74,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           ? '$text Kategori Pengeluaran'
                           : '$text Kategori Pemasukan',
                       style: GoogleFonts.inder(
-                        fontSize: 18,
-                      ),
+                          fontSize: 18, color: isDark ? base : home),
                     ),
                     SizedBox(
                       height: 10,
@@ -84,15 +84,19 @@ class _CategoryPageState extends State<CategoryPage> {
                       child: Column(
                         children: [
                           TextFormField(
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black),
                             controller: categoryNameController,
                             cursorColor: primary,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Form tidak boleh kosong';
+                                return 'Nama kategori tidak boleh kosong';
                               }
                               return null;
                             },
                             decoration: InputDecoration(
+                              filled: isDark ? true : false,
+                              fillColor: isDark ? card : null,
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: primary),
                                 borderRadius: BorderRadius.circular(16),
@@ -209,7 +213,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: base,
+                          color: isDark ? background : base,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -304,7 +308,7 @@ class _CategoryPageState extends State<CategoryPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -365,19 +369,29 @@ class _CategoryPageState extends State<CategoryPage> {
                                         ),
                                         child: SingleChildScrollView(
                                           child: Card(
+                                            color: isDark ? card : base,
                                             elevation: 10,
                                             child: ListTile(
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   IconButton(
-                                                    icon: Icon(Icons.delete),
+                                                    icon: Icon(
+                                                      Icons.delete,
+                                                      color:
+                                                          isDark ? base : home,
+                                                    ),
                                                     onPressed: () {
                                                       showDialog(
                                                           context: context,
                                                           builder: (BuildContext
                                                               context) {
                                                             return AlertDialog(
+                                                              backgroundColor:
+                                                                  isDark
+                                                                      ? dialog
+                                                                      : Colors
+                                                                          .white,
                                                               shadowColor:
                                                                   Colors
                                                                       .red[50],
@@ -396,6 +410,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                                 16,
                                                                             fontWeight:
                                                                                 FontWeight.bold,
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : home,
                                                                           ),
                                                                         ),
                                                                       ),
@@ -418,7 +435,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                                 Text(
                                                                               'Batal',
                                                                               style: GoogleFonts.inder(
-                                                                                color: home,
+                                                                                color: isDark ? base : home,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -467,7 +484,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                     width: 10,
                                                   ),
                                                   IconButton(
-                                                    icon: Icon(Icons.edit),
+                                                    icon: Icon(
+                                                      Icons.edit,
+                                                      color:
+                                                          isDark ? base : home,
+                                                    ),
                                                     onPressed: () {
                                                       openDialog(snapshot
                                                           .data![index]);
@@ -493,7 +514,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                       ),
                                               ),
                                               title: Text(
-                                                  snapshot.data![index].name),
+                                                snapshot.data![index].name,
+                                                style: TextStyle(
+                                                    color:
+                                                        isDark ? base : home),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -502,12 +527,22 @@ class _CategoryPageState extends State<CategoryPage> {
                                   );
                                 } else {
                                   return Center(
-                                    child: Text('Data tidak ada'),
+                                    child: Text(
+                                      'Data tidak ada',
+                                      style: TextStyle(
+                                        color: isDark ? base : home,
+                                      ),
+                                    ),
                                   );
                                 }
                               } else {
                                 return Center(
-                                  child: Text('Data tidak ada'),
+                                  child: Text(
+                                    'Data tidak ada',
+                                    style: TextStyle(
+                                      color: isDark ? base : home,
+                                    ),
+                                  ),
                                 );
                               }
                             }
@@ -525,6 +560,7 @@ class _CategoryPageState extends State<CategoryPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -540,7 +576,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -576,7 +612,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -591,7 +627,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
