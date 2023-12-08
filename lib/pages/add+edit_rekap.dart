@@ -96,6 +96,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     horizontal: 16.0,
                   ),
                   child: TextFormField(
+                    style: TextStyle(color: isDark ? base : home),
                     controller: namaRekapController,
                     cursorColor: primary,
                     validator: (value) {
@@ -121,6 +122,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: TextFormField(
+                    style: TextStyle(color: isDark ? base : home),
                     readOnly: true,
                     controller: startDateController,
                     cursorColor: primary,
@@ -184,6 +186,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: TextFormField(
+                    style: TextStyle(color: isDark ? base : home),
                     readOnly: true,
                     controller: endDateController,
                     cursorColor: primary,
@@ -322,6 +325,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
           ),
         ),
       ),
+      backgroundColor: isDark ? background : Colors.white,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,
         child: Row(

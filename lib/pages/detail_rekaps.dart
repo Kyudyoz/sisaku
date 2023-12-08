@@ -369,7 +369,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     Text(
                                       name,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark ? base : home),
                                     ),
                                     SizedBox(height: 20),
                                     Row(
@@ -595,7 +596,12 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                       });
                                                 }
                                               }
-                                              return Text("data");
+                                              return Text(
+                                                "Belum ada pengeluaran",
+                                                style: TextStyle(
+                                                    color:
+                                                        isDark ? base : home),
+                                              );
                                             }
                                           }),
                                     ),
@@ -672,10 +678,22 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                     MainAxisAlignment
                                                                         .spaceBetween,
                                                                 children: [
-                                                                  Text(incomeNames
-                                                                      .toString()), // Nama kategori income
-                                                                  Text("Rp." +
-                                                                      amountString), // Total Income
+                                                                  Text(
+                                                                    incomeNames
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Nama kategori income
+                                                                  Text(
+                                                                    "Rp." +
+                                                                        amountString,
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Total Income
                                                                 ],
                                                               ),
                                                               SizedBox(
@@ -709,7 +727,12 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                       });
                                                 }
                                               }
-                                              return Text("data");
+                                              return Text(
+                                                "Belum ada pemasukan",
+                                                style: TextStyle(
+                                                    color:
+                                                        isDark ? base : home),
+                                              );
                                             }
                                           }),
                                     ),

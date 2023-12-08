@@ -162,7 +162,7 @@ class _GalleryPageState extends State<GalleryPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -474,8 +474,10 @@ class _GalleryPageState extends State<GalleryPage> {
                                           width: 200,
                                         ),
                                         Text(
-                                          "Belum ada transaksi dengan bergambar",
-                                          style: GoogleFonts.inder(),
+                                          "Belum ada transaksi dengan gambar",
+                                          style: GoogleFonts.inder(
+                                              color:
+                                                  isDark ? base : Colors.black),
                                         ),
                                       ],
                                     ),
@@ -494,7 +496,9 @@ class _GalleryPageState extends State<GalleryPage> {
                                       ),
                                       Text(
                                         "Tidak Ada Data",
-                                        style: GoogleFonts.inder(),
+                                        style: GoogleFonts.inder(
+                                            color:
+                                                isDark ? base : Colors.black),
                                       ),
                                     ],
                                   ),
