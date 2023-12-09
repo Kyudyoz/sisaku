@@ -67,7 +67,7 @@ class _GalleryPageState extends State<GalleryPage> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: base,
+                          color: isDark ? background : base,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -162,7 +162,7 @@ class _GalleryPageState extends State<GalleryPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -184,7 +184,9 @@ class _GalleryPageState extends State<GalleryPage> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation<Color>(primary)),
                             );
                           } else {
                             if (snapshot.hasData) {
@@ -472,8 +474,10 @@ class _GalleryPageState extends State<GalleryPage> {
                                           width: 200,
                                         ),
                                         Text(
-                                          "Belum ada transaksi dengan bergambar",
-                                          style: GoogleFonts.inder(),
+                                          "Belum ada transaksi dengan gambar",
+                                          style: GoogleFonts.inder(
+                                              color:
+                                                  isDark ? base : Colors.black),
                                         ),
                                       ],
                                     ),
@@ -492,7 +496,9 @@ class _GalleryPageState extends State<GalleryPage> {
                                       ),
                                       Text(
                                         "Tidak Ada Data",
-                                        style: GoogleFonts.inder(),
+                                        style: GoogleFonts.inder(
+                                            color:
+                                                isDark ? base : Colors.black),
                                       ),
                                     ],
                                   ),
@@ -512,6 +518,7 @@ class _GalleryPageState extends State<GalleryPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -527,7 +534,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -545,7 +552,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -555,13 +562,15 @@ class _GalleryPageState extends State<GalleryPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
                   );
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -576,7 +585,7 @@ class _GalleryPageState extends State<GalleryPage> {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),

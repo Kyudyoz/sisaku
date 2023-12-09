@@ -13,7 +13,8 @@ import 'add+edit_rekap.dart';
 import 'gallery_pages.dart';
 
 class RekapPage extends StatefulWidget {
-  const RekapPage({super.key});
+  final int r;
+  const RekapPage({super.key, required this.r});
 
   @override
   State<RekapPage> createState() => _RekapPageState();
@@ -21,7 +22,7 @@ class RekapPage extends StatefulWidget {
 
 class _RekapPageState extends State<RekapPage> {
   final AppDb database = AppDb();
-  late int r;
+  late int r = widget.r;
   bool isUpdate = false;
   // Map<String, double> dataMap = {
   //   "Balance": 253000,
@@ -35,7 +36,7 @@ class _RekapPageState extends State<RekapPage> {
   @override
   void initState() {
     super.initState();
-    updateR(1);
+    updateR(r);
     _loadData();
     datamap().then((dataMap) {
       setState(() {
@@ -103,7 +104,7 @@ class _RekapPageState extends State<RekapPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -262,7 +263,10 @@ class _RekapPageState extends State<RekapPage> {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
                                         return Center(
-                                          child: CircularProgressIndicator(),
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      primary)),
                                         );
                                       } else {
                                         if (snapshot.hasData) {
@@ -288,8 +292,10 @@ class _RekapPageState extends State<RekapPage> {
                                                         legendOptions:
                                                             LegendOptions(
                                                           legendTextStyle:
-                                                              GoogleFonts
-                                                                  .inder(),
+                                                              GoogleFonts.inder(
+                                                                  color: isDark
+                                                                      ? base
+                                                                      : home),
                                                           legendPosition:
                                                               LegendPosition
                                                                   .right,
@@ -337,7 +343,9 @@ class _RekapPageState extends State<RekapPage> {
                                                 ),
                                                 Text(
                                                   "Tidak Ada Data",
-                                                  style: GoogleFonts.inder(),
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
                                                 ),
                                               ],
                                             ),
@@ -358,7 +366,10 @@ class _RekapPageState extends State<RekapPage> {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
                                       return Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    primary)),
                                       );
                                     } else {
                                       if (snapshot.hasData) {
@@ -405,7 +416,10 @@ class _RekapPageState extends State<RekapPage> {
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .bold),
+                                                                        .bold,
+                                                                color: isDark
+                                                                    ? base
+                                                                    : home),
                                                           ),
                                                           SizedBox(width: 10),
                                                         ],
@@ -439,10 +453,22 @@ class _RekapPageState extends State<RekapPage> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text("Durasi "),
-                                                        Text(startDate +
-                                                            " ~ " +
-                                                            endDate),
+                                                        Text(
+                                                          "Durasi ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          startDate +
+                                                              " ~ " +
+                                                              endDate,
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -451,12 +477,23 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            "Total Pengeluaran "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .totalExpense
-                                                                .toString()),
+                                                          "Total Pengeluaran ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalExpense
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -465,12 +502,23 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            "Total Pemasukan "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .totalIncome
-                                                                .toString()),
+                                                          "Total Pemasukan ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalIncome
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -478,12 +526,24 @@ class _RekapPageState extends State<RekapPage> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text("Sisa "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .sisa
-                                                                .toString()),
+                                                        Text(
+                                                          "Sisa ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .sisa
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 30),
                                                 ],
@@ -503,7 +563,9 @@ class _RekapPageState extends State<RekapPage> {
                                                 ),
                                                 Text(
                                                   "Belum ada transaksi pada bulan ini",
-                                                  style: GoogleFonts.inder(),
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
                                                 ),
                                               ],
                                             ),
@@ -521,7 +583,9 @@ class _RekapPageState extends State<RekapPage> {
                                               ),
                                               Text(
                                                 "Tidak Ada Data",
-                                                style: GoogleFonts.inder(),
+                                                style: GoogleFonts.inder(
+                                                    color:
+                                                        isDark ? base : home),
                                               ),
                                             ],
                                           ),
@@ -540,7 +604,10 @@ class _RekapPageState extends State<RekapPage> {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
                                       return Center(
-                                        child: CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    primary)),
                                       );
                                     } else {
                                       if (snapshot.hasData) {
@@ -587,7 +654,10 @@ class _RekapPageState extends State<RekapPage> {
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .bold),
+                                                                        .bold,
+                                                                color: isDark
+                                                                    ? base
+                                                                    : home),
                                                           ),
                                                           SizedBox(width: 35),
                                                         ],
@@ -648,6 +718,9 @@ class _RekapPageState extends State<RekapPage> {
                                                                         (BuildContext
                                                                             context) {
                                                                       return AlertDialog(
+                                                                        backgroundColor: isDark
+                                                                            ? dialog
+                                                                            : Colors.white,
                                                                         shadowColor:
                                                                             Colors.red[50],
                                                                         content:
@@ -663,6 +736,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                                     style: GoogleFonts.inder(
                                                                                       fontSize: 16,
                                                                                       fontWeight: FontWeight.bold,
+                                                                                      color: isDark ? base : Colors.black,
                                                                                     ),
                                                                                   ),
                                                                                 ),
@@ -680,7 +754,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                                       child: Text(
                                                                                         'Batal',
                                                                                         style: GoogleFonts.inder(
-                                                                                          color: home,
+                                                                                          color: isDark ? base : home,
                                                                                           fontWeight: FontWeight.bold,
                                                                                         ),
                                                                                       ),
@@ -695,6 +769,15 @@ class _RekapPageState extends State<RekapPage> {
                                                                                             "Berhasil Hapus Semua",
                                                                                           );
                                                                                         });
+                                                                                        ScaffoldMessenger.of(context).showSnackBar(
+                                                                                          SnackBar(
+                                                                                            content: Text(
+                                                                                              'Berhasil Tambah Kategori',
+                                                                                              style: GoogleFonts.inder(color: base),
+                                                                                            ),
+                                                                                            backgroundColor: primary,
+                                                                                          ),
+                                                                                        );
                                                                                       },
                                                                                       child: Text(
                                                                                         'Ya',
@@ -731,10 +814,22 @@ class _RekapPageState extends State<RekapPage> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text("Durasi "),
-                                                        Text(startDate +
-                                                            " ~ " +
-                                                            endDate),
+                                                        Text(
+                                                          "Durasi ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          startDate +
+                                                              " ~ " +
+                                                              endDate,
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -743,12 +838,23 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            "Total Pengeluaran "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .totalExpense
-                                                                .toString()),
+                                                          "Total Pengeluaran ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalExpense
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -757,12 +863,23 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                            "Total Pemasukan "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .totalIncome
-                                                                .toString()),
+                                                          "Total Pemasukan ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalIncome
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 15),
                                                   Row(
@@ -770,12 +887,24 @@ class _RekapPageState extends State<RekapPage> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text("Sisa "),
-                                                        Text("Rp." +
-                                                            snapshot
-                                                                .data![index]
-                                                                .sisa
-                                                                .toString()),
+                                                        Text(
+                                                          "Sisa ",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .sisa
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
                                                       ]),
                                                   SizedBox(height: 30),
                                                 ],
@@ -788,13 +917,18 @@ class _RekapPageState extends State<RekapPage> {
                                                 bottom: 85),
                                             child: Column(
                                               children: [
+                                                SizedBox(
+                                                  height: 35,
+                                                ),
                                                 Image.asset(
                                                   'assets/img/tes.png',
                                                   width: 200,
                                                 ),
                                                 Text(
                                                   "Tidak Ada Data",
-                                                  style: GoogleFonts.inder(),
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
                                                 ),
                                               ],
                                             ),
@@ -812,7 +946,9 @@ class _RekapPageState extends State<RekapPage> {
                                               ),
                                               Text(
                                                 "Tidak Ada Data",
-                                                style: GoogleFonts.inder(),
+                                                style: GoogleFonts.inder(
+                                                    color:
+                                                        isDark ? base : home),
                                               ),
                                             ],
                                           ),
@@ -822,6 +958,35 @@ class _RekapPageState extends State<RekapPage> {
                                   },
                                 ))
                               ],
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Visibility(
+                                    visible: (r == 3) ? true : false,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 8, 30),
+                                      child: FloatingActionButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            // DetailPage adalah halaman yang dituju
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddEditRekap(rekap: null),
+                                            ),
+                                          );
+                                        },
+                                        backgroundColor: primary,
+                                        child: Icon(
+                                          Icons.add,
+                                          color: base,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -851,34 +1016,6 @@ class _RekapPageState extends State<RekapPage> {
                             ],
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: (r == 3) ? true : false,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 8, 30),
-                                child: FloatingActionButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      // DetailPage adalah halaman yang dituju
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddEditRekap(rekap: null),
-                                      ),
-                                    );
-                                  },
-                                  backgroundColor: primary,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: base,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),
@@ -890,6 +1027,7 @@ class _RekapPageState extends State<RekapPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -905,7 +1043,7 @@ class _RekapPageState extends State<RekapPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -923,20 +1061,14 @@ class _RekapPageState extends State<RekapPage> {
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
 
             Expanded(
               child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => RekapPage(),
-                    ),
-                  );
-                },
+                onPressed: () {},
                 icon: Icon(
                   Icons.bar_chart,
                   color: primary,
@@ -954,7 +1086,7 @@ class _RekapPageState extends State<RekapPage> {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),

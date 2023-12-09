@@ -8,6 +8,7 @@ import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
 import 'package:sisaku/widgets/image_input.dart';
+
 // import 'package:sisaku/colors.dart';
 import 'dart:io';
 import 'package:sisaku/models/database.dart';
@@ -117,17 +118,23 @@ class _TransactionPageState extends State<TransactionPage> {
     imageDb = convertImageToUint8List(image);
   }
 
+  final _formKey = GlobalKey<FormState>();
+  final _formKey1 = GlobalKey<FormState>();
+
   TextEditingController categoryNameController = TextEditingController();
   // Dialog
   void openDialog(Category? category) {
+    String text = 'Tambah';
     if (category != null) {
       categoryNameController.text = category.name;
+      text = 'Edit';
     }
     showDialog(
         context: context,
         useSafeArea: true,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: isDark ? dialog : Colors.white,
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
@@ -137,59 +144,87 @@ class _TransactionPageState extends State<TransactionPage> {
                   children: [
                     Text(
                       (type == 2)
-                          ? 'Tambah Kategori Pengeluaran'
-                          : 'Tambah kategori Pemasukan',
+                          ? '$text Kategori Pengeluaran'
+                          : '$text Kategori Pemasukan',
                       style: GoogleFonts.inder(
                         fontSize: 18,
+                        color: isDark ? base : Colors.black,
                       ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      controller: categoryNameController,
-                      cursorColor: primary,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: primary),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: "Tidak Boleh Kosong",
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(primary),
-                        shape: MaterialStatePropertyAll(
-                          ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            style: TextStyle(
+                              color: isDark ? base : Colors.black,
+                            ),
+                            controller: categoryNameController,
+                            cursorColor: primary,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Nama kategori tidak boleh kosong';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: primary),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  borderSide: BorderSide(
+                                    color: isDark ? base : Colors.black,
+                                  )),
+                              labelText: "Nama Kategori",
+                              labelStyle: TextStyle(
+                                color: isDark ? base : Colors.black,
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(primary),
+                              shape: MaterialStatePropertyAll(
+                                ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                if (category == null &&
+                                    categoryNameController.text != '') {
+                                  insertCategory(
+                                    categoryNameController.text,
+                                    type,
+                                  );
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop('dialog');
+                                  setState(() {});
+                                  categoryNameController.clear();
+                                }
+                              }
+                            },
+                            child: Text(
+                              'Simpan',
+                              style: GoogleFonts.inder(
+                                color: base,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        if (category == null &&
-                            categoryNameController.text != '') {
-                          insertCategory(
-                            categoryNameController.text,
-                            type,
-                          );
-                          Navigator.of(context, rootNavigator: true)
-                              .pop('dialog');
-                          setState(() {});
-                          categoryNameController.clear();
-                        }
-                      },
-                      child: Text(
-                        'Simpan',
-                        style: GoogleFonts.inder(
-                          color: base,
-                          fontSize: 12,
-                        ),
-                      ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -217,7 +252,9 @@ class _TransactionPageState extends State<TransactionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Tambah Transaksi",
+                  (widget.transactionWithCategory == null)
+                      ? "Tambah Transaksi"
+                      : "Edit Transaksi",
                   style: GoogleFonts.inder(
                     fontSize: 23,
                     color: base,
@@ -231,7 +268,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: base,
+                          color: isDark ? background : base,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -327,7 +364,7 @@ class _TransactionPageState extends State<TransactionPage> {
               child: Container(
                 padding: EdgeInsets.only(top: 0),
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -337,351 +374,494 @@ class _TransactionPageState extends State<TransactionPage> {
                   child: SafeArea(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10.0, bottom: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                            ),
-                            child: TextFormField(
-                              controller: deskripsiController,
-                              cursorColor: primary,
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: primary),
+                      child: Form(
+                        key: _formKey1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                              ),
+                              child: TextFormField(
+                                style: TextStyle(
+                                    color: isDark ? base : Colors.black),
+                                controller: deskripsiController,
+                                cursorColor: primary,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Deskripsi tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: primary)),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: isDark ? base : home),
+                                  ),
+                                  labelText: 'Deskripsi',
+                                  labelStyle: TextStyle(
+                                      color: isDark ? base : Colors.black),
                                 ),
-                                labelText: 'Deskripsi',
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0,
-                            ),
-                            child: TextFormField(
-                              controller: amountController,
-                              keyboardType: TextInputType.number,
-                              cursorColor: primary,
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: primary),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                              ),
+                              child: TextFormField(
+                                style: TextStyle(
+                                    color: isDark ? base : Colors.black),
+                                controller: amountController,
+                                keyboardType: TextInputType.number,
+                                cursorColor: primary,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Jumlah uang tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: primary)),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: isDark ? base : home),
+                                  ),
+                                  labelText: 'Jumlah Uang',
+                                  labelStyle: TextStyle(
+                                      color: isDark ? base : Colors.black),
                                 ),
-                                labelText: 'Jumlah Uang',
                               ),
                             ),
-                          ),
 
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: TextFormField(
-                              readOnly: true,
-                              controller: dateController,
-                              cursorColor: primary,
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: primary),
+                            // SizedBox(
+                            //   height: 10,
+                            // ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: TextFormField(
+                                style: TextStyle(
+                                    color: isDark ? base : Colors.black),
+                                readOnly: true,
+                                controller: dateController,
+                                cursorColor: primary,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Tanggal tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: primary)),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: isDark ? base : home),
+                                  ),
+                                  labelStyle: TextStyle(
+                                      color: isDark ? base : Colors.black),
+                                  labelText: 'Pilih Tanggal',
+                                  suffixIcon: Icon(
+                                    Icons.calendar_month_rounded,
+                                    color: primary,
+                                  ),
                                 ),
-                                labelText: 'Pilih Tanggal',
-                                suffixIcon: Icon(
-                                  Icons.calendar_month_rounded,
-                                  color: primary,
-                                ),
-                              ),
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialEntryMode:
-                                      DatePickerEntryMode.calendarOnly,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2020),
-                                  lastDate: DateTime(2099),
-                                );
-
-                                if (pickedDate != Null) {
-                                  String formattedDate =
-                                      DateFormat('dd-MMMM-yyyy')
-                                          .format(pickedDate!);
-                                  dateController.text = formattedDate;
-                                  String data = DateFormat('yyyy-MM-dd')
-                                      .format(pickedDate);
-                                  setState(() {
-                                    dbDate = data;
-                                    print("Isi dbDate : " + dbDate);
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-
-                          FutureBuilder<List<Category>>(
-                            future: getAllCategory(type),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else {
-                                if (snapshot.hasData) {
-                                  if (snapshot.data!.length > 0) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: DropdownButtonFormField<Category>(
-                                        decoration: InputDecoration(
-                                          hintText: 'Pilih Kategori',
-                                        ),
-                                        isExpanded: true,
-                                        value: selectedCategory,
-                                        icon: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 11),
-                                          child: Icon(
-                                            Icons.arrow_drop_down,
-                                            color: primary,
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialEntryMode:
+                                          DatePickerEntryMode.calendarOnly,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2020),
+                                      lastDate: DateTime(2099),
+                                      builder: (context, child) {
+                                        return Theme(
+                                          data: Theme.of(context).copyWith(
+                                            colorScheme: ColorScheme.light(
+                                              primary: primary,
+                                              onPrimary: base,
+                                              onSurface:
+                                                  isDark ? base : Colors.black,
+                                            ),
+                                            dialogBackgroundColor:
+                                                isDark ? card : Colors.white,
                                           ),
+                                          child: child!,
+                                        );
+                                      });
+
+                                  if (pickedDate != Null) {
+                                    String formattedDate =
+                                        DateFormat('dd-MMMM-yyyy')
+                                            .format(pickedDate!);
+                                    dateController.text = formattedDate;
+                                    String data = DateFormat('yyyy-MM-dd')
+                                        .format(pickedDate);
+                                    setState(() {
+                                      dbDate = data;
+                                      print("Isi dbDate : " + dbDate);
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+
+                            FutureBuilder<List<Category>>(
+                              future: getAllCategory(type),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                primary)),
+                                  );
+                                } else {
+                                  if (snapshot.hasData) {
+                                    if (snapshot.data!.length > 0) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child:
+                                            DropdownButtonFormField<Category>(
+                                          dropdownColor: isDark ? card : base,
+                                          style: TextStyle(
+                                              color:
+                                                  isDark ? base : Colors.black),
+                                          validator: (value) {
+                                            if (value == null) {
+                                              return 'Kategori tidak boleh kosong';
+                                            }
+                                            return null;
+                                          },
+                                          decoration: InputDecoration(
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: isDark ? base : home),
+                                            ),
+                                            labelStyle: TextStyle(
+                                                color: isDark
+                                                    ? base
+                                                    : Colors.black),
+                                            labelText: 'Pilih Kategori',
+                                            focusedBorder: UnderlineInputBorder(
+                                                borderSide:
+                                                    BorderSide(color: primary)),
+                                          ),
+                                          isExpanded: true,
+                                          value: selectedCategory,
+                                          icon: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 11),
+                                            child: Icon(
+                                              Icons.arrow_drop_down,
+                                              color: primary,
+                                            ),
+                                          ),
+                                          items: snapshot.data!
+                                              .map((Category item) {
+                                            return DropdownMenuItem<Category>(
+                                              value: item,
+                                              child: Text(item.name),
+                                            );
+                                          }).toList(),
+                                          onChanged: (Category? value) {
+                                            setState(() {
+                                              selectedCategory = value;
+                                            });
+                                          },
                                         ),
-                                        items:
-                                            snapshot.data!.map((Category item) {
-                                          return DropdownMenuItem<Category>(
-                                            value: item,
-                                            child: Text(item.name),
-                                          );
-                                        }).toList(),
-                                        onChanged: (Category? value) {
-                                          setState(() {
-                                            selectedCategory = value;
-                                          });
-                                        },
-                                      ),
-                                    );
-                                  } else {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 24.0, horizontal: 18.0),
-                                      child: Center(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text('Kategori tidak ada'),
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                // Navigator.pushReplacement(
-                                                //   context,
-                                                //   // DetailPage adalah halaman yang dituju
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) =>
-                                                //         CategoryPage(),
-                                                //   ),
-                                                // );
-                                                openDialog(null);
-                                                categoryNameController.clear();
-                                              },
-                                              icon: Icon(
-                                                Icons.add,
-                                                color: base,
-                                              ),
-                                              label: Text(
-                                                'Tambah kategori',
-                                                style: GoogleFonts.inder(
-                                                    color: base),
-                                              ),
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(
-                                                  primary,
+                                      );
+                                    } else {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 24.0, horizontal: 18.0),
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Kategori tidak ada',
+                                                style: TextStyle(
+                                                  color: isDark
+                                                      ? base
+                                                      : Colors.black,
                                                 ),
-                                                shape:
-                                                    MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            18.0),
+                                              ),
+                                              ElevatedButton.icon(
+                                                onPressed: () {
+                                                  // Navigator.pushReplacement(
+                                                  //   context,
+                                                  //   // DetailPage adalah halaman yang dituju
+                                                  //   MaterialPageRoute(
+                                                  //     builder: (context) =>
+                                                  //         CategoryPage(),
+                                                  //   ),
+                                                  // );
+                                                  openDialog(null);
+                                                  categoryNameController
+                                                      .clear();
+                                                },
+                                                icon: Icon(
+                                                  Icons.add,
+                                                  color: base,
+                                                ),
+                                                label: Text(
+                                                  'Tambah kategori',
+                                                  style: GoogleFonts.inder(
+                                                      color: base),
+                                                ),
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                          Color>(
+                                                    primary,
+                                                  ),
+                                                  shape:
+                                                      MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              18.0),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 24.0),
+                                      child: Center(
+                                        child: Text(
+                                          'Database tidak ada',
+                                          style: TextStyle(
+                                            color: isDark ? base : Colors.black,
+                                          ),
                                         ),
                                       ),
                                     );
                                   }
-                                } else {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 24.0),
-                                    child: Center(
-                                      child: Text('Kategori tidak ada'),
-                                    ),
-                                  );
                                 }
-                              }
-                            },
-                          ),
+                              },
+                            ),
 
-                          SizedBox(
-                            height: 25,
-                          ),
-                          (imageLama != null)
-                              ? SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Gambar Lama",
-                                              style: GoogleFonts.montserrat(),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 2, color: primary),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            (imageLama != null)
+                                ? SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Gambar Lama",
+                                                style: GoogleFonts.montserrat(
+                                                  color: isDark
+                                                      ? base
+                                                      : Colors.black,
+                                                ),
                                               ),
-                                              child: Image.memory(
-                                                imageLama!,
-                                                width: 200,
-                                                height: 200,
+                                              SizedBox(
+                                                height: 10,
                                               ),
-                                            ),
-                                          ],
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 2, color: primary),
+                                                ),
+                                                child: Image.memory(
+                                                  imageLama!,
+                                                  width: 200,
+                                                  height: 200,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Gambar Baru(opsional)",
-                                              style: GoogleFonts.montserrat(),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            ImageInput(
-                                              imagesaveat: savedImages,
-                                            ),
-                                          ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Gambar Baru(opsional)",
+                                                style: GoogleFonts.montserrat(
+                                                    color: isDark
+                                                        ? base
+                                                        : Colors.black),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              ImageInput(
+                                                imagesaveat: savedImages,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Gambar (opsional)",
+                                          style: GoogleFonts.montserrat(
+                                              color:
+                                                  isDark ? base : Colors.black),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        ImageInput(imagesaveat: savedImages),
+                                      ],
+                                    ),
                                   ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Gambar (opsional)",
-                                        style: GoogleFonts.montserrat(),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      ImageInput(imagesaveat: savedImages),
-                                    ],
-                                  ),
-                                ),
-                          SizedBox(
-                            height: 25,
-                          ),
-                          Center(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(16, 20, 16, 10),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        (widget.transactionWithCategory == null)
-                                            ? await insert(
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Center(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 20, 16, 10),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          if (_formKey1.currentState!
+                                              .validate()) {
+                                            if (widget
+                                                    .transactionWithCategory ==
+                                                null) {
+                                              await insert(
                                                 int.parse(
                                                     amountController.text),
                                                 DateTime.parse(dbDate),
                                                 deskripsiController.text,
                                                 selectedCategory!.id,
-                                                imageDb,
-                                              )
-                                            : await update(
-                                                widget.transactionWithCategory!
-                                                    .transaction.id,
-                                                int.parse(
-                                                    amountController.text),
-                                                selectedCategory!.id,
-                                                DateTime.parse(dbDate),
-                                                deskripsiController.text,
                                                 imageDb,
                                               );
-                                        // Parsing string tanggal ke dalam objek DateTime
-                                        DateTime date = DateTime.parse(dbDate);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Berhasil Tambah Transaksi',
+                                                    style: GoogleFonts.inder(
+                                                        color: base),
+                                                  ),
+                                                  backgroundColor: primary,
+                                                ),
+                                              );
+                                            } else {
+                                              if (widget
+                                                      .transactionWithCategory !=
+                                                  null) {
+                                                await update(
+                                                  widget
+                                                      .transactionWithCategory!
+                                                      .transaction
+                                                      .id,
+                                                  int.parse(
+                                                      amountController.text),
+                                                  selectedCategory!.id,
+                                                  DateTime.parse(dbDate),
+                                                  deskripsiController.text,
+                                                  imageDb,
+                                                );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Berhasil Edit Transaksi',
+                                                      style: GoogleFonts.inder(
+                                                          color: base),
+                                                    ),
+                                                    backgroundColor: primary,
+                                                  ),
+                                                );
+                                              }
+                                            }
 
-                                        // Mendapatkan tahun dan bulan dari objek DateTime
-                                        int year = date.year;
-                                        int month = date.month;
+                                            // Parsing string tanggal ke dalam objek DateTime
+                                            DateTime date =
+                                                DateTime.parse(dbDate);
 
-                                        print("Tahun: $year");
-                                        print("Bulan: $month");
-                                        await createMonthlyRekaps(year, month);
-                                        // Navigator.pop(context);
-                                        await Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => HomePage(
+                                            // Mendapatkan tahun dan bulan dari objek DateTime
+                                            int year = date.year;
+                                            int month = date.month;
+
+                                            print("Tahun: $year");
+                                            print("Bulan: $month");
+                                            await createMonthlyRekaps(
+                                                year, month);
+                                            // Navigator.pop(context);
+
+                                            final route = MaterialPageRoute(
+                                              builder: (context) => HomePage(
                                                 selectedDate:
-                                                    DateTime.parse(dbDate)),
+                                                    DateTime.parse(dbDate),
+                                              ),
+                                            );
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    route, (route) => false);
+                                          }
+                                        },
+                                        child: Text(
+                                          'Simpan Transaksi',
+                                          style: GoogleFonts.inder(
+                                            color: base,
+                                            fontSize: 15,
                                           ),
-                                        );
-                                      },
-                                      child: Text(
-                                        'Simpan Transaksi',
-                                        style: GoogleFonts.inder(
-                                          color: base,
-                                          fontSize: 15,
                                         ),
-                                      ),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            // (isExpense) ? MaterialStateProperty.all<Color>(Colors.red) :
-                                            MaterialStateProperty.all<Color>(
-                                                primary),
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(18.0),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              // (isExpense) ? MaterialStateProperty.all<Color>(Colors.red) :
+                                              MaterialStateProperty.all<Color>(
+                                                  primary),
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -693,22 +873,23 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          HomePage(selectedDate: DateTime.now()),
-                    ),
-                  );
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HomePage(selectedDate: DateTime.now()),
+                      ),
+                      (route) => false);
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -718,15 +899,15 @@ class _TransactionPageState extends State<TransactionPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
-                    ),
-                  );
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPage(),
+                      ),
+                      (route) => false);
                 },
                 icon: Icon(
                   Icons.list,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -734,30 +915,34 @@ class _TransactionPageState extends State<TransactionPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
+                    (route) => false,
                   );
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => SettingPage(),
                     ),
+                    (route) => false,
                   );
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),

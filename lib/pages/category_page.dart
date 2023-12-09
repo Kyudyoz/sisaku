@@ -15,6 +15,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
+  final _formKey = GlobalKey<FormState>();
   late int type;
 
   void initState() {
@@ -50,14 +51,17 @@ class _CategoryPageState extends State<CategoryPage> {
   TextEditingController categoryNameController = TextEditingController();
   // Dialog
   void openDialog(Category? category) {
+    String text = 'Tambah';
     if (category != null) {
       categoryNameController.text = category.name;
+      text = 'Edit';
     }
     showDialog(
         context: context,
         useSafeArea: true,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: isDark ? dialog : Colors.white,
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
@@ -67,71 +71,117 @@ class _CategoryPageState extends State<CategoryPage> {
                   children: [
                     Text(
                       (type == 2)
-                          ? 'Tambah Kategori Pengeluaran'
-                          : 'Tambah kategori Pemasukan',
+                          ? '$text Kategori Pengeluaran'
+                          : '$text Kategori Pemasukan',
                       style: GoogleFonts.inder(
-                        fontSize: 18,
-                      ),
+                          fontSize: 18, color: isDark ? base : home),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      controller: categoryNameController,
-                      cursorColor: primary,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: primary),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: "Tidak Boleh Kosong",
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(primary),
-                        shape: MaterialStatePropertyAll(
-                          ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black),
+                            controller: categoryNameController,
+                            cursorColor: primary,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Nama kategori tidak boleh kosong';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              filled: isDark ? true : false,
+                              fillColor: isDark ? card : null,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: primary),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide: BorderSide(
+                                  color: isDark ? base : Colors.black,
+                                ),
+                              ),
+                              labelText: "Nama Kategori",
+                              labelStyle: TextStyle(
+                                color: isDark ? base : Colors.black,
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(primary),
+                              shape: MaterialStatePropertyAll(
+                                ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                if (category == null &&
+                                    categoryNameController.text != '') {
+                                  insert(
+                                    categoryNameController.text,
+                                    type,
+                                  );
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop('dialog');
+                                  setState(() {});
+                                  categoryNameController.clear();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Berhasil Tambah Kategori',
+                                        style: GoogleFonts.inder(color: base),
+                                      ),
+                                      backgroundColor: primary,
+                                    ),
+                                  );
+                                } else {
+                                  if (category != null &&
+                                      categoryNameController.text != '') {
+                                    update(
+                                      category.id,
+                                      categoryNameController.text,
+                                    );
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop('dialog');
+                                    setState(() {});
+                                    categoryNameController.clear();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Berhasil Edit Kategori',
+                                          style: GoogleFonts.inder(color: base),
+                                        ),
+                                        backgroundColor: primary,
+                                      ),
+                                    );
+                                  }
+                                }
+                              }
+                            },
+                            child: Text(
+                              'Simpan',
+                              style: GoogleFonts.inder(
+                                color: base,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        if (category == null &&
-                            categoryNameController.text != '') {
-                          insert(
-                            categoryNameController.text,
-                            type,
-                          );
-                          Navigator.of(context, rootNavigator: true)
-                              .pop('dialog');
-                          setState(() {});
-                          categoryNameController.clear();
-                        } else {
-                          if (category != null &&
-                              categoryNameController.text != '') {
-                            update(
-                              category.id,
-                              categoryNameController.text,
-                            );
-                            Navigator.of(context, rootNavigator: true)
-                                .pop('dialog');
-                            setState(() {});
-                            categoryNameController.clear();
-                          }
-                        }
-                      },
-                      child: Text(
-                        'Simpan',
-                        style: GoogleFonts.inder(
-                          color: base,
-                          fontSize: 12,
-                        ),
-                      ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -168,7 +218,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: base,
+                          color: isDark ? background : base,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -263,7 +313,7 @@ class _CategoryPageState extends State<CategoryPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: base,
+                  color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -307,7 +357,9 @@ class _CategoryPageState extends State<CategoryPage> {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation<Color>(primary)),
                               );
                             } else {
                               if (snapshot.hasData) {
@@ -322,19 +374,29 @@ class _CategoryPageState extends State<CategoryPage> {
                                         ),
                                         child: SingleChildScrollView(
                                           child: Card(
+                                            color: isDark ? card : base,
                                             elevation: 10,
                                             child: ListTile(
                                               trailing: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   IconButton(
-                                                    icon: Icon(Icons.delete),
+                                                    icon: Icon(
+                                                      Icons.delete,
+                                                      color:
+                                                          isDark ? base : home,
+                                                    ),
                                                     onPressed: () {
                                                       showDialog(
                                                           context: context,
                                                           builder: (BuildContext
                                                               context) {
                                                             return AlertDialog(
+                                                              backgroundColor:
+                                                                  isDark
+                                                                      ? dialog
+                                                                      : Colors
+                                                                          .white,
                                                               shadowColor:
                                                                   Colors
                                                                       .red[50],
@@ -353,6 +415,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                                 16,
                                                                             fontWeight:
                                                                                 FontWeight.bold,
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : home,
                                                                           ),
                                                                         ),
                                                                       ),
@@ -375,7 +440,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                                 Text(
                                                                               'Batal',
                                                                               style: GoogleFonts.inder(
-                                                                                color: home,
+                                                                                color: isDark ? base : home,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -392,6 +457,14 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                               setState(() {
                                                                                 print("Berhasil Hapus");
                                                                               });
+                                                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                                                SnackBar(
+                                                                                    content: Text(
+                                                                                      'Berhasil Hapus Kategori',
+                                                                                      style: GoogleFonts.inder(color: base),
+                                                                                    ),
+                                                                                    backgroundColor: primary),
+                                                                              );
                                                                             },
                                                                             child:
                                                                                 Text(
@@ -416,7 +489,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                     width: 10,
                                                   ),
                                                   IconButton(
-                                                    icon: Icon(Icons.edit),
+                                                    icon: Icon(
+                                                      Icons.edit,
+                                                      color:
+                                                          isDark ? base : home,
+                                                    ),
                                                     onPressed: () {
                                                       openDialog(snapshot
                                                           .data![index]);
@@ -442,7 +519,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                       ),
                                               ),
                                               title: Text(
-                                                  snapshot.data![index].name),
+                                                snapshot.data![index].name,
+                                                style: TextStyle(
+                                                    color:
+                                                        isDark ? base : home),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -451,12 +532,22 @@ class _CategoryPageState extends State<CategoryPage> {
                                   );
                                 } else {
                                   return Center(
-                                    child: Text('Data tidak ada'),
+                                    child: Text(
+                                      'Data tidak ada',
+                                      style: TextStyle(
+                                        color: isDark ? base : home,
+                                      ),
+                                    ),
                                   );
                                 }
                               } else {
                                 return Center(
-                                  child: Text('Data tidak ada'),
+                                  child: Text(
+                                    'Data tidak ada',
+                                    style: TextStyle(
+                                      color: isDark ? base : home,
+                                    ),
+                                  ),
                                 );
                               }
                             }
@@ -474,6 +565,7 @@ class _CategoryPageState extends State<CategoryPage> {
       ),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
+        color: isDark ? dialog : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -489,7 +581,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -517,13 +609,15 @@ class _CategoryPageState extends State<CategoryPage> {
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => RekapPage(),
+                      builder: (context) => RekapPage(
+                        r: 1,
+                      ),
                     ),
                   );
                 },
                 icon: Icon(
                   Icons.bar_chart,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
@@ -538,7 +632,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.black,
+                  color: isDark ? Colors.white : Colors.black,
                 ),
               ),
             ),
