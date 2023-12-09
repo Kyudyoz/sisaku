@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +13,9 @@ import 'package:sisaku/pages/setting_page.dart';
 
 import 'package:sisaku/models/database.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:sisaku/pages/transaction_page.dart';
+import 'package:sisaku/widgets/details.dart';
+import '../models/transaction_with_category.dart';
 import 'add+edit_rekap.dart';
 import 'gallery_pages.dart';
 
@@ -174,6 +179,8 @@ class _DetailRekapsStat extends State<DetailRekap>
     return await database.updateRekapAmount(id, startDate, endDate);
   }
 
+  final rekap_detail = Rekap;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -227,9 +234,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                     topLeft: Radius.circular(8.0),
                     topRight: Radius.circular(8.0),
                   ),
-                  color: Colors.white,
+                  color: (isDark) ? background : base,
                 ),
-                labelColor: Colors.black,
+                labelColor: (isDark) ? base : Colors.black87,
                 unselectedLabelColor: Colors.white,
                 tabs: _tabs,
                 onTap: updateR,
@@ -254,7 +261,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                         Expanded(
                           child: Column(
                             children: [
-                              // Kalo Realtime
+                              // Kalo Chart
                               if (r == 1) ...[
                                 Expanded(
                                   child: FutureBuilder<Map<String, double>>(
@@ -357,7 +364,34 @@ class _DetailRekapsStat extends State<DetailRekap>
                                       }
                                     },
                                   ),
-                                )
+                                ),
+                                
+                                ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(primary),
+                                  shape: MaterialStatePropertyAll(
+                                    ContinuousRectangleBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    // DetailPage adalah halaman yang dituju
+                                    MaterialPageRoute(
+                                      builder: (context) => GalleryPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Lihat Galeri',
+                                  style: GoogleFonts.inder(
+                                    color: base,
+                                  ),
+                                ),
+                              ),
                               ]
 
                               // Kalo Kategori
@@ -365,125 +399,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                 Expanded(
                                     child: Column(
                                   children: [
-                                    SizedBox(height: 35),
-                                    Text(
-                                      name,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: isDark ? base : home),
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Durasi ",
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                          Text(
-                                            startDate + " ~ " + endDate,
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                        ]),
-                                    SizedBox(height: 15),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Total Pengeluaran ",
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                          Text(
-                                            "Rp." +
-                                                (NumberFormat.currency(
-                                                  locale: 'id',
-                                                  decimalDigits: 0,
-                                                ).format(
-                                                  totalExpense,
-                                                )).replaceAll('IDR', ''),
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                        ]),
-                                    SizedBox(height: 15),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Total Pemasukan ",
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                          Text(
-                                            "Rp." +
-                                                (NumberFormat.currency(
-                                                  locale: 'id',
-                                                  decimalDigits: 0,
-                                                ).format(
-                                                  totalIncome,
-                                                )).replaceAll('IDR', ''),
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                        ]),
-                                    SizedBox(height: 15),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Rata-Rata Harian ",
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                          Text(
-                                            "Rp." +
-                                                (NumberFormat.currency(
-                                                  locale: 'id',
-                                                  decimalDigits: 0,
-                                                ).format(
-                                                  dailyAverage,
-                                                )).replaceAll('IDR', ''),
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                        ]),
-                                    SizedBox(height: 15),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Sisa ",
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                          Text(
-                                            "Rp." +
-                                                (NumberFormat.currency(
-                                                  locale: 'id',
-                                                  decimalDigits: 0,
-                                                ).format(
-                                                  totalIncome,
-                                                )).replaceAll('IDR', ''),
-                                            style: TextStyle(
-                                                color: isDark ? base : home),
-                                          ),
-                                        ]),
-                                    SizedBox(height: 27),
-                                    Text(
-                                      "Pengeluaran Berdasarkan Kategori",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: isDark ? base : Colors.black),
-                                    ),
-                                    SizedBox(height: 10),
+                                  // Details
+                                   Details(name: name, startDate: startDate, endDate: endDate, totalExpense: totalExpense, totalIncome: totalIncome, dailyAverage: dailyAverage),
 
                                     // ---------------------------> Mapping data Expense <---------------------------------------
 
@@ -616,7 +533,6 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     SizedBox(height: 10),
 
                                     // ---------------------------> Mapping data Income <---------------------------------------
-
                                     Expanded(
                                       child: FutureBuilder<
                                               List<Map<String, Object>?>>(
@@ -740,383 +656,307 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     SizedBox(height: 25),
                                   ],
                                 )
-                                    // Kalo Custom
+                             )       
+                                    
+                              
 
-                                    )
+                           
+                              // Kalo Transaksi
                               ] else if (r == 3) ...[
-                                Expanded(
-                                    child: StreamBuilder<List<Rekap>>(
-                                  stream: getCustomRekaps(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    primary)),
-                                      );
-                                    } else {
-                                      if (snapshot.hasData) {
-                                        if (snapshot.data!.length > 0) {
-                                          return ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot.data!.length,
-                                            itemBuilder: (context, index) {
-                                              String startDate =
-                                                  DateFormat('dd-MMMM-yyyy')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .startDate);
-                                              String endDate =
-                                                  DateFormat('dd-MMMM-yyyy')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .endDate);
-                                              if (!isUpdate) {
-                                                update(
-                                                    snapshot.data![index].id,
-                                                    snapshot
-                                                        .data![index].startDate,
-                                                    snapshot
-                                                        .data![index].endDate);
-                                                isUpdate = true;
-                                              }
+                               
+                               Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 30),
+                                  child: Column(
+                                    children: [
+                                   Details(name: name, startDate: startDate, endDate: endDate, totalExpense: totalExpense, totalIncome: totalIncome, dailyAverage: dailyAverage),
 
-                                              return Column(
-                                                children: [
-                                                  SizedBox(height: 35),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            snapshot
-                                                                .data![index]
-                                                                .name,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: isDark
-                                                                    ? base
-                                                                    : Colors
-                                                                        .black),
-                                                          ),
-                                                          SizedBox(width: 35),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          IconButton(
-                                                            // Pindah ke halaman Detail Rekap
-                                                            onPressed: () {
-                                                              Navigator
-                                                                  .pushReplacement(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      DetailRekap(
-                                                                          rekap:
-                                                                              snapshot.data![index]),
-                                                                ),
-                                                              );
-                                                              print("tes edit");
-                                                            },
-                                                            color: primary,
-                                                            hoverColor:
-                                                                secondary,
-                                                            icon: Icon(Icons
-                                                                .arrow_forward_ios),
-                                                          ),
-                                                          IconButton(
-                                                            // Pindah ke halaman edit
-                                                            onPressed: () {
-                                                              Navigator
-                                                                  .pushReplacement(
-                                                                context,
-                                                                // DetailPage adalah halaman yang dituju
-                                                                MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      AddEditRekap(
-                                                                          rekap:
-                                                                              snapshot.data![index]),
-                                                                ),
-                                                              );
-                                                              print("tes edit");
-                                                            },
-                                                            color: primary,
-                                                            focusColor:
-                                                                secondary,
-                                                            hoverColor:
-                                                                secondary,
-                                                            iconSize: 20,
-                                                            icon: Icon(
-                                                                Icons.edit),
-                                                          ),
-                                                          IconButton(
-                                                              // Pindah ke halaman Detail Rekap
-                                                              onPressed: () {
-                                                                showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return AlertDialog(
-                                                                        backgroundColor: isDark
-                                                                            ? dialog
-                                                                            : Colors.white,
-                                                                        shadowColor:
-                                                                            Colors.red[50],
-                                                                        content:
-                                                                            SingleChildScrollView(
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                Column(
-                                                                              children: [
-                                                                                Center(
-                                                                                  child: Text(
-                                                                                    'Yakin ingin Hapus?',
-                                                                                    style: GoogleFonts.inder(fontSize: 16, fontWeight: FontWeight.bold, color: isDark ? base : Colors.black),
-                                                                                  ),
+                              // ---------------------------> Mapping Transaction Name <---------------------------------------
+                                    StreamBuilder<List<TransactionWithCategory>>(
+                                        stream: database.getTransactionByRekaps(dbStartDate, dbEndDate),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                                      primary)),
+                                            );
+                                          } else {
+                                            if (snapshot.hasData) {
+                                              if (snapshot.data!.length > 0) {
+                                                return ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: snapshot.data!.length,
+                                                    itemBuilder: (context, index) {
+                                                      return SingleChildScrollView(
+                                                        child: Card(
+                                                          color: isDark ? card : base,
+                                                          elevation: 10,
+                                                          child: ListTile(
+                                                            leading: Container(
+                                                              decoration: BoxDecoration(
+                                                                color:
+                                                                    isDark ? card : base,
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        8),
+                                                              ),
+                                                              child: (snapshot
+                                                                          .data![index]
+                                                                          .transaction
+                                                                          .image !=
+                                                                      null)
+                                                                  ? Image.memory(
+                                                                      snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .transaction
+                                                                              .image ??
+                                                                          Uint8List(0),
+                                                                      // width: 80,
+                                                                      fit: BoxFit.cover,
+                                                                      width: 80,
+                                                                    )
+                                                                  : Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Container(
+                                                                          width: 80,
+                                                                          decoration: BoxDecoration(
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(
+                                                                                      10),
+                                                                              color: Color
+                                                                                  .fromRGBO(
+                                                                                      0,
+                                                                                      0,
+                                                                                      0,
+                                                                                      0.1)),
+                                                                          child: snapshot
+                                                                                      .data![index]
+                                                                                      .category
+                                                                                      .type ==
+                                                                                  2
+                                                                              ? Icon(
+                                                                                  Icons
+                                                                                      .upload_rounded,
+                                                                                  color: Colors
+                                                                                      .red,
+                                                                                  size:
+                                                                                      40,
+                                                                                )
+                                                                              : Icon(
+                                                                                  Icons
+                                                                                      .download_rounded,
+                                                                                  color: Colors
+                                                                                      .green,
+                                                                                  size:
+                                                                                      40,
                                                                                 ),
-                                                                                SizedBox(
-                                                                                  height: 30,
-                                                                                ),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                            ),
+                                                            title: Text(
+                                                              'Rp. ' +
+                                                                  (NumberFormat.currency(
+                                                                    locale: 'id',
+                                                                    decimalDigits: 0,
+                                                                  ).format(
+                                                                    snapshot
+                                                                        .data![index]
+                                                                        .transaction
+                                                                        .amount,
+                                                                  )).replaceAll(
+                                                                      'IDR', ''),
+                                                              style: TextStyle(
+                                                                  color: isDark
+                                                                      ? base
+                                                                      : Colors.black),
+                                                            ),
+                                                            subtitle: Text(
+                                                              snapshot.data![index]
+                                                                      .category.name +
+                                                                  ' ( ' +
+                                                                  snapshot.data![index]
+                                                                      .transaction.name +
+                                                                  ' )',
+                                                              style: TextStyle(
+                                                                  color: isDark
+                                                                      ? base
+                                                                      : Colors.black),
+                                                            ),
+                                                            trailing: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize.min,
+                                                              children: [
+                                                                IconButton(
+                                                                  icon: Icon(
+                                                                    Icons.delete,
+                                                                    color: isDark
+                                                                        ? base
+                                                                        : home,
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    showDialog(
+                                                                        context: context,
+                                                                        builder:
+                                                                            (BuildContext
+                                                                                context) {
+                                                                          return AlertDialog(
+                                                                            backgroundColor: isDark
+                                                                                ? dialog
+                                                                                : Colors
+                                                                                    .white,
+                                                                            shadowColor:
+                                                                                Colors.red[
+                                                                                    50],
+                                                                            content:
+                                                                                SingleChildScrollView(
+                                                                              child:
+                                                                                  Center(
+                                                                                child:
+                                                                                    Column(
                                                                                   children: [
-                                                                                    TextButton(
-                                                                                      onPressed: () {
-                                                                                        Navigator.of(context).pop();
-                                                                                      },
-                                                                                      child: Text(
-                                                                                        'Batal',
+                                                                                    Center(
+                                                                                      child:
+                                                                                          Text(
+                                                                                        'Yakin ingin Hapus?',
                                                                                         style: GoogleFonts.inder(
-                                                                                          color: isDark ? base : home,
+                                                                                          fontSize: 16,
                                                                                           fontWeight: FontWeight.bold,
+                                                                                          color: isDark ? base : Colors.black,
                                                                                         ),
                                                                                       ),
                                                                                     ),
-                                                                                    ElevatedButton(
-                                                                                      onPressed: () {
-                                                                                        Navigator.of(context, rootNavigator: true).pop('dialog');
-                                                                                        database.deleteRekap(snapshot.data![index].id);
-                                                                                        setState(() {
-                                                                                          print(
-                                                                                            "Berhasil Hapus Semua",
-                                                                                          );
-                                                                                        });
-                                                                                      },
-                                                                                      child: Text(
-                                                                                        'Ya',
-                                                                                        style: GoogleFonts.inder(
-                                                                                          color: base,
-                                                                                          fontWeight: FontWeight.bold,
+                                                                                    SizedBox(
+                                                                                      height:
+                                                                                          30,
+                                                                                    ),
+                                                                                    Row(
+                                                                                      mainAxisAlignment:
+                                                                                          MainAxisAlignment.end,
+                                                                                      crossAxisAlignment:
+                                                                                          CrossAxisAlignment.end,
+                                                                                      children: [
+                                                                                        TextButton(
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Batal',
+                                                                                            style: TextStyle(
+                                                                                              color: isDark ? base : Colors.black,
+                                                                                            ),
+                                                                                          ),
                                                                                         ),
-                                                                                      ),
+                                                                                        ElevatedButton(
+                                                                                          style: ButtonStyle(
+                                                                                            backgroundColor: MaterialStatePropertyAll(primary),
+                                                                                          ),
+                                                                                          onPressed: () async {
+                                                                                            // Navigator.of(
+                                                                                            //         context,
+                                                                                            //         rootNavigator:
+                                                                                            //             true)
+                                                                                            //     .pop();
+                                                                                            await database.deleteTransactionRepo(snapshot.data![index].transaction.id);
+                                                                                            // Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                                            // Navigator.of(context).pushReplacement(
+                                                                                            //   MaterialPageRoute(
+                                                                                            //     builder: (context) => HomePage(selectedDate: selectedDate),
+                                                                                            //   ),
+                                                                                            // );
+                                                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                                                              SnackBar(
+                                                                                                  content: Text(
+                                                                                                    'Berhasil Hapus Transaksi',
+                                                                                                    style: GoogleFonts.inder(color: base),
+                                                                                                  ),
+                                                                                                  backgroundColor: primary),
+                                                                                            );
+
+                                                                                            setState(() {});
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Ya',
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
                                                                                     ),
                                                                                   ],
                                                                                 ),
-                                                                              ],
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    });
-                                                              },
-                                                              color: primary,
-                                                              focusColor:
-                                                                  secondary,
-                                                              hoverColor:
-                                                                  secondary,
-                                                              iconSize: 20,
-                                                              icon: Icon(Icons
-                                                                  .delete)),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                                          );
+                                                                        });
+                                                                  },
+                                                                ),
+                                                                // SizedBox(
+                                                                //   width: 1,
+                                                                // ),
+                                                                IconButton(
+                                                                  icon: Icon(
+                                                                    Icons.edit,
+                                                                    color: isDark
+                                                                        ? base
+                                                                        : home,
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    Navigator.of(context)
+                                                                        .push(
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            ((context) =>
+                                                                                TransactionPage(
+                                                                                  transactionWithCategory:
+                                                                                      snapshot.data![index],
+                                                                                )),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
+                                              } else {
+                                                return Center(
+                                                  child: Text(
+                                                    'Tidak ada data',
+                                                    style: TextStyle(
+                                                      color: isDark ? base : home,
+                                                    ),
                                                   ),
-                                                  SizedBox(height: 20),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Durasi ",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          startDate +
-                                                              " ~ " +
-                                                              endDate,
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Total Pengeluaran ",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalExpense
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Total Pemasukan ",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalIncome
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Sisa ",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .sisa
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 30),
-                                                ],
+                                                );
+                                              }
+                                            } else {
+                                              return Center(
+                                                child: Text(
+                                                  'Tidak ada data',
+                                                  style: TextStyle(
+                                                    color: isDark ? base : home,
+                                                  ),
+                                                ),
                                               );
-                                            },
-                                          );
-                                        } else {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 85),
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  'assets/img/tes.png',
-                                                  width: 200,
-                                                ),
-                                                Text(
-                                                  "Tidak Ada Data",
-                                                  style: GoogleFonts.inder(
-                                                      color:
-                                                          isDark ? base : home),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }
-                                      } else {
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 85),
-                                          child: Column(
-                                            children: [
-                                              Image.asset(
-                                                'assets/img/tes.png',
-                                                width: 200,
-                                              ),
-                                              Text(
-                                                "Tidak Ada Data",
-                                                style: GoogleFonts.inder(
-                                                    color:
-                                                        isDark ? base : home),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  },
-                                ))
-                              ],
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(primary),
-                                  shape: MaterialStatePropertyAll(
-                                    ContinuousRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    // DetailPage adalah halaman yang dituju
-                                    MaterialPageRoute(
-                                      builder: (context) => GalleryPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Lihat Galeri',
-                                  style: GoogleFonts.inder(
-                                    color: base,
+                                            }
+                                          }
+                                        },
+                                      ),
+                                  ],
                                   ),
                                 ),
                               ),
                             ],
+                                      ],
                           ),
                         ),
                         Row(
