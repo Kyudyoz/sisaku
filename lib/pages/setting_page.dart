@@ -617,6 +617,6 @@ const secondary = Color.fromARGB(255, 151, 221, 230);
 const base = Color.fromARGB(255, 243, 243, 243);
 const home = Color.fromARGB(162, 0, 35, 39);
 
-const background = Color.fromRGBO(24, 24, 24, 1);
+const background = Color.fromARGB(255, 41, 36, 46);
 const card = Color.fromRGBO(61, 61, 61, 1);
 const dialog = Color.fromRGBO(33, 33, 33, 1);
