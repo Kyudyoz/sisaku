@@ -214,7 +214,7 @@ class AppDb extends _$AppDb {
       'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
       'FROM transactions '
       'INNER JOIN categories ON transactions.category_id = categories.id '
-      'WHERE transactions.transaction_date BETWEEN :startDate AND :endDate '
+      'WHERE transactions.transaction_date BETWEEN ? AND ? '
       'AND categories.type = 1 '
       'GROUP BY categories.name',
       variables: [
@@ -232,18 +232,9 @@ class AppDb extends _$AppDb {
         'name': name,
         'totalAmount': totalAmount,
         'type': type,
-        //
-        //[{'name': name,
-        // 'totalAmount': totalAmount
-        // }, {}]
+      
       };
     }).get();
-    // Pisahkan hasil berdasarkan type
-    // final pemasukan = result.where((item) => item['type'] == 1).toList();
-    // final pengeluaran = result.where((item) => item['type'] == 2).toList();
-
-    // print("Pemasukan: $pemasukan");
-    // print("Pengeluaran: $pengeluaran");
     print(
         "===================================================================================================================================================================");
     print("result IncCatName dari database");
@@ -253,19 +244,13 @@ class AppDb extends _$AppDb {
   // Get Expense Category Name  For Rekaps
   Future<List<Map<String, Object>?>> getExpCatNameByRekaps(
       DateTime start, DateTime end) async {
-    // Untuk mapping data
-    // Map<String, List> dataMap = {
-    //   "incomeName": [],
-    //   "incomeAmount": [],
-    //   "expenseName": [],
-    //   "expenseAmount": []
-    // };
+  
 
     final query = customSelect(
       'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
       'FROM transactions '
       'INNER JOIN categories ON transactions.category_id = categories.id '
-      'WHERE transactions.transaction_date BETWEEN :startDate AND :endDate '
+      'WHERE transactions.transaction_date BETWEEN ? AND ? '
       'AND categories.type = 2 '
       'GROUP BY categories.name',
       variables: [
@@ -298,7 +283,28 @@ class AppDb extends _$AppDb {
     return result;
   }
 
+  // Get All Transaction Name  by Rekaps Group Order By Latest
+  Stream<List<TransactionWithCategory>> getTransactionByRekaps(DateTime start, DateTime end) {
+    final query = (select(transactions).join([
+      innerJoin(
+        categories,
+        categories.id.equalsExp(transactions.category_id),
+      ),
+    ])
+      ..where(transactions.transaction_date.isBetweenValues(start, end))
+      ..orderBy([OrderingTerm.asc(transactions.transaction_date)]));
+      
+    return query.watch().map((rows) {
+      return rows.map((row) {
+        return TransactionWithCategory(
+          row.readTable(transactions),
+          row.readTable(categories),
+        );
+      }).toList();
+    });
+  }
 
+  // Get All Transaction Name  by Rekaps Group Order By 
 
 // Rekap
 
@@ -455,6 +461,8 @@ class AppDb extends _$AppDb {
     ).get();
     return results;
   }
+
+  
 
   // CRUD Create Custom Rekap
   Future insertRekap(
