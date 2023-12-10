@@ -302,6 +302,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                           "Pemasukan",
                                           style: GoogleFonts.inder(
                                             color: (type == 1) ? base : primary,
+                                            fontWeight: (type == 1) ? FontWeight.bold : FontWeight.normal
                                           ),
                                         ),
                                       ),
@@ -332,6 +333,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                           "Pengeluaran",
                                           style: GoogleFonts.inder(
                                             color: (type == 2) ? base : primary,
+                                            fontWeight: (type == 2) ? FontWeight.bold : FontWeight.normal
                                           ),
                                         ),
                                       ),

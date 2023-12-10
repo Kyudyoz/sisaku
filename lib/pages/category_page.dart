@@ -252,6 +252,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           "Pemasukan",
                                           style: GoogleFonts.inder(
                                             color: (type == 1) ? base : primary,
+                                            fontWeight: (type == 1) ? FontWeight.bold : FontWeight.normal
                                           ),
                                         ),
                                       ),
@@ -282,6 +283,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           "Pengeluaran",
                                           style: GoogleFonts.inder(
                                             color: (type == 2) ? base : primary,
+                                            fontWeight: (type == 2) ? FontWeight.bold : FontWeight.normal
                                           ),
                                         ),
                                       ),
