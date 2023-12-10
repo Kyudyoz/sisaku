@@ -206,6 +206,8 @@ class AppDb extends _$AppDb {
     }
   }
 
+  
+// Rekap
   // Get Category Name by Id(Return String) For Rekaps
   Future<List<Map<String, Object>?>> getIncCatNameByRekaps(
       DateTime start, DateTime end) async {
@@ -306,7 +308,7 @@ class AppDb extends _$AppDb {
 
   // Get All Transaction Name  by Rekaps Group Order By 
 
-// Rekap
+
 
   // Get All Rekaps
   Stream<List<Rekap>> getAllRekaps() {
@@ -683,6 +685,47 @@ class AppDb extends _$AppDb {
   // CRUD Delete Rekap
   Future deleteRekap(int id) async {
     return (delete(rekaps)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+
+   Future<Map<String, double>> getIncExpPieChart() async {
+    // Lakukan query select
+    // final List<Transaction> results = await select(transactions).get();
+     
+    Map<String, double> allIncExp = {};
+
+    final query = await customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'GROUP BY categories.type',
+
+      readsFrom: {transactions, categories},
+    );
+
+      final result = await query.map((row) {
+      final totalAmount = row.read<int>('totalAmount');
+      final type = row.read<int>('type'); // Ganti dengan tipe data yang sesuai
+      return {
+        'totalAmount': totalAmount,
+        'type': type,
+      };
+    }).get();
+    // Buat map kosong
+    final pemasukan = result[0];
+    print("isi result type 1 : $pemasukan");
+
+    result.forEach((transaction) {
+      final type = transaction["type"];  
+      final amount = transaction["totalAmount"];
+      if (type == 1)
+        allIncExp["Pemasukan"] = amount!.toDouble();
+      else if (type == 2)
+        allIncExp["Pengeluaran"] = amount!.toDouble();
+    });
+
+    print("Isi datamap Inc Exp $allIncExp");
+    return allIncExp;
   }
 }
 
