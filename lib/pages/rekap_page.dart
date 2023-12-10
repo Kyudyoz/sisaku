@@ -32,15 +32,24 @@ class _RekapPageState extends State<RekapPage> {
   bool datakosong = false;
 
   late Map<String, double> _dataMap = {};
+  late Map<String, double> _pieChartIncExp = {};
 
   @override
   void initState() {
     super.initState();
     updateR(r);
     _loadData();
+
+    print(" isi aaa $getIncExpPieChart()");
+
     datamap().then((dataMap) {
       setState(() {
         _dataMap = dataMap;
+      });
+    });
+    getIncExpPieChart().then((dataMapIncExp) {
+      setState(() {
+        _pieChartIncExp = dataMapIncExp;
       });
     });
   }
@@ -71,7 +80,14 @@ class _RekapPageState extends State<RekapPage> {
 
   Future<Map<String, double>> datamap() async {
     final Map<String, double> dataMap = await database.getMapFromDatabase();
+
     return dataMap;
+  }
+
+  Future<Map<String, double>> getIncExpPieChart() async {
+    final Map<String, double> dataMapIncExp =  await database.getIncExpPieChart();
+    print("isi datamap inc exp $dataMapIncExp");
+    return dataMapIncExp;
   }
 
   Future<void> _loadData() async {
@@ -238,27 +254,15 @@ class _RekapPageState extends State<RekapPage> {
                             children: [
                               // Kalo Realtime
                               if (r == 1) ...[
-                                // (_dataMap.isEmpty)
-                                //     ? Padding(
-                                //         padding: const EdgeInsets.only(top: 85),
-                                //         child: Column(
-                                //           children: [
-                                //             Image.asset(
-                                //               'assets/img/tes.png',
-                                //               width: 200,
-                                //             ),
-                                //             Text(
-                                //               "Tidak Ada Data",
-                                //               style: GoogleFonts.inder(),
-                                //             ),
-                                //           ],
-                                //         ),
-                                //       )
-                                //     :
+                     
 
                                 Expanded(
-                                  child: FutureBuilder<Map<String, double>>(
-                                    future: datamap(),
+                                  child: Column(
+                                    children: [
+                              // TODO: Add Text "By Type"
+                              // ===================================>All Inc Exp Data Map<===================================
+                                      FutureBuilder<Map<String, double>>(
+                                    future: getIncExpPieChart(),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -271,18 +275,16 @@ class _RekapPageState extends State<RekapPage> {
                                       } else {
                                         if (snapshot.hasData) {
                                           if (snapshot.data!.length > 0) {
-                                            return ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: 1,
-                                              itemBuilder: (context, index) {
-                                                return Column(
+                                             return Column(
                                                   children: [
+                                                    
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.only(
                                                               top: 35),
                                                       child: PieChart(
-                                                        dataMap: _dataMap,
+                                                        dataMap: _pieChartIncExp,
+                                                        colorList: [Colors.greenAccent,Colors.redAccent],
                                                         chartRadius:
                                                             MediaQuery.of(
                                                                         context)
@@ -308,11 +310,12 @@ class _RekapPageState extends State<RekapPage> {
                                                         ),
                                                       ),
                                                     ),
+
+                                                    
+                                                 
                                                   ],
                                                 );
-                                              },
-                                            );
-                                          } else {
+                                            } else {
                                             return Padding(
                                               padding: const EdgeInsets.only(
                                                   bottom: 85),
@@ -354,7 +357,123 @@ class _RekapPageState extends State<RekapPage> {
                                       }
                                     },
                                   ),
-                                )
+                              
+                              
+                               // TODO: Add Text "By All Kategori Name"
+                              // ===================================>All Kategori Name Map<===================================
+                              //TODO: Add PieChart "By All Kategori Name"
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                               // TODO: Add Text "By Type"
+                              // ===================================>All Transaction Data Map<===================================
+                                      FutureBuilder<Map<String, double>>(
+                                        future: datamap(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<Color>(
+                                                          primary)),
+                                            );
+                                          } else {
+                                            if (snapshot.hasData) {
+                                              if (snapshot.data!.length > 0) {
+                                                 return Column(
+                                                      children: [
+                                                        
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets.only(
+                                                                  top: 35),
+                                                          child: PieChart(
+                                                            dataMap: _dataMap,
+                                                            chartRadius:
+                                                                MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    1.7,
+                                                            legendOptions:
+                                                                LegendOptions(
+                                                              legendTextStyle:
+                                                                  GoogleFonts.inder(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                              legendPosition:
+                                                                  LegendPosition
+                                                                      .right,
+                                                            ),
+                                                            chartValuesOptions:
+                                                                ChartValuesOptions(
+                                                              showChartValuesInPercentage:
+                                                                  true,
+                                                              decimalPlaces: 0,
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        
+                                                     
+                                                      ],
+                                                    );
+               } else {
+                                                return Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      bottom: 85),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(height: 35),
+                                                      Image.asset(
+                                                        'assets/img/tes.png',
+                                                        width: 200,
+                                                      ),
+                                                      Text(
+                                                        "Belum ada transaksi",
+                                                        style: GoogleFonts.inder(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }
+                                            } else {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 85),
+                                                child: Column(
+                                                  children: [
+                                                    Image.asset(
+                                                      'assets/img/tes.png',
+                                                      width: 200,
+                                                    ),
+                                                    Text(
+                                                      "Tidak Ada Data",
+                                                      style: GoogleFonts.inder(
+                                                          color:
+                                                              isDark ? base : home),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        },
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              
+                                
+                              
                               ]
 
                               // Kalo Bulanan
