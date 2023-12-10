@@ -672,27 +672,26 @@ class _DetailRekapsStat extends State<DetailRekap>
                                    Details(name: name, startDate: startDate, endDate: endDate, totalExpense: totalExpense, totalIncome: totalIncome, dailyAverage: dailyAverage),
 
                               // ---------------------------> Mapping Transaction Name <---------------------------------------
-                                    StreamBuilder<List<TransactionWithCategory>>(
-                                        stream: database.getTransactionByRekaps(dbStartDate, dbEndDate),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                                      primary)),
-                                            );
-                                          } else {
-                                            if (snapshot.hasData) {
-                                              if (snapshot.data!.length > 0) {
-                                                return ListView.builder(
-                                                    shrinkWrap: true,
-                                                    itemCount: snapshot.data!.length,
-                                                    itemBuilder: (context, index) {
-                                                      return SingleChildScrollView(
-                                                        child: Card(
-                                                          color: isDark ? card : base,
-                                                          elevation: 10,
+                                    Expanded(
+                                      child: StreamBuilder<List<TransactionWithCategory>>(
+                                          stream: database.getTransactionByRekaps(dbStartDate, dbEndDate),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                                        primary)),
+                                              );
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length > 0) {
+                                                  return ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: snapshot.data!.length,
+                                                      itemBuilder: (context, index) {
+                                                        final type =  snapshot.data![index].category.type;
+                                                        return SingleChildScrollView(
                                                           child: ListTile(
                                                             leading: Container(
                                                               decoration: BoxDecoration(
@@ -700,7 +699,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                     isDark ? card : base,
                                                                 borderRadius:
                                                                     BorderRadius.circular(
-                                                                        8),
+                                                                        35),
                                                               ),
                                                               child: (snapshot
                                                                           .data![index]
@@ -716,7 +715,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                           Uint8List(0),
                                                                       // width: 80,
                                                                       fit: BoxFit.cover,
-                                                                      width: 80,
+                                                                      width: 50,
                                                                     )
                                                                   : Column(
                                                                       mainAxisAlignment:
@@ -727,7 +726,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                               .center,
                                                                       children: [
                                                                         Container(
-                                                                          width: 80,
+                                                                          width: 50,
                                                                           decoration: BoxDecoration(
                                                                               borderRadius:
                                                                                   BorderRadius.circular(
@@ -763,171 +762,141 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                       ],
                                                                     ),
                                                             ),
-                                                            title: Text(
-                                                              'Rp. ' +
-                                                                  (NumberFormat.currency(
-                                                                    locale: 'id',
-                                                                    decimalDigits: 0,
-                                                                  ).format(
-                                                                    snapshot
-                                                                        .data![index]
-                                                                        .transaction
-                                                                        .amount,
-                                                                  )).replaceAll(
-                                                                      'IDR', ''),
-                                                              style: TextStyle(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : Colors.black),
-                                                            ),
-                                                            subtitle: Text(
-                                                              snapshot.data![index]
-                                                                      .category.name +
-                                                                  ' ( ' +
-                                                                  snapshot.data![index]
-                                                                      .transaction.name +
-                                                                  ' )',
-                                                              style: TextStyle(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : Colors.black),
-                                                            ),
-                                                            trailing: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize.min,
-                                                              children: [
-                                                                IconButton(
-                                                                  icon: Icon(
-                                                                    Icons.delete,
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home,
-                                                                  ),
-                                                                  onPressed: () {
-                                                                    showDialog(
-                                                                        context: context,
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return AlertDialog(
-                                                                            backgroundColor: isDark
-                                                                                ? dialog
-                                                                                : Colors
-                                                                                    .white,
-                                                                            shadowColor:
-                                                                                Colors.red[
-                                                                                    50],
-                                                                            content:
-                                                                                SingleChildScrollView(
-                                                                              child:
-                                                                                  Center(
-                                                                                child:
-                                                                                    Column(
-                                                                                  children: [
-                                                                                    Center(
-                                                                                      child:
-                                                                                          Text(
-                                                                                        'Yakin ingin Hapus?',
-                                                                                        style: GoogleFonts.inder(
-                                                                                          fontSize: 16,
-                                                                                          fontWeight: FontWeight.bold,
-                                                                                          color: isDark ? base : Colors.black,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height:
-                                                                                          30,
-                                                                                    ),
-                                                                                    Row(
-                                                                                      mainAxisAlignment:
-                                                                                          MainAxisAlignment.end,
-                                                                                      crossAxisAlignment:
-                                                                                          CrossAxisAlignment.end,
-                                                                                      children: [
-                                                                                        TextButton(
-                                                                                          onPressed: () {
-                                                                                            Navigator.of(context).pop();
-                                                                                          },
-                                                                                          child: Text(
-                                                                                            'Batal',
-                                                                                            style: TextStyle(
-                                                                                              color: isDark ? base : Colors.black,
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                        ElevatedButton(
-                                                                                          style: ButtonStyle(
-                                                                                            backgroundColor: MaterialStatePropertyAll(primary),
-                                                                                          ),
-                                                                                          onPressed: () async {
-                                                                                            // Navigator.of(
-                                                                                            //         context,
-                                                                                            //         rootNavigator:
-                                                                                            //             true)
-                                                                                            //     .pop();
-                                                                                            await database.deleteTransactionRepo(snapshot.data![index].transaction.id);
-                                                                                            // Navigator.of(context, rootNavigator: true).pop('dialog');
-                                                                                            // Navigator.of(context).pushReplacement(
-                                                                                            //   MaterialPageRoute(
-                                                                                            //     builder: (context) => HomePage(selectedDate: selectedDate),
-                                                                                            //   ),
-                                                                                            // );
-                                                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                                                              SnackBar(
-                                                                                                  content: Text(
-                                                                                                    'Berhasil Hapus Transaksi',
-                                                                                                    style: GoogleFonts.inder(color: base),
-                                                                                                  ),
-                                                                                                  backgroundColor: primary),
-                                                                                            );
+                                                            // title: Text(
+                                                            //      snapshot.data![index]
+                                                            //                 .transaction
+                                                            //                 .transaction_date.toLocal().toString(),
+                                                            //       style: TextStyle(
+                                                            //           color: isDark
+                                                            //               ? base
+                                                            //               : Colors.black),
+                                                            //     ),
 
-                                                                                            setState(() {});
-                                                                                          },
-                                                                                          child: Text(
-                                                                                            'Ya',
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                        });
-                                                                  },
+                                                            subtitle:  Column(
+                                                              children: [
+ Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                              children: [
+                                                                Text(
+                                                                 snapshot.data![index]
+                                                                            .transaction
+                                                                            .name,
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : Colors.black),
                                                                 ),
-                                                                // SizedBox(
-                                                                //   width: 1,
-                                                                // ),
-                                                                IconButton(
-                                                                  icon: Icon(
-                                                                    Icons.edit,
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home,
-                                                                  ),
-                                                                  onPressed: () {
-                                                                    Navigator.of(context)
-                                                                        .push(
-                                                                      MaterialPageRoute(
-                                                                        builder:
-                                                                            ((context) =>
-                                                                                TransactionPage(
-                                                                                  transactionWithCategory:
-                                                                                      snapshot.data![index],
-                                                                                )),
+                                                                Text(
+                                                                  'Rp. ' +
+                                                                      (NumberFormat.currency(
+                                                                        locale: 'id',
+                                                                        decimalDigits: 0,
+                                                                      ).format(
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .transaction
+                                                                            .amount,
+                                                                      )).replaceAll(
+                                                                          'IDR', ''),
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : Colors.black),
+                                                                ),
+                                                                                     ],
+                                                            ),
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                  children: [
+                                                                    LinearPercentIndicator(
+                                                                      width: MediaQuery.of(
+                                                                                  context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.55,
+                                                                      barRadius:
+                                                                          const Radius
+                                                                              .circular(
+                                                                              16),
+                                                                      lineHeight: 7.0,
+                                                                      percent:
+                                                                          calculatePercentage(
+                                                                        (snapshot
+                                                                                    .data![index]
+                                                                                    .transaction
+                                                                                    .amount)
+                                                                            .toDouble(),
+                                                                        (type == 1) ? totalIncome
+                                                                            .toDouble() : totalExpense
+                                                                            .toDouble(),
+                                                                      ), // Ganti nilai persentase sesuai kebutuhan
+                                                                      progressColor: (type == 1) ? Colors.green :
+                                                                          Colors.red,
+                                                                    ),
+                                                                    IconButton(
+                                                                      icon: Icon(
+                                                                        Icons.arrow_forward_ios_sharp,
+                                                                        color: primary,
+                                                                        size: 16,
                                                                       ),
-                                                                    );
-                                                                  },
+                                                                      onPressed: () {
+                                                                        Navigator.of(context)
+                                                                            .push(
+                                                                          MaterialPageRoute(
+                                                                            builder:
+                                                                                ((context) =>
+                                                                                    TransactionPage(
+                                                                                      transactionWithCategory:
+                                                                                          snapshot.data![index],
+                                                                                    )),
+                                                                          ),
+                                                                        );
+                                                                    })
+                                                                  ],
                                                                 ),
                                                               ],
                                                             ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    });
+                                                   
+                                                          //   trailing: Row(
+                                                          //     mainAxisSize:
+                                                          //         MainAxisSize.min,
+                                                          //     children: [
+                                                          //         IconButton(
+                                                          //         icon: Icon(
+                                                          //           Icons.arrow_forward_ios_sharp,
+                                                          //           color: primary,
+                                                          //         ),
+                                                          //         onPressed: () {
+                                                          //           Navigator.of(context)
+                                                          //               .push(
+                                                          //             MaterialPageRoute(
+                                                          //               builder:
+                                                          //                   ((context) =>
+                                                          //                       TransactionPage(
+                                                          //                         transactionWithCategory:
+                                                          //                             snapshot.data![index],
+                                                          //                       )),
+                                                          //             ),
+                                                          //           );
+                                                          //         },
+                                                          //       ),
+                                                          //     ],
+                                                          //   ),
+                                                          // ),
+                                                           ),
+                                                        );
+                                                      });
+                                                } else {
+                                                  return Center(
+                                                    child: Text(
+                                                      'Tidak ada data',
+                                                      style: TextStyle(
+                                                        color: isDark ? base : home,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
                                               } else {
                                                 return Center(
                                                   child: Text(
@@ -938,19 +907,10 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                   ),
                                                 );
                                               }
-                                            } else {
-                                              return Center(
-                                                child: Text(
-                                                  'Tidak ada data',
-                                                  style: TextStyle(
-                                                    color: isDark ? base : home,
-                                                  ),
-                                                ),
-                                              );
                                             }
-                                          }
-                                        },
-                                      ),
+                                          },
+                                        ),
+                                    ),
                                   ],
                                   ),
                                 ),
@@ -959,35 +919,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                       ],
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: (r == 3) ? true : false,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 8, 30),
-                                child: FloatingActionButton(
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      // DetailPage adalah halaman yang dituju
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            AddEditRekap(rekap: null),
-                                      ),
-                                    );
-                                  },
-                                  backgroundColor: primary,
-                                  child: Icon(
-                                    Icons.add,
-                                    color: base,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                                 ],
                     ),
                   ),
                 ),
