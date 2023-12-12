@@ -476,7 +476,9 @@ class _SettingPageState extends State<SettingPage> {
                                                 },
                                                 title: Text("Bahasa Indonesia",
                                                     style: GoogleFonts.inder()),
-                                                activeColor: base,
+                                                activeColor: isDark
+                                                    ? base
+                                                    : Colors.black,
                                                 selected: true,
                                               ),
                                               RadioListTile.adaptive(
@@ -497,7 +499,9 @@ class _SettingPageState extends State<SettingPage> {
                                                 },
                                                 title: Text("English",
                                                     style: GoogleFonts.inder()),
-                                                activeColor: base,
+                                                activeColor: isDark
+                                                    ? base
+                                                    : Colors.black,
                                                 selected: true,
                                               ),
                                             ],
