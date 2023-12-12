@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
             weekFormat: true,
             showWeekDays: true,
             weekdayTextStyle: GoogleFonts.inder(fontSize: 18, color: base),
-            locale: 'id',
+            locale: (lang == 0) ? 'id' : 'en',
             height: 200.0,
             selectedDateTime: selectedDate,
             showIconBehindDayText: true,
@@ -128,7 +128,9 @@ class _HomePageState extends State<HomePage> {
             pageSnapping: true,
             todayTextStyle: GoogleFonts.inder(color: Colors.black),
             markedDateIconMaxShown: 2,
-            headerText: '${DateFormat.yMMM().format(selectedDate)}',
+            headerText: (lang == 0)
+                ? '${DateFormat.yMMM('id_ID').format(selectedDate)}'
+                : '${DateFormat.yMMM().format(selectedDate)}',
             selectedDayTextStyle: GoogleFonts.inder(
                 color: Colors.black, fontWeight: FontWeight.bold),
             selectedDayBorderColor: base,
@@ -163,13 +165,21 @@ class _HomePageState extends State<HomePage> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(18, 20, 16, 5),
                         child: Text(
-                          'Sisa Uang Kamu : Rp. ' +
-                              (NumberFormat.currency(
-                                locale: 'id',
-                                decimalDigits: 0,
-                              ).format(
-                                rest,
-                              )).replaceAll('IDR', ''),
+                          (lang == 0)
+                              ? 'Sisa Uang Kamu : Rp. ' +
+                                  (NumberFormat.currency(
+                                    locale: 'id',
+                                    decimalDigits: 0,
+                                  ).format(
+                                    rest,
+                                  )).replaceAll('IDR', '')
+                              : 'Balance : Rp. ' +
+                                  (NumberFormat.currency(
+                                    locale: 'id',
+                                    decimalDigits: 0,
+                                  ).format(
+                                    rest,
+                                  )).replaceAll('IDR', ''),
                           style: GoogleFonts.inder(
                               fontWeight: FontWeight.w500,
                               fontSize: 20,
@@ -208,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Pemasukan',
+                                        (lang == 0) ? 'Pemasukan' : 'Income',
                                         style: GoogleFonts.inder(
                                           color: base,
                                           fontWeight: FontWeight.bold,
@@ -255,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Pengeluaran',
+                                        (lang == 0) ? 'Pengeluaran' : 'Expense',
                                         style: GoogleFonts.inder(
                                           color: base,
                                           fontWeight: FontWeight.bold,
@@ -294,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Transaksi',
+                              (lang == 0) ? 'Transaksi' : 'Transactions',
                               style: GoogleFonts.inder(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -313,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                               child: Text(
-                                'Lihat Semua',
+                                (lang == 0) ? 'Lihat Semua' : 'View All',
                                 style: GoogleFonts.inder(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w200,
@@ -486,7 +496,7 @@ class _HomePageState extends State<HomePage> {
                                                                           Center(
                                                                             child:
                                                                                 Text(
-                                                                              'Yakin ingin Hapus?',
+                                                                              (lang == 0) ? 'Yakin ingin Hapus?' : 'Are you sure want to delete this transaction?',
                                                                               style: GoogleFonts.inder(
                                                                                 fontSize: 16,
                                                                                 fontWeight: FontWeight.bold,
@@ -509,7 +519,7 @@ class _HomePageState extends State<HomePage> {
                                                                                   Navigator.of(context).pop();
                                                                                 },
                                                                                 child: Text(
-                                                                                  'Batal',
+                                                                                  (lang == 0) ? 'Batal' : 'Cancel',
                                                                                   style: TextStyle(
                                                                                     color: isDark ? base : Colors.black,
                                                                                   ),
@@ -535,7 +545,7 @@ class _HomePageState extends State<HomePage> {
                                                                                   ScaffoldMessenger.of(context).showSnackBar(
                                                                                     SnackBar(
                                                                                         content: Text(
-                                                                                          'Berhasil Hapus Transaksi',
+                                                                                          (lang == 0) ? 'Berhasil Hapus Transaksi' : 'Delete Transaction Success',
                                                                                           style: GoogleFonts.inder(color: base),
                                                                                         ),
                                                                                         backgroundColor: primary),
@@ -544,7 +554,7 @@ class _HomePageState extends State<HomePage> {
                                                                                   setState(() {});
                                                                                 },
                                                                                 child: Text(
-                                                                                  'Ya',
+                                                                                  (lang == 0) ? 'Ya' : 'Yes',
                                                                                 ),
                                                                               ),
                                                                             ],
@@ -591,7 +601,9 @@ class _HomePageState extends State<HomePage> {
                                   } else {
                                     return Center(
                                       child: Text(
-                                        'Tidak ada data',
+                                        (lang == 0)
+                                            ? 'Tidak ada data'
+                                            : 'No data',
                                         style: TextStyle(
                                           color: isDark ? base : home,
                                         ),
@@ -601,7 +613,9 @@ class _HomePageState extends State<HomePage> {
                                 } else {
                                   return Center(
                                     child: Text(
-                                      'Tidak ada data',
+                                      (lang == 0)
+                                          ? 'Tidak ada data'
+                                          : "No data",
                                       style: TextStyle(
                                         color: isDark ? base : home,
                                       ),

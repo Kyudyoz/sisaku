@@ -16,8 +16,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:sisaku/pages/transaction_page.dart';
 import 'package:sisaku/widgets/details.dart';
 import '../models/transaction_with_category.dart';
-import 'add+edit_rekap.dart';
-import 'gallery_pages.dart';
+// import 'add+edit_rekap.dart';
+// import 'gallery_pages.dart';
 
 class DetailRekap extends StatefulWidget {
   const DetailRekap({super.key, required this.rekap});
@@ -54,15 +54,16 @@ class _DetailRekapsStat extends State<DetailRekap>
   late TabController _tabController;
 
   final _selectedColor = primary;
-  final _unselectedColor = base;
-  final _tabs = const [
-    Tab(text: 'Grafik'),
-    Tab(text: 'Kategori'),
-    Tab(text: 'Nama'),
+  // final _unselectedColor = base;
+
+  final _tabs = [
+    Tab(text: (lang == 0) ? 'Grafik' : "Chart"),
+    Tab(text: (lang == 0) ? 'Kategori' : "Category"),
+    Tab(text: (lang == 0) ? 'Nama' : "Name"),
   ];
   late bool isUpdate = false;
 
-  late Map<String, List> _dataMapCategory = {};
+  // late Map<String, List> _dataMapCategory = {};
   late Map<String, double> _dataMapChart = {};
 
   // final _iconTabs = const [
@@ -120,7 +121,7 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   double totalExpenseAmounts = 0;
   double totalIncomeAmounts = 0;
-  late Map<String, double> _dataMap = {};
+  // late Map<String, double> _dataMap = {};
   Future<Map<String, double>> datamap() async {
     final Map<String, double> dataMap = await database.getMapFromDatabase();
     return dataMap;
@@ -145,7 +146,6 @@ class _DetailRekapsStat extends State<DetailRekap>
     // print("Tes Hasil nama value $data");
     getDailyAverage(totalExpense, totalIncome);
 
-    print("ini");
     _tabController = TabController(length: 3, vsync: this);
 
     updateR(0);
@@ -187,7 +187,7 @@ class _DetailRekapsStat extends State<DetailRekap>
       appBar: AppBar(
         backgroundColor: primary,
         title: Text(
-          "Detail Rekap",
+          (lang == 0) ? "Detail Rekap" : "Recap Details",
           style: GoogleFonts.inder(
             fontWeight: FontWeight.w500,
             fontSize: 20,
@@ -331,7 +331,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                     width: 200,
                                                   ),
                                                   Text(
-                                                    "Belum ada transaksi",
+                                                    (lang == 0)
+                                                        ? "Belum ada transaksi"
+                                                        : "No transactions yet",
                                                     style: GoogleFonts.inder(
                                                         color: isDark
                                                             ? base
@@ -352,7 +354,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                   width: 200,
                                                 ),
                                                 Text(
-                                                  "Tidak Ada Data",
+                                                  (lang == 0)
+                                                      ? "Tidak Ada Data"
+                                                      : "No data",
                                                   style: GoogleFonts.inder(
                                                       color:
                                                           isDark ? base : home),
@@ -365,33 +369,6 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     },
                                   ),
                                 ),
-                                
-                                ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(primary),
-                                  shape: MaterialStatePropertyAll(
-                                    ContinuousRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    // DetailPage adalah halaman yang dituju
-                                    MaterialPageRoute(
-                                      builder: (context) => GalleryPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Lihat Galeri',
-                                  style: GoogleFonts.inder(
-                                    color: base,
-                                  ),
-                                ),
-                              ),
                               ]
 
                               // Kalo Kategori
@@ -399,11 +376,25 @@ class _DetailRekapsStat extends State<DetailRekap>
                                 Expanded(
                                     child: Column(
                                   children: [
-                                  // Details
-                                   Details(name: name, startDate: startDate, endDate: endDate, totalExpense: totalExpense, totalIncome: totalIncome, dailyAverage: dailyAverage),
+                                    // Details
+                                    Details(
+                                        name: name,
+                                        startDate: startDate,
+                                        endDate: endDate,
+                                        totalExpense: totalExpense,
+                                        totalIncome: totalIncome,
+                                        dailyAverage: dailyAverage),
 
                                     // ---------------------------> Mapping data Expense <---------------------------------------
-
+                                    Text(
+                                      (lang == 0)
+                                          ? "Pengeluaran Berdasarkan Kategori"
+                                          : "Expense by Category",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark ? base : Colors.black),
+                                    ),
+                                    SizedBox(height: 10),
                                     Expanded(
                                       child: FutureBuilder<
                                               List<Map<String, Object>?>>(
@@ -514,7 +505,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                 }
                                               }
                                               return Text(
-                                                "Belum ada pengeluaran",
+                                                (lang == 0)
+                                                    ? "Belum ada pengeluaran"
+                                                    : "No expenses yet",
                                                 style: TextStyle(
                                                     color:
                                                         isDark ? base : home),
@@ -523,9 +516,11 @@ class _DetailRekapsStat extends State<DetailRekap>
                                           }),
                                     ),
 
-                                    SizedBox(height: 27),
+                                    SizedBox(height: 5),
                                     Text(
-                                      "Pemasukan Berdasarkan Kategori",
+                                      (lang == 0)
+                                          ? "Pemasukan Berdasarkan Kategori"
+                                          : "Income by Category",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: isDark ? base : Colors.black),
@@ -568,10 +563,6 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                             snapshot.data![
                                                                     index]![
                                                                 "totalAmount"];
-                                                        print(
-                                                            "xpense $incomeNames");
-                                                        print(
-                                                            "amount $incomeAmount");
 
                                                         // Convert to Rp
                                                         var amountString =
@@ -644,7 +635,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                 }
                                               }
                                               return Text(
-                                                "Belum ada pemasukan",
+                                                (lang == 0)
+                                                    ? "Belum ada pemasukan"
+                                                    : "No incomes yet",
                                                 style: TextStyle(
                                                     color:
                                                         isDark ? base : home),
@@ -655,271 +648,237 @@ class _DetailRekapsStat extends State<DetailRekap>
 
                                     SizedBox(height: 25),
                                   ],
-                                )
-                             )       
-                                    
-                              
+                                ))
 
-                           
-                              // Kalo Transaksi
+                                // Kalo Transaksi
                               ] else if (r == 3) ...[
-                               
-                               Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 30),
-                                  child: Column(
-                                    children: [
-                                   Details(name: name, startDate: startDate, endDate: endDate, totalExpense: totalExpense, totalIncome: totalIncome, dailyAverage: dailyAverage),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 30),
+                                    child: Column(
+                                      children: [
+                                        Details(
+                                            name: name,
+                                            startDate: startDate,
+                                            endDate: endDate,
+                                            totalExpense: totalExpense,
+                                            totalIncome: totalIncome,
+                                            dailyAverage: dailyAverage),
 
-                              // ---------------------------> Mapping Transaction Name <---------------------------------------
-                                    Expanded(
-                                      child: StreamBuilder<List<TransactionWithCategory>>(
-                                          stream: database.getTransactionByRekaps(dbStartDate, dbEndDate),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center(
-                                                child: CircularProgressIndicator(
-                                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                                        primary)),
-                                              );
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount: snapshot.data!.length,
-                                                      itemBuilder: (context, index) {
-                                                        final type =  snapshot.data![index].category.type;
-                                                        return SingleChildScrollView(
-                                                          child: ListTile(
-                                                            leading: Container(
-                                                              decoration: BoxDecoration(
-                                                                color:
-                                                                    isDark ? card : base,
-                                                                borderRadius:
-                                                                    BorderRadius.circular(
-                                                                        35),
-                                                              ),
-                                                              child: (snapshot
-                                                                          .data![index]
-                                                                          .transaction
-                                                                          .image !=
-                                                                      null)
-                                                                  ? Image.memory(
-                                                                      snapshot
-                                                                              .data![
-                                                                                  index]
-                                                                              .transaction
-                                                                              .image ??
-                                                                          Uint8List(0),
-                                                                      // width: 80,
-                                                                      fit: BoxFit.cover,
-                                                                      width: 50,
-                                                                    )
-                                                                  : Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Container(
-                                                                          width: 50,
-                                                                          decoration: BoxDecoration(
-                                                                              borderRadius:
-                                                                                  BorderRadius.circular(
-                                                                                      10),
-                                                                              color: Color
-                                                                                  .fromRGBO(
-                                                                                      0,
-                                                                                      0,
-                                                                                      0,
-                                                                                      0.1)),
-                                                                          child: snapshot
-                                                                                      .data![index]
-                                                                                      .category
-                                                                                      .type ==
-                                                                                  2
-                                                                              ? Icon(
-                                                                                  Icons
-                                                                                      .upload_rounded,
-                                                                                  color: Colors
-                                                                                      .red,
-                                                                                  size:
-                                                                                      40,
-                                                                                )
-                                                                              : Icon(
-                                                                                  Icons
-                                                                                      .download_rounded,
-                                                                                  color: Colors
-                                                                                      .green,
-                                                                                  size:
-                                                                                      40,
-                                                                                ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                            ),
-                                                            // title: Text(
-                                                            //      snapshot.data![index]
-                                                            //                 .transaction
-                                                            //                 .transaction_date.toLocal().toString(),
-                                                            //       style: TextStyle(
-                                                            //           color: isDark
-                                                            //               ? base
-                                                            //               : Colors.black),
-                                                            //     ),
-
-                                                            subtitle:  Column(
-                                                              children: [
- Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                                              children: [
-                                                                Text(
-                                                                 snapshot.data![index]
-                                                                            .transaction
-                                                                            .name,
-                                                                  style: TextStyle(
-                                                                      color: isDark
-                                                                          ? base
-                                                                          : Colors.black),
+                                        // ---------------------------> Mapping Transaction Name <---------------------------------------
+                                        Expanded(
+                                          child: StreamBuilder<
+                                              List<TransactionWithCategory>>(
+                                            stream:
+                                                database.getTransactionByRekaps(
+                                                    dbStartDate, dbEndDate),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return Center(
+                                                  child: CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                              Color>(primary)),
+                                                );
+                                              } else {
+                                                if (snapshot.hasData) {
+                                                  if (snapshot.data!.length >
+                                                      0) {
+                                                    return ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemCount: snapshot
+                                                            .data!.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          final type = snapshot
+                                                              .data![index]
+                                                              .category
+                                                              .type;
+                                                          return SingleChildScrollView(
+                                                            child: ListTile(
+                                                              leading:
+                                                                  Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: isDark
+                                                                      ? card
+                                                                      : base,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              35),
                                                                 ),
-                                                                Text(
-                                                                  'Rp. ' +
-                                                                      (NumberFormat.currency(
-                                                                        locale: 'id',
-                                                                        decimalDigits: 0,
-                                                                      ).format(
+                                                                child: (snapshot
+                                                                            .data![
+                                                                                index]
+                                                                            .transaction
+                                                                            .image !=
+                                                                        null)
+                                                                    ? Image
+                                                                        .memory(
+                                                                        snapshot.data![index].transaction.image ??
+                                                                            Uint8List(0),
+                                                                        // width: 80,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        width:
+                                                                            50,
+                                                                      )
+                                                                    : Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                50,
+                                                                            decoration:
+                                                                                BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color.fromRGBO(0, 0, 0, 0.1)),
+                                                                            child: snapshot.data![index].category.type == 2
+                                                                                ? Icon(
+                                                                                    Icons.upload_rounded,
+                                                                                    color: Colors.red,
+                                                                                    size: 40,
+                                                                                  )
+                                                                                : Icon(
+                                                                                    Icons.download_rounded,
+                                                                                    color: Colors.green,
+                                                                                    size: 40,
+                                                                                  ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                              ),
+                                                              subtitle: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
                                                                         snapshot
                                                                             .data![index]
                                                                             .transaction
-                                                                            .amount,
-                                                                      )).replaceAll(
-                                                                          'IDR', ''),
-                                                                  style: TextStyle(
-                                                                      color: isDark
-                                                                          ? base
-                                                                          : Colors.black),
-                                                                ),
-                                                                                     ],
-                                                            ),
-                                                                Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                  children: [
-                                                                    LinearPercentIndicator(
-                                                                      width: MediaQuery.of(
-                                                                                  context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.55,
-                                                                      barRadius:
-                                                                          const Radius
-                                                                              .circular(
-                                                                              16),
-                                                                      lineHeight: 7.0,
-                                                                      percent:
-                                                                          calculatePercentage(
-                                                                        (snapshot
-                                                                                    .data![index]
-                                                                                    .transaction
-                                                                                    .amount)
-                                                                            .toDouble(),
-                                                                        (type == 1) ? totalIncome
-                                                                            .toDouble() : totalExpense
-                                                                            .toDouble(),
-                                                                      ), // Ganti nilai persentase sesuai kebutuhan
-                                                                      progressColor: (type == 1) ? Colors.green :
-                                                                          Colors.red,
-                                                                    ),
-                                                                    IconButton(
-                                                                      icon: Icon(
-                                                                        Icons.arrow_forward_ios_sharp,
-                                                                        color: primary,
-                                                                        size: 16,
+                                                                            .name,
+                                                                        style: TextStyle(
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : Colors.black),
                                                                       ),
-                                                                      onPressed: () {
-                                                                        Navigator.of(context)
-                                                                            .push(
-                                                                          MaterialPageRoute(
-                                                                            builder:
-                                                                                ((context) =>
-                                                                                    TransactionPage(
-                                                                                      transactionWithCategory:
-                                                                                          snapshot.data![index],
-                                                                                    )),
+                                                                      Text(
+                                                                        'Rp. ' +
+                                                                            (NumberFormat.currency(
+                                                                              locale: 'id',
+                                                                              decimalDigits: 0,
+                                                                            ).format(
+                                                                              snapshot.data![index].transaction.amount,
+                                                                            )).replaceAll('IDR', ''),
+                                                                        style: TextStyle(
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : Colors.black),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceEvenly,
+                                                                    children: [
+                                                                      LinearPercentIndicator(
+                                                                        width: MediaQuery.of(context).size.width *
+                                                                            0.5,
+                                                                        barRadius: const Radius
+                                                                            .circular(
+                                                                            16),
+                                                                        lineHeight:
+                                                                            7.0,
+                                                                        percent:
+                                                                            calculatePercentage(
+                                                                          (snapshot.data![index].transaction.amount)
+                                                                              .toDouble(),
+                                                                          (type == 1)
+                                                                              ? totalIncome.toDouble()
+                                                                              : totalExpense.toDouble(),
+                                                                        ), // Ganti nilai persentase sesuai kebutuhan
+                                                                        progressColor: (type ==
+                                                                                1)
+                                                                            ? Colors.green
+                                                                            : Colors.red,
+                                                                      ),
+                                                                      IconButton(
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.arrow_forward_ios_sharp,
+                                                                            color:
+                                                                                primary,
+                                                                            size:
+                                                                                16,
                                                                           ),
-                                                                        );
-                                                                    })
-                                                                  ],
-                                                                ),
-                                                              ],
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).push(
+                                                                              MaterialPageRoute(
+                                                                                builder: ((context) => TransactionPage(
+                                                                                      transactionWithCategory: snapshot.data![index],
+                                                                                    )),
+                                                                              ),
+                                                                            );
+                                                                          })
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                   
-                                                          //   trailing: Row(
-                                                          //     mainAxisSize:
-                                                          //         MainAxisSize.min,
-                                                          //     children: [
-                                                          //         IconButton(
-                                                          //         icon: Icon(
-                                                          //           Icons.arrow_forward_ios_sharp,
-                                                          //           color: primary,
-                                                          //         ),
-                                                          //         onPressed: () {
-                                                          //           Navigator.of(context)
-                                                          //               .push(
-                                                          //             MaterialPageRoute(
-                                                          //               builder:
-                                                          //                   ((context) =>
-                                                          //                       TransactionPage(
-                                                          //                         transactionWithCategory:
-                                                          //                             snapshot.data![index],
-                                                          //                       )),
-                                                          //             ),
-                                                          //           );
-                                                          //         },
-                                                          //       ),
-                                                          //     ],
-                                                          //   ),
-                                                          // ),
-                                                           ),
-                                                        );
-                                                      });
+                                                          );
+                                                        });
+                                                  } else {
+                                                    return Center(
+                                                      child: Text(
+                                                        (lang == 0)
+                                                            ? 'Tidak ada data'
+                                                            : "No data",
+                                                        style: TextStyle(
+                                                          color: isDark
+                                                              ? base
+                                                              : home,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
                                                 } else {
                                                   return Center(
                                                     child: Text(
-                                                      'Tidak ada data',
+                                                      (lang == 0)
+                                                          ? 'Tidak ada data'
+                                                          : "No data",
                                                       style: TextStyle(
-                                                        color: isDark ? base : home,
+                                                        color: isDark
+                                                            ? base
+                                                            : home,
                                                       ),
                                                     ),
                                                   );
                                                 }
-                                              } else {
-                                                return Center(
-                                                  child: Text(
-                                                    'Tidak ada data',
-                                                    style: TextStyle(
-                                                      color: isDark ? base : home,
-                                                    ),
-                                                  ),
-                                                );
                                               }
-                                            }
-                                          },
+                                            },
+                                          ),
                                         ),
+                                      ],
                                     ),
-                                  ],
                                   ),
                                 ),
-                              ),
+                              ],
                             ],
-                                      ],
                           ),
                         ),
-                                 ],
+                      ],
                     ),
                   ),
                 ),

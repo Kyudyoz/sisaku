@@ -35,7 +35,7 @@ class _SettingPageState extends State<SettingPage> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
             child: Text(
-              "Pengaturan",
+              (lang == 0) ? "Pengaturan" : 'Setting',
               style: GoogleFonts.inder(
                 fontSize: 23,
                 color: base,
@@ -77,7 +77,7 @@ class _SettingPageState extends State<SettingPage> {
                               SizedBox(width: 20),
                               TextButton(
                                   child: Text(
-                                    "Hapus Iklan",
+                                    (lang == 0) ? "Hapus Iklan" : 'Remove Ads',
                                     style: TextStyle(
                                         color: isDark ? base : Colors.black),
                                   ),
@@ -124,7 +124,9 @@ class _SettingPageState extends State<SettingPage> {
                               SizedBox(width: 20),
                               TextButton(
                                   child: Text(
-                                    "Hapus Data",
+                                    (lang == 0)
+                                        ? "Hapus Data"
+                                        : 'Clear All Data',
                                     style: TextStyle(
                                         color: isDark ? base : Colors.black),
                                   ),
@@ -144,7 +146,9 @@ class _SettingPageState extends State<SettingPage> {
                                                   children: [
                                                     Center(
                                                       child: Text(
-                                                        'Yakin ingin Hapus?',
+                                                        (lang == 0)
+                                                            ? 'Yakin ingin Hapus?'
+                                                            : 'Are you sure you want to clear all data?',
                                                         style:
                                                             GoogleFonts.inder(
                                                           fontSize: 16,
@@ -173,7 +177,9 @@ class _SettingPageState extends State<SettingPage> {
                                                                 .pop();
                                                           },
                                                           child: Text(
-                                                            'Batal',
+                                                            (lang == 0)
+                                                                ? 'Batal'
+                                                                : 'Cancel',
                                                             style: GoogleFonts
                                                                 .inder(
                                                               color: isDark
@@ -199,16 +205,16 @@ class _SettingPageState extends State<SettingPage> {
                                                             database
                                                                 .deleteAll();
                                                             setState(() {
-                                                              print(
-                                                                "Berhasil Hapus Semua",
-                                                              );
                                                               ScaffoldMessenger
                                                                       .of(context)
                                                                   .showSnackBar(
                                                                 SnackBar(
                                                                     content:
                                                                         Text(
-                                                                      'Berhasil Hapus Semua Data',
+                                                                      (lang ==
+                                                                              0)
+                                                                          ? 'Berhasil Hapus Semua Data'
+                                                                          : 'Clear All Data Success',
                                                                       style: GoogleFonts.inder(
                                                                           color:
                                                                               base),
@@ -219,7 +225,9 @@ class _SettingPageState extends State<SettingPage> {
                                                             });
                                                           },
                                                           child: Text(
-                                                            'Ya',
+                                                            (lang == 0)
+                                                                ? 'Ya'
+                                                                : 'Yes',
                                                             style: GoogleFonts
                                                                 .inder(
                                                               color: base,
@@ -253,7 +261,7 @@ class _SettingPageState extends State<SettingPage> {
                               SizedBox(width: 20),
                               TextButton(
                                   child: Text(
-                                    "Tema Warna",
+                                    (lang == 0) ? "Tema Warna" : "Theme",
                                     style: TextStyle(
                                         color: isDark ? base : Colors.black),
                                   ),
@@ -267,7 +275,9 @@ class _SettingPageState extends State<SettingPage> {
                                           backgroundColor:
                                               isDark ? dialog : Colors.white,
                                           title: Text(
-                                            "Pilih Warna",
+                                            (lang == 0)
+                                                ? "Pilih Warna"
+                                                : "Choose Theme Color",
                                             style: TextStyle(
                                                 color: isDark
                                                     ? base
@@ -292,7 +302,7 @@ class _SettingPageState extends State<SettingPage> {
                                                   });
                                                   saveData();
                                                 },
-                                                title: Text("Default",
+                                                title: Text("Cyan",
                                                     style: GoogleFonts.inder()),
                                                 activeColor: defaultTheme[0],
                                                 selected: true,
@@ -423,13 +433,79 @@ class _SettingPageState extends State<SettingPage> {
                               SizedBox(width: 20),
                               TextButton(
                                   child: Text(
-                                    "Bahasa",
+                                    (lang == 0) ? "Bahasa" : "Language",
                                     style: TextStyle(
                                         color: isDark ? base : Colors.black),
                                   ),
                                   style: TextButton.styleFrom(
                                       foregroundColor: Colors.black),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor:
+                                              isDark ? dialog : Colors.white,
+                                          title: Text(
+                                            (lang == 0)
+                                                ? "Pilih Bahasa"
+                                                : "Choose Language",
+                                            style: TextStyle(
+                                                color: isDark
+                                                    ? base
+                                                    : Colors.black),
+                                          ),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              RadioListTile.adaptive(
+                                                tileColor: isDark ? base : home,
+                                                fillColor:
+                                                    MaterialStatePropertyAll(
+                                                        primary),
+                                                value: 0,
+                                                groupValue: lang,
+                                                onChanged: (newLang) {
+                                                  setState(() {
+                                                    lang = newLang!;
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop('dialog');
+                                                  });
+                                                  saveData();
+                                                },
+                                                title: Text("Bahasa Indonesia",
+                                                    style: GoogleFonts.inder()),
+                                                activeColor: base,
+                                                selected: true,
+                                              ),
+                                              RadioListTile.adaptive(
+                                                tileColor: isDark ? base : home,
+                                                fillColor:
+                                                    MaterialStatePropertyAll(
+                                                        primary),
+                                                value: 1,
+                                                groupValue: lang,
+                                                onChanged: (newLang) {
+                                                  setState(() {
+                                                    lang = newLang!;
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop('dialog');
+                                                  });
+                                                  saveData();
+                                                },
+                                                title: Text("English",
+                                                    style: GoogleFonts.inder()),
+                                                activeColor: base,
+                                                selected: true,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }),
                             ]),
                             SizedBox(height: 32),
 
@@ -438,7 +514,7 @@ class _SettingPageState extends State<SettingPage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    "Ikuti Kami",
+                                    (lang == 0) ? "Ikuti Kami" : "Follow Us",
                                     style: TextStyle(
                                         color: isDark ? base : Colors.black),
                                   ),
@@ -581,6 +657,7 @@ SharedPreferences? _sharedPreferences;
 
 late int _kode = 0;
 late bool isDark = false;
+late int lang = 0;
 
 // Fungsi untuk menyimpan data ke `SharedPreferences`
 void saveData() async {
@@ -589,6 +666,7 @@ void saveData() async {
   // Simpan data ke `SharedPreferences`
   _sharedPreferences?.setInt("kode", _kode);
   _sharedPreferences?.setBool("isDark", isDark);
+  _sharedPreferences?.setInt("lang", lang);
 }
 
 // Fungsi untuk mengambil data dari `SharedPreferences`
@@ -598,7 +676,7 @@ void loadData() async {
   // Ambil data dari `SharedPreferences`
   _kode = _sharedPreferences?.getInt("kode") ?? 0;
   isDark = _sharedPreferences?.getBool("isDark") ?? false;
-  print(isDark);
+  lang = _sharedPreferences?.getInt("lang") ?? 0;
 }
 
 Color get primary => _getPrimary(_kode);

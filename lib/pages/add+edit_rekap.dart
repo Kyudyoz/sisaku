@@ -68,7 +68,13 @@ class _AddEditRekapState extends State<AddEditRekap> {
       appBar: AppBar(
         backgroundColor: primary,
         title: Text(
-          (widget.rekap == null) ? "Tambah Rekap" : "Edit Rekap",
+          (widget.rekap == null)
+              ? (lang == 0)
+                  ? "Tambah Rekap"
+                  : "Add Recap"
+              : (lang == 0)
+                  ? "Edit Rekap"
+                  : "Edit Recap",
           style: GoogleFonts.inder(
             fontWeight: FontWeight.w500,
             fontSize: 20,
@@ -101,7 +107,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     cursorColor: primary,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Deskripsi tidak boleh kosong';
+                        return (lang == 0)
+                            ? 'Nama Rekap tidak boleh kosong'
+                            : 'Recap Name cannot be empty';
                       }
                       return null;
                     },
@@ -113,7 +121,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                       ),
                       labelStyle:
                           TextStyle(color: isDark ? base : Colors.black),
-                      labelText: 'Deskripsi',
+                      labelText: (lang == 0) ? 'Nama Rekap' : 'Recap Name',
                     ),
                   ),
                 ),
@@ -128,7 +136,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     cursorColor: primary,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Start date tidak boleh kosong';
+                        return (lang == 0)
+                            ? 'Tanggal Mulai tidak boleh kosong'
+                            : "Start Date cannot be empty";
                       }
                       return null;
                     },
@@ -140,7 +150,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                       ),
                       labelStyle:
                           TextStyle(color: isDark ? base : Colors.black),
-                      labelText: 'Pilih Tanggal',
+                      labelText: (lang == 0)
+                          ? 'Pilih Tanggal Mulai'
+                          : "Choose Start Date",
                       suffixIcon: Icon(
                         Icons.calendar_month_rounded,
                         color: primary,
@@ -192,7 +204,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     cursorColor: primary,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'End date tidak boleh kosong';
+                        return (lang == 0)
+                            ? 'Tanggal Berakhir tidak boleh kosong'
+                            : 'End Date cannot be empty';
                       }
                       return null;
                     },
@@ -204,7 +218,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                       ),
                       labelStyle:
                           TextStyle(color: isDark ? base : Colors.black),
-                      labelText: 'Pilih Tanggal',
+                      labelText: (lang == 0)
+                          ? 'Pilih Tanggal Berakhir'
+                          : "Choose End Date",
                       suffixIcon: Icon(
                         Icons.calendar_month_rounded,
                         color: primary,
@@ -251,9 +267,6 @@ class _AddEditRekapState extends State<AddEditRekap> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextButton(
                     onPressed: () async {
-                      print("dbStart Date" + dbStartDate);
-                      print("dbEnd Date" + dbEndDate);
-
                       // Memproses CRUD
                       if (_formKey.currentState!.validate()) {
                         if (widget.rekap == null) {
@@ -265,7 +278,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                'Berhasil Tambah Rekap',
+                                (lang == 0)
+                                    ? 'Berhasil Tambah Rekap'
+                                    : "Add Rekap Success",
                                 style: GoogleFonts.inder(color: base),
                               ),
                               backgroundColor: primary,
@@ -282,7 +297,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Berhasil Edit Rekap',
+                                  (lang == 0)
+                                      ? 'Berhasil Edit Rekap'
+                                      : "Edit REcap Success",
                                   style: GoogleFonts.inder(color: base),
                                 ),
                                 backgroundColor: primary,
@@ -291,7 +308,6 @@ class _AddEditRekapState extends State<AddEditRekap> {
                           }
                         }
 
-                        print("CRUD Berhasil ??");
                         final route = MaterialPageRoute(
                           builder: (context) => RekapPage(
                             r: 3,
@@ -302,7 +318,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                       }
                     },
                     child: Text(
-                      "Simpan",
+                      (lang == 0) ? "Simpan" : "Save",
                       style: GoogleFonts.inder(
                         color: base,
                         fontSize: 15,

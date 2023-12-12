@@ -51,7 +51,7 @@ class _CategoryPageState extends State<CategoryPage> {
   TextEditingController categoryNameController = TextEditingController();
   // Dialog
   void openDialog(Category? category) {
-    String text = 'Tambah';
+    String text = (lang == 0) ? 'Tambah' : "Add";
     if (category != null) {
       categoryNameController.text = category.name;
       text = 'Edit';
@@ -71,8 +71,12 @@ class _CategoryPageState extends State<CategoryPage> {
                   children: [
                     Text(
                       (type == 2)
-                          ? '$text Kategori Pengeluaran'
-                          : '$text Kategori Pemasukan',
+                          ? (lang == 0)
+                              ? '$text Kategori Pengeluaran'
+                              : '$text Expense Category'
+                          : (lang == 0)
+                              ? '$text Kategori Pemasukan'
+                              : '$text Income Category',
                       style: GoogleFonts.inder(
                           fontSize: 18, color: isDark ? base : home),
                     ),
@@ -90,7 +94,9 @@ class _CategoryPageState extends State<CategoryPage> {
                             cursorColor: primary,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Nama kategori tidak boleh kosong';
+                                return (lang == 0)
+                                    ? 'Nama kategori tidak boleh kosong'
+                                    : "Category Name cannot be empty";
                               }
                               return null;
                             },
@@ -107,7 +113,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                   color: isDark ? base : Colors.black,
                                 ),
                               ),
-                              labelText: "Nama Kategori",
+                              labelText: (lang == 0)
+                                  ? "Nama Kategori"
+                                  : "Category Name",
                               labelStyle: TextStyle(
                                 color: isDark ? base : Colors.black,
                               ),
@@ -141,7 +149,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Berhasil Tambah Kategori',
+                                        (lang == 0)
+                                            ? 'Berhasil Tambah Kategori'
+                                            : "Add Category Success",
                                         style: GoogleFonts.inder(color: base),
                                       ),
                                       backgroundColor: primary,
@@ -161,7 +171,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                          'Berhasil Edit Kategori',
+                                          (lang == 0)
+                                              ? 'Berhasil Edit Kategori'
+                                              : "Edit Category Success",
                                           style: GoogleFonts.inder(color: base),
                                         ),
                                         backgroundColor: primary,
@@ -172,7 +184,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               }
                             },
                             child: Text(
-                              'Simpan',
+                              (lang == 0) ? 'Simpan' : "Save",
                               style: GoogleFonts.inder(
                                 color: base,
                                 fontSize: 12,
@@ -204,7 +216,7 @@ class _CategoryPageState extends State<CategoryPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Kategori",
+                  (lang == 0) ? "Kategori" : "Category",
                   style: GoogleFonts.inder(
                     fontSize: 23,
                     color: base,
@@ -249,11 +261,13 @@ class _CategoryPageState extends State<CategoryPage> {
                                           updateType(1);
                                         },
                                         child: Text(
-                                          "Pemasukan",
+                                          (lang == 0) ? "Pemasukan" : "Income",
                                           style: GoogleFonts.inder(
-                                            color: (type == 1) ? base : primary,
-                                            fontWeight: (type == 1) ? FontWeight.bold : FontWeight.normal
-                                          ),
+                                              color:
+                                                  (type == 1) ? base : primary,
+                                              fontWeight: (type == 1)
+                                                  ? FontWeight.bold
+                                                  : FontWeight.normal),
                                         ),
                                       ),
                                     ],
@@ -280,11 +294,15 @@ class _CategoryPageState extends State<CategoryPage> {
                                           updateType(2);
                                         },
                                         child: Text(
-                                          "Pengeluaran",
+                                          (lang == 0)
+                                              ? "Pengeluaran"
+                                              : "Expense",
                                           style: GoogleFonts.inder(
-                                            color: (type == 2) ? base : primary,
-                                            fontWeight: (type == 2) ? FontWeight.bold : FontWeight.normal
-                                          ),
+                                              color:
+                                                  (type == 2) ? base : primary,
+                                              fontWeight: (type == 2)
+                                                  ? FontWeight.bold
+                                                  : FontWeight.normal),
                                         ),
                                       ),
                                       Icon(
@@ -346,7 +364,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             categoryNameController.clear();
                           },
                           child: Text(
-                            'Tambah',
+                            (lang == 0) ? 'Tambah' : "Add",
                             style: GoogleFonts.inder(
                               color: base,
                             ),
@@ -410,7 +428,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                       Center(
                                                                         child:
                                                                             Text(
-                                                                          'Yakin ingin Hapus?',
+                                                                          (lang == 0)
+                                                                              ? 'Yakin ingin Hapus?'
+                                                                              : "Are you sure want to delete this category?",
                                                                           style:
                                                                               GoogleFonts.inder(
                                                                             fontSize:
@@ -440,7 +460,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             },
                                                                             child:
                                                                                 Text(
-                                                                              'Batal',
+                                                                              (lang == 0) ? 'Batal' : "Cancel",
                                                                               style: GoogleFonts.inder(
                                                                                 color: isDark ? base : home,
                                                                                 fontWeight: FontWeight.bold,
@@ -456,13 +476,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                                 () {
                                                                               Navigator.of(context, rootNavigator: true).pop('dialog');
                                                                               database.deleteCategoryAndTransactionsRepo(snapshot.data![index].id);
-                                                                              setState(() {
-                                                                                print("Berhasil Hapus");
-                                                                              });
+                                                                              setState(() {});
                                                                               ScaffoldMessenger.of(context).showSnackBar(
                                                                                 SnackBar(
                                                                                     content: Text(
-                                                                                      'Berhasil Hapus Kategori',
+                                                                                      (lang == 0) ? 'Berhasil Hapus Kategori' : "Delete Category Success",
                                                                                       style: GoogleFonts.inder(color: base),
                                                                                     ),
                                                                                     backgroundColor: primary),
@@ -470,7 +488,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                                             },
                                                                             child:
                                                                                 Text(
-                                                                              'Ya',
+                                                                              (lang == 0) ? 'Ya' : "Yes",
                                                                               style: GoogleFonts.inder(
                                                                                 color: base,
                                                                                 fontWeight: FontWeight.bold,
@@ -535,7 +553,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                 } else {
                                   return Center(
                                     child: Text(
-                                      'Data tidak ada',
+                                      (lang == 0)
+                                          ? 'Data tidak ada'
+                                          : "No data",
                                       style: TextStyle(
                                         color: isDark ? base : home,
                                       ),
@@ -545,7 +565,7 @@ class _CategoryPageState extends State<CategoryPage> {
                               } else {
                                 return Center(
                                   child: Text(
-                                    'Data tidak ada',
+                                    (lang == 0) ? 'Data tidak ada' : "No data",
                                     style: TextStyle(
                                       color: isDark ? base : home,
                                     ),

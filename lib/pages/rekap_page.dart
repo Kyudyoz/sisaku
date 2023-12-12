@@ -40,8 +40,6 @@ class _RekapPageState extends State<RekapPage> {
     updateR(r);
     _loadData();
 
-    print(" isi aaa $getIncExpPieChart()");
-
     datamap().then((dataMap) {
       setState(() {
         _dataMap = dataMap;
@@ -85,8 +83,8 @@ class _RekapPageState extends State<RekapPage> {
   }
 
   Future<Map<String, double>> getIncExpPieChart() async {
-    final Map<String, double> dataMapIncExp =  await database.getIncExpPieChart();
-    print("isi datamap inc exp $dataMapIncExp");
+    final Map<String, double> dataMapIncExp =
+        await database.getIncExpPieChart();
     return dataMapIncExp;
   }
 
@@ -105,7 +103,7 @@ class _RekapPageState extends State<RekapPage> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
             child: Text(
-              "Rekap",
+              (lang == 0) ? "Rekap" : "Recap",
               style: GoogleFonts.inder(
                 fontSize: 23,
                 color: base,
@@ -196,7 +194,9 @@ class _RekapPageState extends State<RekapPage> {
                                                   updateR(2);
                                                 },
                                                 child: Text(
-                                                  "Bulanan",
+                                                  (lang == 0)
+                                                      ? "Bulanan"
+                                                      : "Monthly",
                                                   style: GoogleFonts.inder(
                                                     color: (r == 2)
                                                         ? base
@@ -254,226 +254,178 @@ class _RekapPageState extends State<RekapPage> {
                             children: [
                               // Kalo Realtime
                               if (r == 1) ...[
-                     
-
                                 Expanded(
-                                  child: Column(
-                                    children: [
-                              // TODO: Add Text "By Type"
-                              // ===================================>All Inc Exp Data Map<===================================
-                                      FutureBuilder<Map<String, double>>(
-                                    future: getIncExpPieChart(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      primary)),
-                                        );
-                                      } else {
-                                        if (snapshot.hasData) {
-                                          if (snapshot.data!.length > 0) {
-                                             return Column(
-                                                  children: [
-                                                    
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 35),
-                                                      child: PieChart(
-                                                        dataMap: _pieChartIncExp,
-                                                        colorList: [Colors.greenAccent,Colors.redAccent],
-                                                        chartRadius:
-                                                            MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                1.7,
-                                                        legendOptions:
-                                                            LegendOptions(
-                                                          legendTextStyle:
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        // ===================================>All Inc Exp Data Map<===================================
+                                        FutureBuilder<Map<String, double>>(
+                                          future: getIncExpPieChart(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(primary)),
+                                              );
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length > 0) {
+                                                  return Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 35),
+                                                        child: PieChart(
+                                                          dataMap:
+                                                              _pieChartIncExp,
+                                                          colorList: [
+                                                            Colors.greenAccent,
+                                                            Colors.redAccent
+                                                          ],
+                                                          chartRadius:
+                                                              MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  1.7,
+                                                          legendOptions:
+                                                              LegendOptions(
+                                                            legendTextStyle:
+                                                                GoogleFonts.inder(
+                                                                    color: isDark
+                                                                        ? base
+                                                                        : home),
+                                                            legendPosition:
+                                                                LegendPosition
+                                                                    .right,
+                                                          ),
+                                                          chartValuesOptions:
+                                                              ChartValuesOptions(
+                                                            showChartValuesInPercentage:
+                                                                true,
+                                                            decimalPlaces: 0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                } else {
+                                                  return Center();
+                                                }
+                                              } else {
+                                                return Center();
+                                              }
+                                            }
+                                          },
+                                        ),
+
+                                        // ===================================>All Transaction Data Map<===================================
+                                        FutureBuilder<Map<String, double>>(
+                                          future: datamap(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center();
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length > 0) {
+                                                  return Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 35),
+                                                        child: PieChart(
+                                                          dataMap: _dataMap,
+                                                          chartRadius:
+                                                              MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  1.7,
+                                                          legendOptions:
+                                                              LegendOptions(
+                                                            legendTextStyle:
+                                                                GoogleFonts.inder(
+                                                                    color: isDark
+                                                                        ? base
+                                                                        : home),
+                                                            legendPosition:
+                                                                LegendPosition
+                                                                    .right,
+                                                          ),
+                                                          chartValuesOptions:
+                                                              ChartValuesOptions(
+                                                            showChartValuesInPercentage:
+                                                                true,
+                                                            decimalPlaces: 0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                } else {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 85),
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(height: 35),
+                                                        Image.asset(
+                                                          'assets/img/tes.png',
+                                                          width: 200,
+                                                        ),
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? "Belum ada transaksi"
+                                                              : "No transactions yet",
+                                                          style:
                                                               GoogleFonts.inder(
                                                                   color: isDark
                                                                       ? base
                                                                       : home),
-                                                          legendPosition:
-                                                              LegendPosition
-                                                                  .right,
                                                         ),
-                                                        chartValuesOptions:
-                                                            ChartValuesOptions(
-                                                          showChartValuesInPercentage:
-                                                              true,
-                                                          decimalPlaces: 0,
-                                                        ),
-                                                      ),
-                                                    ),
-
-                                                    
-                                                 
-                                                  ],
-                                                );
-                                            } else {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 85),
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(height: 35),
-                                                  Image.asset(
-                                                    'assets/img/tes.png',
-                                                    width: 200,
-                                                  ),
-                                                  Text(
-                                                    "Belum ada transaksi",
-                                                    style: GoogleFonts.inder(),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                        } else {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 85),
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  'assets/img/tes.png',
-                                                  width: 200,
-                                                ),
-                                                Text(
-                                                  "Tidak Ada Data",
-                                                  style: GoogleFonts.inder(
-                                                      color:
-                                                          isDark ? base : home),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                                  ),
-                              
-                              
-                               // TODO: Add Text "By All Kategori Name"
-                              // ===================================>All Kategori Name Map<===================================
-                              //TODO: Add PieChart "By All Kategori Name"
-                              
-                              
-                              
-                              
-                              
-                              
-                              
-                              
-                               // TODO: Add Text "By Type"
-                              // ===================================>All Transaction Data Map<===================================
-                                      FutureBuilder<Map<String, double>>(
-                                        future: datamap(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<Color>(
-                                                          primary)),
-                                            );
-                                          } else {
-                                            if (snapshot.hasData) {
-                                              if (snapshot.data!.length > 0) {
-                                                 return Column(
-                                                      children: [
-                                                        
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.only(
-                                                                  top: 35),
-                                                          child: PieChart(
-                                                            dataMap: _dataMap,
-                                                            chartRadius:
-                                                                MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width /
-                                                                    1.7,
-                                                            legendOptions:
-                                                                LegendOptions(
-                                                              legendTextStyle:
-                                                                  GoogleFonts.inder(
-                                                                      color: isDark
-                                                                          ? base
-                                                                          : home),
-                                                              legendPosition:
-                                                                  LegendPosition
-                                                                      .right,
-                                                            ),
-                                                            chartValuesOptions:
-                                                                ChartValuesOptions(
-                                                              showChartValuesInPercentage:
-                                                                  true,
-                                                              decimalPlaces: 0,
-                                                            ),
-                                                          ),
-                                                        ),
-
-                                                        
-                                                     
                                                       ],
-                                                    );
-               } else {
+                                                    ),
+                                                  );
+                                                }
+                                              } else {
                                                 return Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      bottom: 85),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 85),
                                                   child: Column(
                                                     children: [
-                                                      SizedBox(height: 35),
                                                       Image.asset(
                                                         'assets/img/tes.png',
                                                         width: 200,
                                                       ),
                                                       Text(
-                                                        "Belum ada transaksi",
-                                                        style: GoogleFonts.inder(),
+                                                        (lang == 0)
+                                                            ? "Tidak Ada Data"
+                                                            : "No data",
+                                                        style:
+                                                            GoogleFonts.inder(
+                                                                color: isDark
+                                                                    ? base
+                                                                    : home),
                                                       ),
                                                     ],
                                                   ),
                                                 );
                                               }
-                                            } else {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 85),
-                                                child: Column(
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/img/tes.png',
-                                                      width: 200,
-                                                    ),
-                                                    Text(
-                                                      "Tidak Ada Data",
-                                                      style: GoogleFonts.inder(
-                                                          color:
-                                                              isDark ? base : home),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
                                             }
-                                          }
-                                        },
-                                      ),
-
-                                    ],
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              
-                                
-                              
                               ]
 
                               // Kalo Bulanan
@@ -557,7 +509,6 @@ class _RekapPageState extends State<RekapPage> {
                                                                           index]),
                                                             ),
                                                           );
-                                                          print("tes edit");
                                                         },
                                                         color: primary,
                                                         hoverColor: secondary,
@@ -573,7 +524,9 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "Durasi ",
+                                                          (lang == 0)
+                                                              ? "Durasi "
+                                                              : "Period",
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -596,32 +549,9 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "Total Pengeluaran ",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalExpense
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Total Pemasukan ",
+                                                          (lang == 0)
+                                                              ? "Total Pemasukan "
+                                                              : "Total Income",
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -646,7 +576,36 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "Sisa ",
+                                                          (lang == 0)
+                                                              ? "Total Pengeluaran "
+                                                              : "Total Expense",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalExpense
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                      ]),
+                                                  SizedBox(height: 15),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? "Sisa "
+                                                              : "Balance",
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -681,7 +640,9 @@ class _RekapPageState extends State<RekapPage> {
                                                   width: 200,
                                                 ),
                                                 Text(
-                                                  "Belum ada transaksi pada bulan ini",
+                                                  (lang == 0)
+                                                      ? "Belum ada transaksi pada bulan ini"
+                                                      : "No transactions yet this month",
                                                   style: GoogleFonts.inder(
                                                       color:
                                                           isDark ? base : home),
@@ -701,7 +662,9 @@ class _RekapPageState extends State<RekapPage> {
                                                 width: 200,
                                               ),
                                               Text(
-                                                "Tidak Ada Data",
+                                                (lang == 0)
+                                                    ? "Tidak Ada Data"
+                                                    : "No data",
                                                 style: GoogleFonts.inder(
                                                     color:
                                                         isDark ? base : home),
@@ -795,7 +758,6 @@ class _RekapPageState extends State<RekapPage> {
                                                                               snapshot.data![index]),
                                                                 ),
                                                               );
-                                                              print("tes edit");
                                                             },
                                                             color: primary,
                                                             hoverColor:
@@ -816,7 +778,6 @@ class _RekapPageState extends State<RekapPage> {
                                                                               snapshot.data![index]),
                                                                 ),
                                                               );
-                                                              print("tes edit");
                                                             },
                                                             color: primary,
                                                             focusColor:
@@ -851,7 +812,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                               children: [
                                                                                 Center(
                                                                                   child: Text(
-                                                                                    'Yakin ingin Hapus?',
+                                                                                    (lang == 0) ? 'Yakin ingin Hapus?' : "Are you sure want to delete this recap?",
                                                                                     style: GoogleFonts.inder(
                                                                                       fontSize: 16,
                                                                                       fontWeight: FontWeight.bold,
@@ -871,7 +832,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                                         Navigator.of(context).pop();
                                                                                       },
                                                                                       child: Text(
-                                                                                        'Batal',
+                                                                                        (lang == 0) ? 'Batal' : "Cancel",
                                                                                         style: GoogleFonts.inder(
                                                                                           color: isDark ? base : home,
                                                                                           fontWeight: FontWeight.bold,
@@ -883,15 +844,11 @@ class _RekapPageState extends State<RekapPage> {
                                                                                       onPressed: () {
                                                                                         Navigator.of(context, rootNavigator: true).pop('dialog');
                                                                                         database.deleteRekap(snapshot.data![index].id);
-                                                                                        setState(() {
-                                                                                          print(
-                                                                                            "Berhasil Hapus Semua",
-                                                                                          );
-                                                                                        });
+                                                                                        setState(() {});
                                                                                         ScaffoldMessenger.of(context).showSnackBar(
                                                                                           SnackBar(
                                                                                             content: Text(
-                                                                                              'Berhasil Tambah Kategori',
+                                                                                              (lang == 0) ? 'Berhasil Hapus Rekap' : 'Delete Recap Success',
                                                                                               style: GoogleFonts.inder(color: base),
                                                                                             ),
                                                                                             backgroundColor: primary,
@@ -899,7 +856,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                                         );
                                                                                       },
                                                                                       child: Text(
-                                                                                        'Ya',
+                                                                                        (lang == 0) ? 'Ya' : "Yes",
                                                                                         style: GoogleFonts.inder(
                                                                                           color: base,
                                                                                           fontWeight: FontWeight.bold,
@@ -934,7 +891,9 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "Durasi ",
+                                                          (lang == 0)
+                                                              ? "Durasi "
+                                                              : "Period",
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -957,32 +916,9 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "Total Pengeluaran ",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalExpense
-                                                                  .toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "Total Pemasukan ",
+                                                          (lang == 0)
+                                                              ? "Total Pemasukan "
+                                                              : "Total Income",
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -1007,7 +943,36 @@ class _RekapPageState extends State<RekapPage> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "Sisa ",
+                                                          (lang == 0)
+                                                              ? "Total Pengeluaran "
+                                                              : "Total Expense",
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                        Text(
+                                                          "Rp." +
+                                                              snapshot
+                                                                  .data![index]
+                                                                  .totalExpense
+                                                                  .toString(),
+                                                          style: TextStyle(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                        ),
+                                                      ]),
+                                                  SizedBox(height: 15),
+                                                  Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? "Sisa "
+                                                              : " Balance ",
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -1044,7 +1009,9 @@ class _RekapPageState extends State<RekapPage> {
                                                   width: 200,
                                                 ),
                                                 Text(
-                                                  "Tidak Ada Data",
+                                                  (lang == 0)
+                                                      ? "Tidak Ada Data"
+                                                      : "No data",
                                                   style: GoogleFonts.inder(
                                                       color:
                                                           isDark ? base : home),
@@ -1064,7 +1031,9 @@ class _RekapPageState extends State<RekapPage> {
                                                 width: 200,
                                               ),
                                               Text(
-                                                "Tidak Ada Data",
+                                                (lang == 0)
+                                                    ? "Tidak Ada Data"
+                                                    : "No data",
                                                 style: GoogleFonts.inder(
                                                     color:
                                                         isDark ? base : home),
@@ -1106,32 +1075,37 @@ class _RekapPageState extends State<RekapPage> {
                                   ),
                                 ],
                               ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(primary),
-                                  shape: MaterialStatePropertyAll(
-                                    ContinuousRectangleBorder(
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    // DetailPage adalah halaman yang dituju
-                                    MaterialPageRoute(
-                                      builder: (context) => GalleryPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Lihat Galeri',
-                                  style: GoogleFonts.inder(
-                                    color: base,
-                                  ),
-                                ),
-                              ),
+                              (r == 1)
+                                  ? ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(primary),
+                                        shape: MaterialStatePropertyAll(
+                                          ContinuousRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          // DetailPage adalah halaman yang dituju
+                                          MaterialPageRoute(
+                                            builder: (context) => GalleryPage(),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        (lang == 0)
+                                            ? 'Lihat Galeri'
+                                            : 'View Gallery',
+                                        style: GoogleFonts.inder(
+                                          color: base,
+                                        ),
+                                      ),
+                                    )
+                                  : Center(),
                             ],
                           ),
                         ),

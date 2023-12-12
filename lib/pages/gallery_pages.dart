@@ -53,7 +53,7 @@ class _GalleryPageState extends State<GalleryPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Gallery",
+                  (lang == 0) ? "Galeri" : "Gallery",
                   style: GoogleFonts.montserrat(
                     fontSize: 23,
                     color: base,
@@ -98,7 +98,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                           updateType(1);
                                         },
                                         child: Text(
-                                          "Pemasukan",
+                                          (lang == 0) ? "Pemasukan" : "Income",
                                           style: GoogleFonts.montserrat(
                                             color: (type == 1) ? base : primary,
                                           ),
@@ -128,7 +128,9 @@ class _GalleryPageState extends State<GalleryPage> {
                                           updateType(2);
                                         },
                                         child: Text(
-                                          "Pengeluaran",
+                                          (lang == 0)
+                                              ? "Pengeluaran"
+                                              : "Expense",
                                           style: GoogleFonts.montserrat(
                                             color: (type == 2) ? base : primary,
                                           ),
@@ -317,7 +319,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                                 children: [
                                                                                   Text(
-                                                                                    "Tanggal Transaksi",
+                                                                                    (lang == 0) ? "Tanggal Transaksi" : "Transaction Date",
                                                                                     style: GoogleFonts.inder(
                                                                                       fontSize: 14,
                                                                                       color: base,
@@ -342,7 +344,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                                                 children: [
                                                                                   Text(
-                                                                                    'Jumlah Uang',
+                                                                                    (lang == 0) ? 'Jumlah Uang' : "Amount",
                                                                                     style: GoogleFonts.inder(
                                                                                       fontSize: 14,
                                                                                       color: base,
@@ -474,7 +476,9 @@ class _GalleryPageState extends State<GalleryPage> {
                                           width: 200,
                                         ),
                                         Text(
-                                          "Belum ada transaksi dengan gambar",
+                                          (lang == 0)
+                                              ? "Belum ada transaksi dengan gambar"
+                                              : "No transactions with image yet",
                                           style: GoogleFonts.inder(
                                               color:
                                                   isDark ? base : Colors.black),
@@ -495,7 +499,9 @@ class _GalleryPageState extends State<GalleryPage> {
                                         width: 200,
                                       ),
                                       Text(
-                                        "Tidak Ada Data",
+                                        (lang == 0)
+                                            ? "Tidak Ada Data"
+                                            : "No data",
                                         style: GoogleFonts.inder(
                                             color:
                                                 isDark ? base : Colors.black),

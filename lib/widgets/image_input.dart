@@ -71,7 +71,7 @@ class _ImageInputState extends State<ImageInput> {
                 ? Image.file(_imageFile!, fit: BoxFit.cover)
                 : Center(
                     child: Text(
-                      'Belum ada gambar',
+                      (lang == 0) ? 'Belum ada gambar' : 'No image',
                       style: TextStyle(color: isDark ? base : Colors.black),
                     ),
                   ),
@@ -87,7 +87,7 @@ class _ImageInputState extends State<ImageInput> {
                     color: primary,
                   ),
                   label: Text(
-                    'Ambil dari galeri',
+                    (lang == 0) ? 'Ambil dari galeri' : 'From Gallery',
                     style: TextStyle(color: primary),
                   )),
               TextButton.icon(
@@ -97,7 +97,7 @@ class _ImageInputState extends State<ImageInput> {
                     color: primary,
                   ),
                   label: Text(
-                    'Gunakan kamera',
+                    (lang == 0) ? 'Gunakan kamera' : "Use Camera",
                     style: TextStyle(color: primary),
                   )),
             ],

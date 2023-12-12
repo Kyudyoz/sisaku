@@ -124,7 +124,7 @@ class _TransactionPageState extends State<TransactionPage> {
   TextEditingController categoryNameController = TextEditingController();
   // Dialog
   void openDialog(Category? category) {
-    String text = 'Tambah';
+    String text = (lang == 0) ? 'Tambah' : 'Add';
     if (category != null) {
       categoryNameController.text = category.name;
       text = 'Edit';
@@ -144,8 +144,12 @@ class _TransactionPageState extends State<TransactionPage> {
                   children: [
                     Text(
                       (type == 2)
-                          ? '$text Kategori Pengeluaran'
-                          : '$text Kategori Pemasukan',
+                          ? (lang == 0)
+                              ? '$text Kategori Pengeluaran'
+                              : '$text Expense Category'
+                          : (lang == 0)
+                              ? '$text Kategori Pemasukan'
+                              : '$text Income Category',
                       style: GoogleFonts.inder(
                         fontSize: 18,
                         color: isDark ? base : Colors.black,
@@ -166,7 +170,9 @@ class _TransactionPageState extends State<TransactionPage> {
                             cursorColor: primary,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Nama kategori tidak boleh kosong';
+                                return (lang == 0)
+                                    ? 'Nama kategori tidak boleh kosong'
+                                    : "Category Name cannot be empty";
                               }
                               return null;
                             },
@@ -180,7 +186,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                   borderSide: BorderSide(
                                     color: isDark ? base : Colors.black,
                                   )),
-                              labelText: "Nama Kategori",
+                              labelText: (lang == 0)
+                                  ? "Nama Kategori"
+                                  : "Category Name",
                               labelStyle: TextStyle(
                                 color: isDark ? base : Colors.black,
                               ),
@@ -215,7 +223,7 @@ class _TransactionPageState extends State<TransactionPage> {
                               }
                             },
                             child: Text(
-                              'Simpan',
+                              (lang == 0) ? 'Simpan' : 'Save',
                               style: GoogleFonts.inder(
                                 color: base,
                                 fontSize: 12,
@@ -253,8 +261,12 @@ class _TransactionPageState extends State<TransactionPage> {
               children: [
                 Text(
                   (widget.transactionWithCategory == null)
-                      ? "Tambah Transaksi"
-                      : "Edit Transaksi",
+                      ? (lang == 0)
+                          ? "Tambah Transaksi"
+                          : "Add Transaction"
+                      : (lang == 0)
+                          ? "Edit Transaksi"
+                          : "Edit Transaction",
                   style: GoogleFonts.inder(
                     fontSize: 23,
                     color: base,
@@ -299,11 +311,13 @@ class _TransactionPageState extends State<TransactionPage> {
                                           updateType(1);
                                         },
                                         child: Text(
-                                          "Pemasukan",
+                                          (lang == 0) ? "Pemasukan" : 'Income',
                                           style: GoogleFonts.inder(
-                                            color: (type == 1) ? base : primary,
-                                            fontWeight: (type == 1) ? FontWeight.bold : FontWeight.normal
-                                          ),
+                                              color:
+                                                  (type == 1) ? base : primary,
+                                              fontWeight: (type == 1)
+                                                  ? FontWeight.bold
+                                                  : FontWeight.normal),
                                         ),
                                       ),
                                     ],
@@ -330,11 +344,15 @@ class _TransactionPageState extends State<TransactionPage> {
                                           updateType(2);
                                         },
                                         child: Text(
-                                          "Pengeluaran",
+                                          (lang == 0)
+                                              ? "Pengeluaran"
+                                              : 'Expense',
                                           style: GoogleFonts.inder(
-                                            color: (type == 2) ? base : primary,
-                                            fontWeight: (type == 2) ? FontWeight.bold : FontWeight.normal
-                                          ),
+                                              color:
+                                                  (type == 2) ? base : primary,
+                                              fontWeight: (type == 2)
+                                                  ? FontWeight.bold
+                                                  : FontWeight.normal),
                                         ),
                                       ),
                                       Icon(
@@ -392,7 +410,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                 cursorColor: primary,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Deskripsi tidak boleh kosong';
+                                    return (lang == 0)
+                                        ? 'Deskripsi tidak boleh kosong'
+                                        : 'Transaction Name cannot be empty';
                                   }
                                   return null;
                                 },
@@ -403,7 +423,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                     borderSide:
                                         BorderSide(color: isDark ? base : home),
                                   ),
-                                  labelText: 'Deskripsi',
+                                  labelText: (lang == 0)
+                                      ? 'Deskripsi'
+                                      : 'Transaction Name',
                                   labelStyle: TextStyle(
                                       color: isDark ? base : Colors.black),
                                 ),
@@ -421,7 +443,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                 cursorColor: primary,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Jumlah uang tidak boleh kosong';
+                                    return (lang == 0)
+                                        ? 'Jumlah uang tidak boleh kosong'
+                                        : 'Amount cannot be empty';
                                   }
                                   return null;
                                 },
@@ -432,7 +456,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                     borderSide:
                                         BorderSide(color: isDark ? base : home),
                                   ),
-                                  labelText: 'Jumlah Uang',
+                                  labelText:
+                                      (lang == 0) ? 'Jumlah Uang' : 'Amount',
                                   labelStyle: TextStyle(
                                       color: isDark ? base : Colors.black),
                                 ),
@@ -453,7 +478,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                 cursorColor: primary,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Tanggal tidak boleh kosong';
+                                    return (lang == 0)
+                                        ? 'Tanggal tidak boleh kosong'
+                                        : 'Date cannot be empty';
                                   }
                                   return null;
                                 },
@@ -466,7 +493,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                   ),
                                   labelStyle: TextStyle(
                                       color: isDark ? base : Colors.black),
-                                  labelText: 'Pilih Tanggal',
+                                  labelText: (lang == 0)
+                                      ? 'Pilih Tanggal'
+                                      : 'Choose Date',
                                   suffixIcon: Icon(
                                     Icons.calendar_month_rounded,
                                     color: primary,
@@ -505,7 +534,6 @@ class _TransactionPageState extends State<TransactionPage> {
                                         .format(pickedDate);
                                     setState(() {
                                       dbDate = data;
-                                      print("Isi dbDate : " + dbDate);
                                     });
                                   }
                                 },
@@ -537,7 +565,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                   isDark ? base : Colors.black),
                                           validator: (value) {
                                             if (value == null) {
-                                              return 'Kategori tidak boleh kosong';
+                                              return (lang == 0)
+                                                  ? 'Kategori tidak boleh kosong'
+                                                  : 'Category cannot be empty';
                                             }
                                             return null;
                                           },
@@ -550,7 +580,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 color: isDark
                                                     ? base
                                                     : Colors.black),
-                                            labelText: 'Pilih Kategori',
+                                            labelText: (lang == 0)
+                                                ? 'Pilih Kategori'
+                                                : 'Category',
                                             focusedBorder: UnderlineInputBorder(
                                                 borderSide:
                                                     BorderSide(color: primary)),
@@ -589,7 +621,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                'Kategori tidak ada',
+                                                (lang == 0)
+                                                    ? 'Kategori tidak ada'
+                                                    : 'Category not found',
                                                 style: TextStyle(
                                                   color: isDark
                                                       ? base
@@ -615,7 +649,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                   color: base,
                                                 ),
                                                 label: Text(
-                                                  'Tambah kategori',
+                                                  (lang == 0)
+                                                      ? 'Tambah kategori'
+                                                      : 'Add Category',
                                                   style: GoogleFonts.inder(
                                                       color: base),
                                                 ),
@@ -647,7 +683,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                           vertical: 24.0),
                                       child: Center(
                                         child: Text(
-                                          'Database tidak ada',
+                                          (lang == 0)
+                                              ? 'Database tidak ada'
+                                              : "Database not found",
                                           style: TextStyle(
                                             color: isDark ? base : Colors.black,
                                           ),
@@ -675,7 +713,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Gambar Lama",
+                                                (lang == 0)
+                                                    ? "Gambar Lama"
+                                                    : 'Old Image',
                                                 style: GoogleFonts.montserrat(
                                                   color: isDark
                                                       ? base
@@ -707,7 +747,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Gambar Baru(opsional)",
+                                                (lang == 0)
+                                                    ? "Gambar Baru(opsional)"
+                                                    : "New Image(Optional)",
                                                 style: GoogleFonts.montserrat(
                                                     color: isDark
                                                         ? base
@@ -733,7 +775,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Gambar (opsional)",
+                                          (lang == 0)
+                                              ? "Gambar (opsional)"
+                                              : "Image (Optional)",
                                           style: GoogleFonts.montserrat(
                                               color:
                                                   isDark ? base : Colors.black),
@@ -774,7 +818,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                   .showSnackBar(
                                                 SnackBar(
                                                   content: Text(
-                                                    'Berhasil Tambah Transaksi',
+                                                    (lang == 0)
+                                                        ? 'Berhasil Tambah Transaksi'
+                                                        : 'Add Transaction Success',
                                                     style: GoogleFonts.inder(
                                                         color: base),
                                                   ),
@@ -801,7 +847,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                                     .showSnackBar(
                                                   SnackBar(
                                                     content: Text(
-                                                      'Berhasil Edit Transaksi',
+                                                      (lang == 0)
+                                                          ? 'Berhasil Edit Transaksi'
+                                                          : 'Edit Transaction Success',
                                                       style: GoogleFonts.inder(
                                                           color: base),
                                                     ),
@@ -819,8 +867,6 @@ class _TransactionPageState extends State<TransactionPage> {
                                             int year = date.year;
                                             int month = date.month;
 
-                                            print("Tahun: $year");
-                                            print("Bulan: $month");
                                             await createMonthlyRekaps(
                                                 year, month);
                                             // Navigator.pop(context);
@@ -837,7 +883,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                           }
                                         },
                                         child: Text(
-                                          'Simpan Transaksi',
+                                          (lang == 0)
+                                              ? 'Simpan Transaksi'
+                                              : 'Save',
                                           style: GoogleFonts.inder(
                                             color: base,
                                             fontSize: 15,
