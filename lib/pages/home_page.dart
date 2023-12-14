@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
     _loadData();
     loadData();
     if (isLoading) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(seconds: 3), () {
         if (mounted) {
           setState(() {
             isLoading = false;
