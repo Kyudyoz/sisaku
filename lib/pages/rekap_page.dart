@@ -33,6 +33,8 @@ class _RekapPageState extends State<RekapPage> {
 
   late Map<String, double> _dataMap = {};
   late Map<String, double> _pieChartIncExp = {};
+  late Map<String, double> _pieChartIncName = {};
+  late Map<String, double> _pieChartExpName = {};   
 
   @override
   void initState() {
@@ -50,6 +52,18 @@ class _RekapPageState extends State<RekapPage> {
         _pieChartIncExp = dataMapIncExp;
       });
     });
+
+     // print(" isi aaa $getIncExpPieChart()");
+    print("Isi Inc Name $getIncNamePieChart()");
+
+
+
+    getExpNamePieChart().then((dataMapExpName) {
+      setState(() {
+        _pieChartExpName = dataMapExpName;
+      });
+    });
+
   }
 
   void updateR(int index) {
@@ -87,6 +101,18 @@ class _RekapPageState extends State<RekapPage> {
         await database.getIncExpPieChart();
     return dataMapIncExp;
   }
+  
+Future<Map<String, double>> getIncNamePieChart() async {
+    final Map<String, double> dataMapInc =  await database.getAllIncPieChart();
+    print("isi datamap inc name $dataMapInc");
+    return dataMapInc;
+  }
+  
+  Future<Map<String, double>> getExpNamePieChart() async {
+    final Map<String, double> dataMapExp =  await database.getAllExpPieChart();
+    print("isi datamap inc name $dataMapExp");
+    return dataMapExp;
+  }
 
   Future<void> _loadData() async {
     setState(() {});
@@ -103,7 +129,7 @@ class _RekapPageState extends State<RekapPage> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
             child: Text(
-              (lang == 0) ? "Rekap" : "Recap",
+              (lang == 0) ? "Rekap" : "Report",
               style: GoogleFonts.inder(
                 fontSize: 23,
                 color: base,
@@ -848,7 +874,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                                         ScaffoldMessenger.of(context).showSnackBar(
                                                                                           SnackBar(
                                                                                             content: Text(
-                                                                                              (lang == 0) ? 'Berhasil Hapus Rekap' : 'Delete Recap Success',
+                                                                                              (lang == 0) ? 'Berhasil Hapus Rekap' : 'Delete Report Success',
                                                                                               style: GoogleFonts.inder(color: base),
                                                                                             ),
                                                                                             backgroundColor: primary,
