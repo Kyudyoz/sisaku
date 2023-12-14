@@ -42,28 +42,34 @@ class _RekapPageState extends State<RekapPage> {
     updateR(r);
     _loadData();
 
-    datamap().then((dataMap) {
-      setState(() {
-        _dataMap = dataMap;
-      });
-    });
+   
     getIncExpPieChart().then((dataMapIncExp) {
       setState(() {
-        _pieChartIncName = dataMapIncExp;
+        _pieChartIncExp = dataMapIncExp;
       });
+
     });
 
-     // print(" isi aaa $getIncExpPieChart()");
-    print("Isi Inc Name $getIncNamePieChart()");
-
-
-
+   
+    getIncNamePieChart().then((dataMapIncName) {
+      setState(() {
+        _pieChartIncName = dataMapIncName;
+      });
+       print("Isi Inc Name $_pieChartIncName");
+    });
+    
     getExpNamePieChart().then((dataMapExpName) {
       setState(() {
         _pieChartExpName = dataMapExpName;
       });
+       print("Isi Exp Name $_pieChartExpName");
     });
 
+    datamap().then((dataMap) {
+        setState(() {
+          _dataMap = dataMap;
+        });
+      });
   }
 
   void updateR(int index) {
@@ -92,13 +98,13 @@ class _RekapPageState extends State<RekapPage> {
 
   Future<Map<String, double>> datamap() async {
     final Map<String, double> dataMap = await database.getMapFromDatabase();
-
     return dataMap;
   }
 
   Future<Map<String, double>> getIncExpPieChart() async {
     final Map<String, double> dataMapIncExp =
         await database.getIncExpPieChart();
+    // print("isi datamap All Inc Exp $dataMapIncExp");
     return dataMapIncExp;
   }
   
@@ -110,7 +116,7 @@ Future<Map<String, double>> getIncNamePieChart() async {
   
   Future<Map<String, double>> getExpNamePieChart() async {
     final Map<String, double> dataMapExp =  await database.getAllExpPieChart();
-    print("isi datamap inc name $dataMapExp");
+    print("isi datamap Exp name $dataMapExp");
     return dataMapExp;
   }
 
@@ -284,7 +290,18 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
+                                        
                                         // ===================================>All Inc Exp Data Map<===================================
+                                        Padding(
+                                          padding: const EdgeInsets.only(top:25),
+                                          child: Text(
+                                            (lang == 0) ? "Berdasarkan Tipe" : "By Type",
+                                            style: GoogleFonts.inder(
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+
                                         FutureBuilder<Map<String, double>>(
                                           future: getIncExpPieChart(),
                                           builder: (context, snapshot) {
@@ -348,8 +365,17 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             }
                                           },
                                         ),
-
+                                        
                                         // ===================================>All Transaction Inc Name Map<===================================
+                                         Padding(
+                                          padding: const EdgeInsets.only(top:25),
+                                          child: Text(
+                                            (lang == 0) ? "Berdasarkan Nama Kategori Pemasukan" : "By Income Category Name",
+                                            style: GoogleFonts.inder(
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
 
                                         FutureBuilder<Map<String, double>>(
                                           future: getIncNamePieChart(),
@@ -449,7 +475,18 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             }
                                           },
                                         ),
-                                        // ===================================>All Transaction Inc Name Map<===================================
+                                       
+                                        // ===================================>All Transaction Expense Name Map<===================================
+                                         Padding(
+                                          padding: const EdgeInsets.only(top:25),
+                                          child: Text(
+                                            (lang == 0) ? "Berdasarkan Nama Kategori Pengeluaran" : "By Expense Category Name",
+                                            style: GoogleFonts.inder(
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+
                                         FutureBuilder<Map<String, double>>(
                                           future: getExpNamePieChart(),
                                           builder: (context, snapshot) {
@@ -550,6 +587,16 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                         ),
 
                                       // ===================================>All Transaction Data Map<===================================
+                                         Padding(
+                                          padding: const EdgeInsets.only(top:25),
+                                          child: Text(
+                                            (lang == 0) ? "Berdasarkan Semua Transaksi" : "By All Transaction",
+                                            style: GoogleFonts.inder(
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+
                                         FutureBuilder<Map<String, double>>(
                                           future: datamap(),
                                           builder: (context, snapshot) {
@@ -648,6 +695,7 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             }
                                           },
                                         ),
+                                      
                                       ],
                                     ),
                                   ),
