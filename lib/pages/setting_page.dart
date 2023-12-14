@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:sisaku/colors.dart';
 import 'package:sisaku/models/database.dart';
+import 'package:sisaku/pages/about.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
@@ -125,7 +126,7 @@ class _SettingPageState extends State<SettingPage> {
                               TextButton(
                                   child: Text(
                                     (lang == 0)
-                                        ? "Hapus Data"
+                                        ? "Hapus Semua Data"
                                         : 'Clear All Data',
                                     style: TextStyle(
                                         color: isDark ? base : Colors.black),
@@ -509,6 +510,36 @@ class _SettingPageState extends State<SettingPage> {
                                         );
                                       },
                                     );
+                                  }),
+                            ]),
+
+                            SizedBox(height: 18),
+                            Row(children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      color: primary,
+                                      borderRadius: BorderRadius.circular(3)),
+                                  child: Icon(
+                                    Icons.code_outlined,
+                                    color: base,
+                                    size: 27,
+                                  )),
+                              SizedBox(width: 20),
+                              TextButton(
+                                  child: Text(
+                                    (lang == 0)
+                                        ? "Tentang Pengembang"
+                                        : 'About Developer',
+                                    style: TextStyle(
+                                        color: isDark ? base : Colors.black),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                      foregroundColor: Colors.black),
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => About(),
+                                    ));
                                   }),
                             ]),
                             SizedBox(height: 32),
