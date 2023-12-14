@@ -3,6 +3,7 @@ import 'package:sisaku/pages/home_page.dart';
 // import 'package:sisaku/colors.dart';
 import 'pages/setting_page.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +26,15 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', 'EN'),
+        Locale('id', 'ID'),
+      ],
       home: HomePage(selectedDate: DateTime.now()),
       theme: ThemeData(
         primaryColor: primary,

@@ -504,6 +504,9 @@ class _TransactionPageState extends State<TransactionPage> {
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
+                                      locale: (lang == 0)
+                                          ? Locale('id', 'ID')
+                                          : Locale('en', 'EN'),
                                       initialEntryMode:
                                           DatePickerEntryMode.calendarOnly,
                                       initialDate: DateTime.now(),
@@ -526,8 +529,10 @@ class _TransactionPageState extends State<TransactionPage> {
                                       });
 
                                   if (pickedDate != Null) {
-                                    String formattedDate =
-                                        DateFormat('dd-MMMM-yyyy')
+                                    String formattedDate = (lang == 0)
+                                        ? DateFormat('dd-MMMM-yyyy', 'id_ID')
+                                            .format(pickedDate!)
+                                        : DateFormat('dd-MMMM-yyyy')
                                             .format(pickedDate!);
                                     dateController.text = formattedDate;
                                     String data = DateFormat('yyyy-MM-dd')

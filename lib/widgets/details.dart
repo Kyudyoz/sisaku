@@ -13,6 +13,7 @@ class Details extends StatefulWidget {
     required this.totalIncome,
     required this.totalExpense,
     required this.dailyAverage,
+    required this.isMonthly,
   });
   // final Rekap? rekap;
   final name;
@@ -21,6 +22,7 @@ class Details extends StatefulWidget {
   final totalIncome;
   final totalExpense;
   final dailyAverage;
+  final isMonthly;
 
   @override
   State<Details> createState() => _DetailsState();
@@ -32,7 +34,15 @@ class _DetailsState extends State<Details> {
     return Column(children: [
       SizedBox(height: 35),
       Text(
-        widget.name,
+        (lang == 0)
+            ? (widget.isMonthly)
+                ? DateFormat.yMMMM('id_ID').format(
+                    DateTime.parse(widget.name),
+                  )
+                : widget.name
+            : (widget.isMonthly)
+                ? DateFormat.yMMMM().format(DateTime.parse(widget.name))
+                : widget.name,
         style:
             TextStyle(fontWeight: FontWeight.bold, color: isDark ? base : home),
       ),
@@ -43,7 +53,17 @@ class _DetailsState extends State<Details> {
           style: TextStyle(color: isDark ? base : home),
         ),
         Text(
-          widget.startDate + " ~ " + widget.endDate,
+          (lang == 0)
+              ? DateFormat('dd-MMMM-yyyy', 'id_ID')
+                      .format(widget.startDate)
+                      .toString() +
+                  " ~ " +
+                  DateFormat('dd-MMMM-yyyy', 'id_ID')
+                      .format(widget.endDate)
+                      .toString()
+              : DateFormat('dd-MMMM-yyyy').format(widget.startDate).toString() +
+                  " ~ " +
+                  DateFormat('dd-MMMM-yyyy').format(widget.endDate).toString(),
           style: TextStyle(color: isDark ? base : home),
         ),
       ]),

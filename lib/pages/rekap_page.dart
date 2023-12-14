@@ -34,7 +34,7 @@ class _RekapPageState extends State<RekapPage> {
   late Map<String, double> _dataMap = {};
   late Map<String, double> _pieChartIncExp = {};
   late Map<String, double> _pieChartIncName = {};
-  late Map<String, double> _pieChartExpName = {};   
+  late Map<String, double> _pieChartExpName = {};
 
   @override
   void initState() {
@@ -42,34 +42,31 @@ class _RekapPageState extends State<RekapPage> {
     updateR(r);
     _loadData();
 
-   
     getIncExpPieChart().then((dataMapIncExp) {
       setState(() {
         _pieChartIncExp = dataMapIncExp;
       });
-
     });
 
-   
     getIncNamePieChart().then((dataMapIncName) {
       setState(() {
         _pieChartIncName = dataMapIncName;
       });
-       print("Isi Inc Name $_pieChartIncName");
+      print("Isi Inc Name $_pieChartIncName");
     });
-    
+
     getExpNamePieChart().then((dataMapExpName) {
       setState(() {
         _pieChartExpName = dataMapExpName;
       });
-       print("Isi Exp Name $_pieChartExpName");
+      print("Isi Exp Name $_pieChartExpName");
     });
 
     datamap().then((dataMap) {
-        setState(() {
-          _dataMap = dataMap;
-        });
+      setState(() {
+        _dataMap = dataMap;
       });
+    });
   }
 
   void updateR(int index) {
@@ -107,15 +104,15 @@ class _RekapPageState extends State<RekapPage> {
     // print("isi datamap All Inc Exp $dataMapIncExp");
     return dataMapIncExp;
   }
-  
-Future<Map<String, double>> getIncNamePieChart() async {
-    final Map<String, double> dataMapInc =  await database.getAllIncPieChart();
+
+  Future<Map<String, double>> getIncNamePieChart() async {
+    final Map<String, double> dataMapInc = await database.getAllIncPieChart();
     print("isi datamap inc name $dataMapInc");
     return dataMapInc;
   }
-  
+
   Future<Map<String, double>> getExpNamePieChart() async {
-    final Map<String, double> dataMapExp =  await database.getAllExpPieChart();
+    final Map<String, double> dataMapExp = await database.getAllExpPieChart();
     print("isi datamap Exp name $dataMapExp");
     return dataMapExp;
   }
@@ -290,14 +287,18 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        
                                         // ===================================>All Inc Exp Data Map<===================================
                                         Padding(
-                                          padding: const EdgeInsets.only(top:25),
+                                          padding:
+                                              const EdgeInsets.only(top: 25),
                                           child: Text(
-                                            (lang == 0) ? "Berdasarkan Tipe" : "By Type",
+                                            (lang == 0)
+                                                ? "Berdasarkan Tipe"
+                                                : "By Type",
                                             style: GoogleFonts.inder(
                                               fontSize: 17,
+                                              color:
+                                                  isDark ? base : Colors.black,
                                             ),
                                           ),
                                         ),
@@ -329,12 +330,7 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                                             Colors.greenAccent,
                                                             Colors.redAccent
                                                           ],
-                                                          chartRadius:
-                                                              MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  1.7,
+                                                          chartRadius: 200,
                                                           legendOptions:
                                                               LegendOptions(
                                                             legendTextStyle:
@@ -365,14 +361,19 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             }
                                           },
                                         ),
-                                        
+
                                         // ===================================>All Transaction Inc Name Map<===================================
-                                         Padding(
-                                          padding: const EdgeInsets.only(top:25),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 25),
                                           child: Text(
-                                            (lang == 0) ? "Berdasarkan Nama Kategori Pemasukan" : "By Income Category Name",
+                                            (lang == 0)
+                                                ? "Berdasarkan Nama Kategori Pemasukan"
+                                                : "By Income Category Name",
                                             style: GoogleFonts.inder(
                                               fontSize: 17,
+                                              color:
+                                                  isDark ? base : Colors.black,
                                             ),
                                           ),
                                         ),
@@ -393,13 +394,9 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                                             const EdgeInsets
                                                                 .only(top: 35),
                                                         child: PieChart(
-                                                          dataMap: _pieChartIncName,
-                                                          chartRadius:
-                                                              MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  1.7,
+                                                          dataMap:
+                                                              _pieChartIncName,
+                                                          chartRadius: 200,
                                                           legendOptions:
                                                               LegendOptions(
                                                             legendTextStyle:
@@ -475,14 +472,19 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             }
                                           },
                                         ),
-                                       
+
                                         // ===================================>All Transaction Expense Name Map<===================================
-                                         Padding(
-                                          padding: const EdgeInsets.only(top:25),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 25),
                                           child: Text(
-                                            (lang == 0) ? "Berdasarkan Nama Kategori Pengeluaran" : "By Expense Category Name",
+                                            (lang == 0)
+                                                ? "Berdasarkan Nama Kategori Pengeluaran"
+                                                : "By Expense Category Name",
                                             style: GoogleFonts.inder(
                                               fontSize: 17,
+                                              color:
+                                                  isDark ? base : Colors.black,
                                             ),
                                           ),
                                         ),
@@ -503,13 +505,9 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                                             const EdgeInsets
                                                                 .only(top: 35),
                                                         child: PieChart(
-                                                          dataMap: _pieChartExpName,
-                                                          chartRadius:
-                                                              MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  1.7,
+                                                          dataMap:
+                                                              _pieChartExpName,
+                                                          chartRadius: 200,
                                                           legendOptions:
                                                               LegendOptions(
                                                             legendTextStyle:
@@ -586,13 +584,18 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                           },
                                         ),
 
-                                      // ===================================>All Transaction Data Map<===================================
-                                         Padding(
-                                          padding: const EdgeInsets.only(top:25),
+                                        // ===================================>All Transaction Data Map<===================================
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 25),
                                           child: Text(
-                                            (lang == 0) ? "Berdasarkan Semua Transaksi" : "By All Transaction",
+                                            (lang == 0)
+                                                ? "Berdasarkan Semua Transaksi"
+                                                : "By All Transaction",
                                             style: GoogleFonts.inder(
                                               fontSize: 17,
+                                              color:
+                                                  isDark ? base : Colors.black,
                                             ),
                                           ),
                                         ),
@@ -614,12 +617,7 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                                                 .only(top: 35),
                                                         child: PieChart(
                                                           dataMap: _dataMap,
-                                                          chartRadius:
-                                                              MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  1.7,
+                                                          chartRadius: 200,
                                                           legendOptions:
                                                               LegendOptions(
                                                             legendTextStyle:
@@ -695,7 +693,6 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             }
                                           },
                                         ),
-                                      
                                       ],
                                     ),
                                   ),
@@ -723,13 +720,23 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             shrinkWrap: true,
                                             itemCount: snapshot.data!.length,
                                             itemBuilder: (context, index) {
-                                              String startDate =
-                                                  DateFormat('dd-MMMM-yyyy')
+                                              String startDate = (lang == 0)
+                                                  ? DateFormat('dd-MMMM-yyyy',
+                                                          'id_ID')
+                                                      .format(snapshot
+                                                          .data![index]
+                                                          .startDate)
+                                                  : DateFormat('dd-MMMM-yyyy')
                                                       .format(snapshot
                                                           .data![index]
                                                           .startDate);
-                                              String endDate =
-                                                  DateFormat('dd-MMMM-yyyy')
+                                              String endDate = (lang == 1)
+                                                  ? DateFormat('dd-MMMM-yyyy',
+                                                          'id_ID')
+                                                      .format(snapshot
+                                                          .data![index].endDate)
+                                                  : DateFormat('dd-MMMM-yyyy',
+                                                          'id_ID')
                                                       .format(snapshot
                                                           .data![index]
                                                           .endDate);
@@ -754,10 +761,21 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            snapshot
-                                                                .data![index]
-                                                                .name
-                                                                .toString(),
+                                                            (lang == 0)
+                                                                ? DateFormat.yMMMM(
+                                                                        'id_ID')
+                                                                    .format(
+                                                                    DateTime.parse(snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .name),
+                                                                  )
+                                                                : DateFormat
+                                                                        .yMMMM()
+                                                                    .format(DateTime.parse(snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .name)),
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -972,13 +990,23 @@ Future<Map<String, double>> getIncNamePieChart() async {
                                             shrinkWrap: true,
                                             itemCount: snapshot.data!.length,
                                             itemBuilder: (context, index) {
-                                              String startDate =
-                                                  DateFormat('dd-MMMM-yyyy')
+                                              String startDate = (lang == 0)
+                                                  ? DateFormat('dd-MMMM-yyyy',
+                                                          'id_ID')
+                                                      .format(snapshot
+                                                          .data![index]
+                                                          .startDate)
+                                                  : DateFormat('dd-MMMM-yyyy')
                                                       .format(snapshot
                                                           .data![index]
                                                           .startDate);
-                                              String endDate =
-                                                  DateFormat('dd-MMMM-yyyy')
+                                              String endDate = (lang == 1)
+                                                  ? DateFormat('dd-MMMM-yyyy',
+                                                          'id_ID')
+                                                      .format(snapshot
+                                                          .data![index].endDate)
+                                                  : DateFormat('dd-MMMM-yyyy',
+                                                          'id_ID')
                                                       .format(snapshot
                                                           .data![index]
                                                           .endDate);

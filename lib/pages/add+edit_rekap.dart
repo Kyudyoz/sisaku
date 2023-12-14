@@ -161,6 +161,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
+                          locale: (lang == 0)
+                              ? Locale('id', 'ID')
+                              : Locale('en', 'EN'),
                           initialEntryMode: DatePickerEntryMode.calendarOnly,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2020),
@@ -181,8 +184,10 @@ class _AddEditRekapState extends State<AddEditRekap> {
                           });
 
                       if (pickedDate != Null) {
-                        String formattedDate =
-                            DateFormat('dd-MMMM-yyyy').format(pickedDate!);
+                        String formattedDate = (lang == 0)
+                            ? DateFormat('dd-MMMM-yyyy', 'id_ID')
+                                .format(pickedDate!)
+                            : DateFormat('dd-MMMM-yyyy').format(pickedDate!);
                         startDateController.text = formattedDate;
                         String data =
                             DateFormat('yyyy-MM-dd').format(pickedDate);
@@ -229,6 +234,9 @@ class _AddEditRekapState extends State<AddEditRekap> {
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
+                          locale: (lang == 0)
+                              ? Locale('id', 'ID')
+                              : Locale('en', 'EN'),
                           initialEntryMode: DatePickerEntryMode.calendarOnly,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2020),
@@ -249,8 +257,10 @@ class _AddEditRekapState extends State<AddEditRekap> {
                           });
 
                       if (pickedDate != Null) {
-                        String formattedDate =
-                            DateFormat('dd-MMMM-yyyy').format(pickedDate!);
+                        String formattedDate = (lang == 0)
+                            ? DateFormat('dd-MMMM-yyyy', 'id_ID')
+                                .format(pickedDate!)
+                            : DateFormat('dd-MMMM-yyyy').format(pickedDate!);
                         endDateController.text = formattedDate;
                         String data =
                             DateFormat('yyyy-MM-dd').format(pickedDate);

@@ -378,12 +378,14 @@ class _DetailRekapsStat extends State<DetailRekap>
                                   children: [
                                     // Details
                                     Details(
-                                        name: name,
-                                        startDate: startDate,
-                                        endDate: endDate,
-                                        totalExpense: totalExpense,
-                                        totalIncome: totalIncome,
-                                        dailyAverage: dailyAverage),
+                                      name: name,
+                                      startDate: dbStartDate,
+                                      endDate: dbEndDate,
+                                      totalExpense: totalExpense,
+                                      totalIncome: totalIncome,
+                                      dailyAverage: dailyAverage,
+                                      isMonthly: isMonthly,
+                                    ),
 
                                     // ---------------------------> Mapping data Expense <---------------------------------------
                                     Text(
@@ -398,9 +400,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     Expanded(
                                       child: FutureBuilder<
                                               List<Map<String, Object>?>>(
-                                          future:
-                                              database.getExpCatNameByRekaps(
-                                                  dbStartDate, dbEndDate),
+                                          future: database.getCatNameByRekaps(
+                                              dbStartDate, dbEndDate, 2),
                                           builder: (context, snapshot) {
                                             final expenseCategory =
                                                 snapshot.data;
@@ -531,14 +532,13 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     Expanded(
                                       child: FutureBuilder<
                                               List<Map<String, Object>?>>(
-                                          future:
-                                              database.getIncCatNameByRekaps(
-                                                  dbStartDate, dbEndDate),
+                                          future: database.getCatNameByRekaps(
+                                              dbStartDate, dbEndDate, 1),
                                           builder: (context, snapshot) {
                                             final incomeCategory =
                                                 snapshot.data;
                                             print(
-                                                "isi  category $incomeCategory");
+                                                "tes isi  category $incomeCategory");
                                             // final expenseCategory =
                                             //     snapshot.data![1];
 
@@ -658,12 +658,14 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     child: Column(
                                       children: [
                                         Details(
-                                            name: name,
-                                            startDate: startDate,
-                                            endDate: endDate,
-                                            totalExpense: totalExpense,
-                                            totalIncome: totalIncome,
-                                            dailyAverage: dailyAverage),
+                                          name: name,
+                                          startDate: dbStartDate,
+                                          endDate: dbEndDate,
+                                          totalExpense: totalExpense,
+                                          totalIncome: totalIncome,
+                                          dailyAverage: dailyAverage,
+                                          isMonthly: isMonthly,
+                                        ),
 
                                         // ---------------------------> Mapping Transaction Name <---------------------------------------
                                         Expanded(
