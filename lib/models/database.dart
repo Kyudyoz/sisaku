@@ -12,6 +12,8 @@ import 'package:sisaku/models/transaction_with_category.dart';
 import 'package:sisaku/models/transactions.dart';
 import 'package:sisaku/models/rekap.dart';
 
+import '../pages/setting_page.dart';
+
 part 'database.g.dart';
 
 @DriftDatabase(
@@ -216,7 +218,7 @@ class AppDb extends _$AppDb {
       'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
       'FROM transactions '
       'INNER JOIN categories ON transactions.category_id = categories.id '
-      'WHERE transactions.transaction_date BETWEEN ? AND ? '
+      'WHERE transactions.transaction_date BETWEEN ? WHERE ? '
       'AND categories.type = 1 '
       'GROUP BY categories.name',
       variables: [
@@ -716,10 +718,17 @@ class AppDb extends _$AppDb {
     result.forEach((transaction) {
       final type = transaction["type"];  
       final amount = transaction["totalAmount"];
-      if (type == 1)
-        allIncExp["Pemasukan"] = amount!.toDouble();
-      else if (type == 2)
-        allIncExp["Pengeluaran"] = amount!.toDouble();
+      if(lang == 0)
+        if (type == 1)
+          allIncExp["Pemasukan"] = amount!.toDouble();
+        else if (type == 2)
+          allIncExp["Pengeluaran"] = amount!.toDouble();
+      else 
+        if (type == 1)
+          allIncExp["Income"] = amount!.toDouble();
+        else if (type == 2)
+          allIncExp["Pengeluaran"] = amount!.toDouble();
+
     });
 
     print("Isi datamap Inc Exp $allIncExp");
@@ -727,43 +736,34 @@ class AppDb extends _$AppDb {
   }
 
 Future<Map<String, double>> getAllExpPieChart() async {
-    // Lakukan query select
-    // final List<Transaction> results = await select(transactions).get();
+   
      
     Map<String, double> allExp = {};
 
-    final query = await customSelect(
+    final List<QueryRow> result = await customSelect(
       'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
       'FROM transactions '
       'INNER JOIN categories ON transactions.category_id = categories.id '
-      'AND categories.type = 2'
+      'WHERE type = 2 '
       'GROUP BY categories.name',
 
       readsFrom: {transactions, categories},
-    );
+    ).get();
 
-      final result = await query.map((row) {
-      final totalAmount = row.read<int>('totalAmount');
-      final type = row.read<int>('type'); // Ganti dengan tipe data yang sesuai
-      final name = row.read<String>('name'); // Ganti dengan tipe data yang sesuai
-      return {
-        'totalAmount': totalAmount,
-        'type': type,
-        'name': name,
-      };
-    }).get();
     // Buat map kosong
     // final pengeluaran = result[0];
     print("isi result Exp Name  : $result");
 
-    result.forEach((transaction) {
-      // final type = transaction["type"];  
-      final name = transaction["name"];  
-      final amount = transaction["totalAmount"];
-      
-        allExp[name.toString()] = amount! as double;
-
-    });
+    
+    for (int i = 0; i < result.length; i++) {
+      QueryRow transaction = result[i];
+      // Masukkan data ke dalam map
+      final name  = transaction.data["name"];
+      final amount  = transaction.data["totalAmount"];
+      // print("isi Name : $name");
+      allExp[name] = amount.toDouble();
+      // print(allExp);
+    }
 
     print("Isi datamap Exp Exp $allExp");
     return allExp;
@@ -771,45 +771,33 @@ Future<Map<String, double>> getAllExpPieChart() async {
 
 
    Future<Map<String, double>> getAllIncPieChart() async {
-    // Lakukan query select
-    // final List<Transaction> results = await select(transactions).get();
+ 
      
     Map<String, double> allInc = {};
-
-    final query = await customSelect(
+    // Query
+    final List<QueryRow> result = await customSelect(
       'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
       'FROM transactions '
       'INNER JOIN categories ON transactions.category_id = categories.id '
-      'AND categories.type = 1'
+      'WHERE type = 1 '
       'GROUP BY categories.name',
 
       readsFrom: {transactions, categories},
-    );
+    ).get();
 
-      final result = await query.map((row) {
-      final totalAmount = row.read<int>('totalAmount');
-      final type = row.read<int>('type'); // Ganti dengan tipe data yang sesuai
-      final name = row.read<String>('name'); // Ganti dengan tipe data yang sesuai
-      return {
-        'totalAmount': totalAmount,
-        'type': type,
-        'name': name,
-      };
-    }).get();
-    // Buat map kosong
-    // final pemasukan = result[0];
-    print("isi result All Inc : $result");
+ 
+    for (int i = 0; i < result.length; i++) {
+      QueryRow transaction = result[i];
+      // Masukkan data ke dalam map
+      final name  = transaction.data["name"];
+      final amount  = transaction.data["totalAmount"];
+      // print("isi Name : $name");
+      allInc[name] = amount.toDouble();
+      // print(allInc);
+    }
+   
 
-    result.forEach((transaction) {
-      // final type = transaction["type"];  
-      final name = transaction["name"];  
-      final amount = transaction["totalAmount"];
-      
-        allInc[name.toString()] = amount! as double;
-
-    });
-
-    print("Isi datamap Inc Exp $allInc");
+    print("Isi datamap IncOM name $allInc");
     return allInc;
   }
 
