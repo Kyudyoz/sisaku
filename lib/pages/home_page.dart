@@ -5,7 +5,7 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter/material.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 // import 'package:sisaku/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,13 +40,14 @@ class _HomePageState extends State<HomePage> {
   late DateTime selectedDate = widget.selectedDate;
 
   void initState() {
+    initializeDateFormatting();
     print(selectedDate);
     updateView(selectedDate);
     print(selectedDate);
     _loadData();
     loadData();
     if (isLoading) {
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(Duration(seconds: 2), () {
         if (mounted) {
           setState(() {
             isLoading = false;
