@@ -712,9 +712,7 @@ class AppDb extends _$AppDb {
       };
     }).get();
     // Buat map kosong
-    final pemasukan = result[0];
-    print("isi result type 1 : $pemasukan");
-
+   
     result.forEach((transaction) {
       final type = transaction["type"];  
       final amount = transaction["totalAmount"];
@@ -727,6 +725,95 @@ class AppDb extends _$AppDb {
     print("Isi datamap Inc Exp $allIncExp");
     return allIncExp;
   }
+
+Future<Map<String, double>> getAllExpPieChart() async {
+    // Lakukan query select
+    // final List<Transaction> results = await select(transactions).get();
+     
+    Map<String, double> allExp = {};
+
+    final query = await customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'AND categories.type = 2'
+      'GROUP BY categories.name',
+
+      readsFrom: {transactions, categories},
+    );
+
+      final result = await query.map((row) {
+      final totalAmount = row.read<int>('totalAmount');
+      final type = row.read<int>('type'); // Ganti dengan tipe data yang sesuai
+      final name = row.read<String>('name'); // Ganti dengan tipe data yang sesuai
+      return {
+        'totalAmount': totalAmount,
+        'type': type,
+        'name': name,
+      };
+    }).get();
+    // Buat map kosong
+    // final pengeluaran = result[0];
+    print("isi result Exp Name  : $result");
+
+    result.forEach((transaction) {
+      // final type = transaction["type"];  
+      final name = transaction["name"];  
+      final amount = transaction["totalAmount"];
+      
+        allExp[name.toString()] = amount! as double;
+
+    });
+
+    print("Isi datamap Exp Exp $allExp");
+    return allExp;
+  }
+
+
+   Future<Map<String, double>> getAllIncPieChart() async {
+    // Lakukan query select
+    // final List<Transaction> results = await select(transactions).get();
+     
+    Map<String, double> allInc = {};
+
+    final query = await customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'AND categories.type = 1'
+      'GROUP BY categories.name',
+
+      readsFrom: {transactions, categories},
+    );
+
+      final result = await query.map((row) {
+      final totalAmount = row.read<int>('totalAmount');
+      final type = row.read<int>('type'); // Ganti dengan tipe data yang sesuai
+      final name = row.read<String>('name'); // Ganti dengan tipe data yang sesuai
+      return {
+        'totalAmount': totalAmount,
+        'type': type,
+        'name': name,
+      };
+    }).get();
+    // Buat map kosong
+    // final pemasukan = result[0];
+    print("isi result All Inc : $result");
+
+    result.forEach((transaction) {
+      // final type = transaction["type"];  
+      final name = transaction["name"];  
+      final amount = transaction["totalAmount"];
+      
+        allInc[name.toString()] = amount! as double;
+
+    });
+
+    print("Isi datamap Inc Exp $allInc");
+    return allInc;
+  }
+
+  
 }
 
 LazyDatabase _openConnection() {
