@@ -49,7 +49,7 @@ class _DetailsState extends State<Details> {
       SizedBox(height: 20),
       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
-          (lang == 0) ? "Durasi " : "Period",
+          (lang == 0) ? "Periode " : "Period",
           style: TextStyle(color: isDark ? base : home),
         ),
         Text(
