@@ -811,6 +811,97 @@ class AppDb extends _$AppDb {
     print("Isi datamap IncOM name $allInc");
     return allInc;
   }
+
+  // For Rekaps Details
+  Future<Map<String, double>> getTransactionRekapPieChart(DateTime start, DateTime end) async {
+    // Lakukan query select
+    final List<Transaction> results = await(select(transactions)
+    ..where((transaction) => transaction.transaction_date.isBetweenValues(start, end)))
+    .get();
+      
+    
+    // Buat map kosong
+    Map<String, double> allTransactions = {};
+
+    // Iterasi hasil query
+    for (Transaction transaction in results) {
+      // Masukkan data ke dalam map
+      allTransactions[transaction.name] = transaction.amount.toDouble();
+    }
+     print("Isi datamap All Transaction name by Rekaps : $allTransactions");
+    return allTransactions;
+  }
+
+// Expense Namee Name For Piechart in Rekap Details
+  Future<Map<String, double>> getRekapExpPieChart(DateTime start, DateTime end) async {
+    Map<String, double> rekapExp = {};
+
+    final List<QueryRow> result = await customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'WHERE transaction_date BETWEEN ? AND ?'
+      'AND type = 2 '
+      'GROUP BY categories.name',
+      readsFrom: {transactions, categories},
+      variables: [
+        Variable<DateTime>(start),
+        Variable<DateTime>(end),
+      ],
+    ).get();
+
+    // Buat map kosong
+    // final pengeluaran = result[0];
+    print("isi result Exp Name  : $result");
+
+    for (int i = 0; i < result.length; i++) {
+      QueryRow transaction = result[i];
+      // Masukkan data ke dalam map
+      final name = transaction.data["name"];
+      final amount = transaction.data["totalAmount"];
+      // print("isi Name : $name");
+      rekapExp[name] = amount.toDouble();
+      // print(rekapExp);
+    }
+
+    print("Isi datamap Expense name by Rekaps : $rekapExp");
+    return rekapExp;
+  }
+
+  // Income Name For Piechart in Rekap Details
+  Future<Map<String, double>> getRekapIncPieChart(DateTime start, DateTime end) async {
+    Map<String, double> rekapInc = {};
+    // Query
+    final List<QueryRow> result = await customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'WHERE transaction_date BETWEEN ? AND ?'
+      'AND type = 1 '
+      'GROUP BY categories.name',
+      readsFrom: {transactions, categories},
+       variables: [
+        Variable<DateTime>(start),
+        Variable<DateTime>(end),
+      ],
+    ).get();
+
+    for (int i = 0; i < result.length; i++) {
+      QueryRow transaction = result[i];
+      // Masukkan data ke dalam map
+      final name = transaction.data["name"];
+      final amount = transaction.data["totalAmount"];
+      // print("isi Name : $name");
+      rekapInc[name] = amount.toDouble();
+      // print(rekapInc);
+    }
+
+    print("Isi datamap Income name by Rekaps : $rekapInc");
+    return rekapInc;
+  }
+  
+
+
 }
 
 LazyDatabase _openConnection() {
