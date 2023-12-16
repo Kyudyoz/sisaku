@@ -13,6 +13,7 @@ import 'package:sisaku/widgets/image_input.dart';
 import 'dart:io';
 import 'package:sisaku/models/database.dart';
 import 'package:sisaku/models/transaction_with_category.dart';
+import 'package:sisaku/widgets/switch_button.dart';
 
 class TransactionPage extends StatefulWidget {
   final TransactionWithCategory? transactionWithCategory;
@@ -275,104 +276,7 @@ class _TransactionPageState extends State<TransactionPage> {
                 SizedBox(
                   height: 20,
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: isDark ? background : base,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 5, 0, 5),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: (type == 1) ? primary : base,
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(16),
-                                      topLeft: Radius.circular(16),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.download_outlined,
-                                        color: (type == 1)
-                                            ? base
-                                            : Colors.green[300],
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          updateType(1);
-                                        },
-                                        child: Text(
-                                          (lang == 0) ? "Pemasukan" : 'Income',
-                                          style: GoogleFonts.inder(
-                                              color:
-                                                  (type == 1) ? base : primary,
-                                              fontWeight: (type == 1)
-                                                  ? FontWeight.bold
-                                                  : FontWeight.normal),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 5, 5),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: (type == 2) ? primary : base,
-                                    borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(16),
-                                      topRight: Radius.circular(16),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          updateType(2);
-                                        },
-                                        child: Text(
-                                          (lang == 0)
-                                              ? "Pengeluaran"
-                                              : 'Expense',
-                                          style: GoogleFonts.inder(
-                                              color:
-                                                  (type == 2) ? base : primary,
-                                              fontWeight: (type == 2)
-                                                  ? FontWeight.bold
-                                                  : FontWeight.normal),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.upload_outlined,
-                                        color: (type == 2)
-                                            ? base
-                                            : Colors.red[300],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+               SwitchButton(type: type, updateType: updateType)     ],
             ),
           ),
         ),
