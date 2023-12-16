@@ -813,26 +813,56 @@ class AppDb extends _$AppDb {
   }
 
   // For Rekaps Details
-  Future<Map<String, double>> getTransactionRekapPieChart(DateTime start, DateTime end) async {
-    // Lakukan query select
-    final List<Transaction> results = await(select(transactions)
-    ..where((transaction) => transaction.transaction_date.isBetweenValues(start, end)))
-    .get();
-      
-    
-    // Buat map kosong
-    Map<String, double> allTransactions = {};
 
-    // Iterasi hasil query
-    for (Transaction transaction in results) {
-      // Masukkan data ke dalam map
-      allTransactions[transaction.name] = transaction.amount.toDouble();
-    }
-     print("Isi datamap All Transaction name by Rekaps : $allTransactions");
-    return allTransactions;
+  // Inc Exp 
+   Future<Map<String, double>> getRekapIncExpPieChart(DateTime start, DateTime end) async {
+ 
+    Map<String, double> allIncExp = {};
+
+    final query = await customSelect(
+      'SELECT categories.name AS name, SUM(transactions.amount) AS totalAmount, categories.type AS type '
+      'FROM transactions '
+      'INNER JOIN categories ON transactions.category_id = categories.id '
+      'WHERE transaction_date BETWEEN ? AND ?'
+      'GROUP BY categories.type',
+      readsFrom: {transactions, categories},
+      variables: [
+        Variable<DateTime>(start),
+        Variable<DateTime>(end),
+      ],
+    );
+
+    final result = await query.map((row) {
+      final totalAmount = row.read<int>('totalAmount');
+      final type = row.read<int>('type'); // Ganti dengan tipe data yang sesuai
+      return {
+        'totalAmount': totalAmount,
+        'type': type,
+      };
+    }).get();
+    // Buat map kosong
+
+    result.forEach((transaction) {
+      final type = transaction["type"];
+      final amount = transaction["totalAmount"];
+      if (lang == 0) {
+        if (type == 1)
+          allIncExp["Pemasukan"] = amount!.toDouble();
+        else if (type == 2) allIncExp["Pengeluaran"] = amount!.toDouble();
+      }
+      if (lang == 1) {
+        if (type == 1)
+          allIncExp["Income"] = amount!.toDouble();
+        else if (type == 2) allIncExp["Expense"] = amount!.toDouble();
+      }
+    });
+
+    print("Isi datamap Inc Exp $allIncExp");
+    return allIncExp;
   }
 
-// Expense Namee Name For Piechart in Rekap Details
+  
+// Expense Category Name
   Future<Map<String, double>> getRekapExpPieChart(DateTime start, DateTime end) async {
     Map<String, double> rekapExp = {};
 
@@ -900,6 +930,25 @@ class AppDb extends _$AppDb {
     return rekapInc;
   }
   
+// All Transaction
+  Future<Map<String, double>> getTransactionRekapPieChart(DateTime start, DateTime end) async {
+    // Lakukan query select
+    final List<Transaction> results = await(select(transactions)
+    ..where((transaction) => transaction.transaction_date.isBetweenValues(start, end)))
+    .get();
+      
+    
+    // Buat map kosong
+    Map<String, double> allTransactions = {};
+
+    // Iterasi hasil query
+    for (Transaction transaction in results) {
+      // Masukkan data ke dalam map
+      allTransactions[transaction.name] = transaction.amount.toDouble();
+    }
+     print("Isi datamap All Transaction name by Rekaps : $allTransactions");
+    return allTransactions;
+  }
 
 
 }
