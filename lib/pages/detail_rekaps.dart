@@ -119,8 +119,8 @@ class _DetailRekapsStat extends State<DetailRekap>
   double totalIncomeAmounts = 0;
 
   // Get All transaction for Piechart
-  Future<Map<String, double>> getAllTransactions(DateTime start, DateTime end) async {
-    final Map<String, double> dataMap = await database.getTransactionRekapPieChart(start, end);
+  Future<Map<String, double>> getRekapType(DateTime start, DateTime end) async {
+    final Map<String, double> dataMap = await database.getRekapIncExpPieChart(start, end);
     return dataMap;
   }
 
@@ -136,11 +136,13 @@ class _DetailRekapsStat extends State<DetailRekap>
     return dataMap;
   }
 
-  // // Get All transaction for Piechart
-  // Future<Map<String, double>> getAllTransactions(DateTime start, DateTime end) async {
-  //   final Map<String, double> dataMap = await database.getTransactionRekapPieChart(start, end);
-  //   return dataMap;
-  // }
+ // Get All transaction for Piechart
+  Future<Map<String, double>> getAllTransactions(DateTime start, DateTime end) async {
+    final Map<String, double> dataMap = await database.getTransactionRekapPieChart(start, end);
+    return dataMap;
+  }
+
+ 
 
 // =============================> load Data, Etc <=============================
   @override
@@ -157,6 +159,14 @@ class _DetailRekapsStat extends State<DetailRekap>
 
     updateR(0);
     _loadData();
+
+
+    getRekapType(dbStartDate, dbEndDate).then((dataMap) {
+      setState(() {
+        _pieChartIncExp = dataMap;
+      });
+    });
+    
     getAllTransactions(dbStartDate, dbEndDate).then((dataMap) {
       setState(() {
         _allTransactionPieChart = dataMap;
@@ -306,64 +316,64 @@ class _DetailRekapsStat extends State<DetailRekap>
                                           ),
                                         ),
 
-                                        // FutureBuilder<Map<String, double>>(
-                                        //   future: g(),
-                                        //   builder: (context, snapshot) {
-                                        //     if (snapshot.connectionState ==
-                                        //         ConnectionState.waiting) {
-                                        //       return Center(
-                                        //         child: CircularProgressIndicator(
-                                        //             valueColor:
-                                        //                 AlwaysStoppedAnimation<
-                                        //                     Color>(primary)),
-                                        //       );
-                                        //     } else {
-                                        //       if (snapshot.hasData) {
-                                        //         if (snapshot.data!.length > 0) {
-                                        //           return Column(
-                                        //             children: [
-                                        //               Padding(
-                                        //                 padding:
-                                        //                     const EdgeInsets
-                                        //                         .only(top: 35),
-                                        //                 child: PieChart(
-                                        //                   dataMap:
-                                        //                       _pieChartIncExp,
-                                        //                   colorList: [
-                                        //                     Colors.greenAccent,
-                                        //                     Colors.redAccent
-                                        //                   ],
-                                        //                   chartRadius: 200,
-                                        //                   legendOptions:
-                                        //                       LegendOptions(
-                                        //                     legendTextStyle:
-                                        //                         GoogleFonts.inder(
-                                        //                             color: isDark
-                                        //                                 ? base
-                                        //                                 : home),
-                                        //                     legendPosition:
-                                        //                         LegendPosition
-                                        //                             .right,
-                                        //                   ),
-                                        //                   chartValuesOptions:
-                                        //                       ChartValuesOptions(
-                                        //                     showChartValuesInPercentage:
-                                        //                         true,
-                                        //                     decimalPlaces: 0,
-                                        //                   ),
-                                        //                 ),
-                                        //               ),
-                                        //             ],
-                                        //           );
-                                        //         } else {
-                                        //           return Center();
-                                        //         }
-                                        //       } else {
-                                        //         return Center();
-                                        //       }
-                                        //     }
-                                        //   },
-                                        // ),
+                                        FutureBuilder<Map<String, double>>(
+                                          future: getRekapType(dbStartDate, dbEndDate),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(primary)),
+                                              );
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length > 0) {
+                                                  return Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(top: 35),
+                                                        child: PieChart(
+                                                          dataMap:
+                                                              _pieChartIncExp,
+                                                          colorList: [
+                                                            Colors.greenAccent,
+                                                            Colors.redAccent
+                                                          ],
+                                                          chartRadius: 200,
+                                                          legendOptions:
+                                                              LegendOptions(
+                                                            legendTextStyle:
+                                                                GoogleFonts.inder(
+                                                                    color: isDark
+                                                                        ? base
+                                                                        : home),
+                                                            legendPosition:
+                                                                LegendPosition
+                                                                    .right,
+                                                          ),
+                                                          chartValuesOptions:
+                                                              ChartValuesOptions(
+                                                            showChartValuesInPercentage:
+                                                                true,
+                                                            decimalPlaces: 0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                } else {
+                                                  return Center();
+                                                }
+                                              } else {
+                                                return Center();
+                                              }
+                                            }
+                                          },
+                                        ),
 
                                         // ===================================>All Transaction Inc Name Map<===================================
                                         Padding(
@@ -708,281 +718,281 @@ class _DetailRekapsStat extends State<DetailRekap>
                               // Kalo Kategori
                               else if (r == 2) ...[
                                 Expanded(
-                                    child: Column(
-                                  children: [
-                                    // Details
-                                    Details(
-                                      name: name,
-                                      startDate: dbStartDate,
-                                      endDate: dbEndDate,
-                                      totalExpense: totalExpense,
-                                      totalIncome: totalIncome,
-                                      dailyAverage: dailyAverage,
-                                      isMonthly: isMonthly,
-                                    ),
+                                  child: Column(
+                                    children: [
+                                      // Details
+                                      Details(
+                                        name: name,
+                                        startDate: dbStartDate,
+                                        endDate: dbEndDate,
+                                        totalExpense: totalExpense,
+                                        totalIncome: totalIncome,
+                                        dailyAverage: dailyAverage,
+                                        isMonthly: isMonthly,
+                                      ),
 
-                                    // ---------------------------> Mapping data Expense <---------------------------------------
-                                    Text(
-                                      (lang == 0)
-                                          ? "Pengeluaran Berdasarkan Kategori"
-                                          : "Expense by Category",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: isDark ? base : Colors.black),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Expanded(
-                                      child: FutureBuilder<
-                                              List<Map<String, Object>?>>(
-                                          future: database.getCatNameByRekaps(
-                                              dbStartDate, dbEndDate, 2),
-                                          builder: (context, snapshot) {
-                                            final expenseCategory =
-                                                snapshot.data;
-                                            print(
-                                                "isi  category $expenseCategory");
-                                            // final expenseCategory =
-                                            //     snapshot.data![1];
+                                      // ---------------------------> Mapping data Expense <---------------------------------------
+                                      Text(
+                                        (lang == 0)
+                                            ? "Pengeluaran Berdasarkan Kategori"
+                                            : "Expense by Category",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: isDark ? base : Colors.black),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Expanded(
+                                        child: FutureBuilder<
+                                                List<Map<String, Object>?>>(
+                                            future: database.getCatNameByRekaps(
+                                                dbStartDate, dbEndDate, 2),
+                                            builder: (context, snapshot) {
+                                              final expenseCategory =
+                                                  snapshot.data;
+                                              print(
+                                                  "isi  category $expenseCategory");
+                                              // final expenseCategory =
+                                              //     snapshot.data![1];
 
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(primary));
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return ListView.builder(
-                                                      itemCount:
-                                                          snapshot.data!.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        var expenseNames =
-                                                            snapshot.data![
-                                                                index]!["name"];
-                                                        var expenseAmount =
-                                                            snapshot.data![
-                                                                    index]![
-                                                                "totalAmount"];
-                                                        print(
-                                                            "xpense $expenseNames");
-                                                        print(
-                                                            "amount $expenseAmount");
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(primary));
+                                              } else {
+                                                if (snapshot.hasData) {
+                                                  if (snapshot.data!.length > 0) {
+                                                    return ListView.builder(
+                                                        itemCount:
+                                                            snapshot.data!.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          var expenseNames =
+                                                              snapshot.data![
+                                                                  index]!["name"];
+                                                          var expenseAmount =
+                                                              snapshot.data![
+                                                                      index]![
+                                                                  "totalAmount"];
+                                                          print(
+                                                              "xpense $expenseNames");
+                                                          print(
+                                                              "amount $expenseAmount");
 
-                                                        // Convert to Rp
-                                                        var amountString =
-                                                            (NumberFormat
-                                                                    .currency(
-                                                          locale: 'id',
-                                                          decimalDigits: 0,
-                                                        ).format(expenseAmount))
-                                                                .replaceAll(
-                                                                    'IDR', '');
+                                                          // Convert to Rp
+                                                          var amountString =
+                                                              (NumberFormat
+                                                                      .currency(
+                                                            locale: 'id',
+                                                            decimalDigits: 0,
+                                                          ).format(expenseAmount))
+                                                                  .replaceAll(
+                                                                      'IDR', '');
 
-                                                        // Kalo Pengeluaran
-                                                        return SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(
-                                                                  height: 20),
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                    expenseNames
-                                                                        .toString(),
-                                                                    style: TextStyle(
-                                                                        color: isDark
-                                                                            ? base
-                                                                            : home),
-                                                                  ), // Nama kategori income
-                                                                  Text(
-                                                                    "Rp." +
-                                                                        amountString,
-                                                                    style: TextStyle(
-                                                                        color: isDark
-                                                                            ? base
-                                                                            : home),
-                                                                  ), // Total Expense
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                  height: 7),
-                                                              LinearPercentIndicator(
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.87,
-                                                                barRadius:
-                                                                    const Radius
-                                                                        .circular(
-                                                                        16),
-                                                                lineHeight: 8.0,
-                                                                percent:
-                                                                    calculatePercentage(
-                                                                  (expenseAmount
-                                                                          as num)
-                                                                      .toDouble(),
-                                                                  totalExpense
-                                                                      .toDouble(),
-                                                                ), // Ganti nilai persentase sesuai kebutuhan
-                                                                progressColor:
-                                                                    Colors.red,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      });
+                                                          // Kalo Pengeluaran
+                                                          return SingleChildScrollView(
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                    height: 20),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      expenseNames
+                                                                          .toString(),
+                                                                      style: TextStyle(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                    ), // Nama kategori income
+                                                                    Text(
+                                                                      "Rp." +
+                                                                          amountString,
+                                                                      style: TextStyle(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                    ), // Total Expense
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                    height: 7),
+                                                                LinearPercentIndicator(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.87,
+                                                                  barRadius:
+                                                                      const Radius
+                                                                          .circular(
+                                                                          16),
+                                                                  lineHeight: 8.0,
+                                                                  percent:
+                                                                      calculatePercentage(
+                                                                    (expenseAmount
+                                                                            as num)
+                                                                        .toDouble(),
+                                                                    totalExpense
+                                                                        .toDouble(),
+                                                                  ), // Ganti nilai persentase sesuai kebutuhan
+                                                                  progressColor:
+                                                                      Colors.red,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        });
+                                                  }
                                                 }
+                                                return Text(
+                                                  (lang == 0)
+                                                      ? "Belum ada pengeluaran"
+                                                      : "No expenses yet",
+                                                  style: TextStyle(
+                                                      color:
+                                                          isDark ? base : home),
+                                                );
                                               }
-                                              return Text(
-                                                (lang == 0)
-                                                    ? "Belum ada pengeluaran"
-                                                    : "No expenses yet",
-                                                style: TextStyle(
-                                                    color:
-                                                        isDark ? base : home),
-                                              );
-                                            }
-                                          }),
-                                    ),
+                                            }),
+                                      ),
 
-                                    SizedBox(height: 5),
-                                    Text(
-                                      (lang == 0)
-                                          ? "Pemasukan Berdasarkan Kategori"
-                                          : "Income by Category",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: isDark ? base : Colors.black),
-                                    ),
-                                    SizedBox(height: 10),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        (lang == 0)
+                                            ? "Pemasukan Berdasarkan Kategori"
+                                            : "Income by Category",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: isDark ? base : Colors.black),
+                                      ),
+                                      SizedBox(height: 10),
 
-                                    // ---------------------------> Mapping data Income <---------------------------------------
-                                    Expanded(
-                                      child: FutureBuilder<
-                                              List<Map<String, Object>?>>(
-                                          future: database.getCatNameByRekaps(
-                                              dbStartDate, dbEndDate, 1),
-                                          builder: (context, snapshot) {
-                                            final incomeCategory =
-                                                snapshot.data;
-                                            print(
-                                                "tes isi  category $incomeCategory");
-                                            // final expenseCategory =
-                                            //     snapshot.data![1];
+                                      // ---------------------------> Mapping data Income <---------------------------------------
+                                      Expanded(
+                                        child: FutureBuilder<
+                                                List<Map<String, Object>?>>(
+                                            future: database.getCatNameByRekaps(
+                                                dbStartDate, dbEndDate, 1),
+                                            builder: (context, snapshot) {
+                                              final incomeCategory =
+                                                  snapshot.data;
+                                              print(
+                                                  "tes isi  category $incomeCategory");
+                                              // final expenseCategory =
+                                              //     snapshot.data![1];
 
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(primary));
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return ListView.builder(
-                                                      itemCount:
-                                                          snapshot.data!.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        var incomeNames =
-                                                            snapshot.data![
-                                                                index]!["name"];
-                                                        var incomeAmount =
-                                                            snapshot.data![
-                                                                    index]![
-                                                                "totalAmount"];
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(primary));
+                                              } else {
+                                                if (snapshot.hasData) {
+                                                  if (snapshot.data!.length > 0) {
+                                                    return ListView.builder(
+                                                        itemCount:
+                                                            snapshot.data!.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          var incomeNames =
+                                                              snapshot.data![
+                                                                  index]!["name"];
+                                                          var incomeAmount =
+                                                              snapshot.data![
+                                                                      index]![
+                                                                  "totalAmount"];
 
-                                                        // Convert to Rp
-                                                        var amountString =
-                                                            (NumberFormat
-                                                                    .currency(
-                                                          locale: 'id',
-                                                          decimalDigits: 0,
-                                                        ).format(incomeAmount))
-                                                                .replaceAll(
-                                                                    'IDR', '');
+                                                          // Convert to Rp
+                                                          var amountString =
+                                                              (NumberFormat
+                                                                      .currency(
+                                                            locale: 'id',
+                                                            decimalDigits: 0,
+                                                          ).format(incomeAmount))
+                                                                  .replaceAll(
+                                                                      'IDR', '');
 
-                                                        // Kalo Pengeluaran
-                                                        return SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(
-                                                                  height: 20),
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                    incomeNames
-                                                                        .toString(),
-                                                                    style: TextStyle(
-                                                                        color: isDark
-                                                                            ? base
-                                                                            : home),
-                                                                  ), // Nama kategori income
-                                                                  Text(
-                                                                    "Rp." +
-                                                                        amountString,
-                                                                    style: TextStyle(
-                                                                        color: isDark
-                                                                            ? base
-                                                                            : home),
-                                                                  ), // Total Income
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                  height: 7),
-                                                              LinearPercentIndicator(
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.87,
-                                                                barRadius:
-                                                                    const Radius
-                                                                        .circular(
-                                                                        16),
-                                                                lineHeight: 8.0,
-                                                                percent:
-                                                                    calculatePercentage(
-                                                                  (incomeAmount
-                                                                          as num)
-                                                                      .toDouble(),
-                                                                  totalIncome
-                                                                      .toDouble(),
-                                                                ), // Ganti nilai persentase sesuai kebutuhan
-                                                                progressColor:
-                                                                    Colors
-                                                                        .green,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      });
+                                                          // Kalo Pengeluaran
+                                                          return SingleChildScrollView(
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(
+                                                                    height: 20),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      incomeNames
+                                                                          .toString(),
+                                                                      style: TextStyle(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                    ), // Nama kategori income
+                                                                    Text(
+                                                                      "Rp." +
+                                                                          amountString,
+                                                                      style: TextStyle(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                    ), // Total Income
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                    height: 7),
+                                                                LinearPercentIndicator(
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.87,
+                                                                  barRadius:
+                                                                      const Radius
+                                                                          .circular(
+                                                                          16),
+                                                                  lineHeight: 8.0,
+                                                                  percent:
+                                                                      calculatePercentage(
+                                                                    (incomeAmount
+                                                                            as num)
+                                                                        .toDouble(),
+                                                                    totalIncome
+                                                                        .toDouble(),
+                                                                  ), // Ganti nilai persentase sesuai kebutuhan
+                                                                  progressColor:
+                                                                      Colors
+                                                                          .green,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        });
+                                                  }
                                                 }
+                                                return Text(
+                                                  (lang == 0)
+                                                      ? "Belum ada pemasukan"
+                                                      : "No incomes yet",
+                                                  style: TextStyle(
+                                                      color:
+                                                          isDark ? base : home),
+                                                );
                                               }
-                                              return Text(
-                                                (lang == 0)
-                                                    ? "Belum ada pemasukan"
-                                                    : "No incomes yet",
-                                                style: TextStyle(
-                                                    color:
-                                                        isDark ? base : home),
-                                              );
-                                            }
-                                          }),
-                                    ),
+                                            }),
+                                      ),
 
-                                    SizedBox(height: 25),
-                                  ],
-                                ))
+                                      SizedBox(height: 25),
+                                    ],
+                                  ))
 
                                 // Kalo Transaksi
                               ] else if (r == 3) ...[
@@ -1097,15 +1107,43 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                         CrossAxisAlignment
                                                                             .center,
                                                                     children: [
-                                                                      Text(
-                                                                        snapshot
-                                                                            .data![index]
-                                                                            .transaction
-                                                                            .name,
-                                                                        style: TextStyle(
-                                                                            color: isDark
-                                                                                ? base
-                                                                                : Colors.black),
+                                                                      Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            snapshot
+                                                                                .data![index]
+                                                                                .transaction
+                                                                                .name,
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                                color: isDark
+                                                                                    ? base
+                                                                                    : Colors.black),
+                                                                          ),
+                                                                          Text(
+                                                                              (lang == 0)
+                                                                                  ? DateFormat.yMMMMEEEEd(
+                                                                                          'id_ID')
+                                                                                      .format(
+                                                                                      DateTime.parse(snapshot
+                                                                                          .data![
+                                                                                              index]
+                                                                                          .transaction.transaction_date.toString()),
+                                                                                    )
+                                                                                  : DateFormat
+                                                                                          .yMMMMEEEEd()
+                                                                                      .format(DateTime.parse(snapshot
+                                                                                          .data![
+                                                                                              index]
+                                                                                          .transaction.transaction_date.toString())),
+                                                                              style: TextStyle(
+                                                                                  fontSize: 11,
+                                                                                  color: isDark
+                                                                                      ? base
+                                                                                      : home),
+                                                                            ),
+                                                                        ],
                                                                       ),
                                                                       Text(
                                                                         'Rp. ' +

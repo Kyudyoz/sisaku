@@ -784,7 +784,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                     ? base
                                                                     : home),
                                                           ),
-                                                          SizedBox(width: 10),
+                                                          SizedBox(width: MediaQuery.of(context).size.width * 0.2),
                                                         ],
                                                       ),
                                                       IconButton(
@@ -817,7 +817,7 @@ class _RekapPageState extends State<RekapPage> {
                                                       children: [
                                                         Text(
                                                           (lang == 0)
-                                                              ? "Durasi "
+                                                              ? "Periode "
                                                               : "Period",
                                                           style: TextStyle(
                                                               color: isDark
