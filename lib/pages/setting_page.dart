@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:sisaku/colors.dart';
@@ -613,7 +614,8 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ],
         ),
-      ),
+      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 270.ms),
+
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,
