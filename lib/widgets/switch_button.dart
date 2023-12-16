@@ -77,7 +77,7 @@ class _SwitchButtonState extends State<SwitchButton> {
                                         .fadeIn(duration: 500.ms)
                                         .then(delay: 30.ms) // baseline=800ms
                                         .slide()
-                                        .tint(color: isDark ? Colors.greenAccent : base , delay: Duration(milliseconds: 50 ))
+                                        .tint(color: isDark ? Colors.greenAccent.withOpacity(0.25) : base , delay: Duration(milliseconds: 50 ))
 
                                         // Kalo dk dipilih ga ada animasinya
                                         : Text(
