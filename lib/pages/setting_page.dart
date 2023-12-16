@@ -722,7 +722,7 @@ Color _getPrimary(int kode) {
 
 const defaultTheme = [
   Color.fromARGB(255, 0, 171, 194),
-  Color.fromARGB(255, 188, 43, 216),
+  Color.fromARGB(255, 134, 27, 155),
   Color.fromARGB(255, 62, 166, 106),
 ];
 
