@@ -1,7 +1,13 @@
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+// import 'package:open_document/my_files/init.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/home_page.dart';
@@ -12,6 +18,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:sisaku/pages/transaction_page.dart';
 import 'package:sisaku/widgets/details.dart';
 import '../models/transaction_with_category.dart';
+import 'package:excel/excel.dart';
+// import 'package:open_document/open_document.dart';
+
 
 class DetailRekap extends StatefulWidget {
   const DetailRekap({super.key, required this.rekap});
@@ -42,6 +51,7 @@ class _DetailRekapsStat extends State<DetailRekap>
   late bool isMonthly;
   late double dailyAverage;
 
+  late String filePath;
   // Untuk dapetin categoi
   late var getCategory;
   // Tab
@@ -214,6 +224,182 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   final rekap_detail = Rekap;
 
+  void exportToExcel() async {
+    Excel excel = Excel.createExcel();
+    excel.rename(excel.getDefaultSheet()!, name);
+
+
+    Sheet sheet = excel[name];
+
+        /*
+    * sheetObject.updateCell(cell, value, { CellStyle (Optional)});
+    * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+    * cell can be identified with Cell Address or by 2D array having row and column Index;
+    * Cell Style options are optional
+    */
+
+  
+
+    
+
+    CellStyle cellStyle = CellStyle(backgroundColorHex: '#1AFF1A', fontFamily :getFontFamily(FontFamily.Calibri));
+    
+    cellStyle.underline = Underline.Single; // or Underline.Double
+
+    var a1 = sheet.cell(CellIndex.indexByString("A1"));
+    a1.value = TextCellValue("Periode");
+
+    var b2 = sheet.cell(CellIndex.indexByString("B2"));
+    a1.value = TextCellValue( DateFormat('dd-MMMM-yyyy', (lang == 0) ? "id_ID" : null).format(dbStartDate).toString() + " ~ " +
+                  DateFormat('dd-MMMM-yyyy', 'id_ID').format(dbEndDate));
+    sheet.merge(CellIndex.indexByString("D1"), CellIndex.indexByString("I1"));
+   
+    // cell.value = null; // removing any value
+    // cell.value = TextCellValue('Some Text');
+    // cell.value = IntCellValue(8);
+    // cell.value = BoolCellValue(true);
+    // cell.value = DoubleCellValue(13.37);
+    // cell.value = DateCellValue(year: 2023, month: 4, day: 20);
+    // cell.value = TimeCellValue(hour: 20, minute: 15, second: 5, millisecond: ...);
+    // cell.value = DateTimeCellValue(year: 2023, month: 4, day: 20, hour: 15, ...);
+    // cell.cellStyle = cellStyle;
+
+
+    
+    // Save to Excel
+  var fileBytes = excel.save();
+  var directory = await getApplicationDocumentsDirectory();
+  new Directory(directory.path+'/'+'dir').create(recursive: true)
+  // The created directory is returned as a Future.
+      .then((Directory directory) {
+    print('Path of New Dir: '+directory.path);
+    final new_dir = directory.path;
+    filePath = new_dir;
+     File(join('$new_dir/"nama".xlsx'))
+    ..createSync(recursive: true)
+    ..writeAsBytesSync(fileBytes!);
+  });
+
+  print("Berhasil Export Excel Cuy");
+   
+        /*
+    * sheetObject.merge(CellIndex starting_cell, CellIndex ending_cell, TextCellValue('customValue'));
+    * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
+    * starting_cell and ending_cell can be identified with Cell Address or by 2D array having row and column Index;
+    * customValue is optional
+    */
+
+    // sheet.merge(CellIndex.indexByString('A1'), CellIndex.indexByString('E4'), customValue: TextCellValue('Put this text after merge'));
+
+    // // setting the number style
+    // cell.cellStyle = (cell.cellStyle ?? CellStyle()).copyWith(
+
+    //   /// for IntCellValue, DoubleCellValue and BoolCellValue use; 
+    //   numberFormat: CustomNumericNumFormat('#,##0.00 \\m\\²'),
+
+    //   /// for DateCellValue and DateTimeCellValue use:
+    //   numberFormat: CustomDateTimeNumFormat('m/d/yy h:mm'),
+
+    //   /// for TimeCellValue use:
+    //   numberFormat: CustomDateTimeNumFormat('mm:ss'),
+
+    //   /// a builtin format for dates
+    //   numberFormat: NumFormat.standard_14,
+      
+    //   /// a builtin format that uses a red text color for negative numbers
+    //   numberFormat: NumFormat.standard_38,
+
+    //   // The numberFormat changes automatially if you set a CellValue that 
+    //   // does not work with the numberFormat set previously. So in case you
+    //   // want to set a new value, e.g. from a date to a decimal number, 
+    //   // make sure you set the new value first and then your custom
+    //   // numberFormat).
+    // );
+
+
+    // // printing cell-type
+    // print('CellType: ' + switch(cell.value) {
+    //   null => 'empty cell',
+    //   TextCellValue() => 'text',
+    //   FormulaCellValue() => 'formula',
+    //   IntCellValue() => 'int',
+    //   BoolCellValue() => 'bool',
+    //   DoubleCellValue() => 'double',
+    //   DateCellValue() => 'date',
+    //   TimeCellValue => 'time',
+    //   DateTimeCellValue => 'date with time',
+    // });
+
+    // ///
+    // /// Inserting and removing column and rows
+
+    // // insert column at index = 8
+    // sheetObject.insertColumn(8);
+
+    // // remove column at index = 18
+    // sheetObject.removeColumn(18);
+
+    // // insert row at index = 82
+    // sheetObject.insertRow(82);
+
+    // // remove row at index = 80
+    // sheetObject.removeRow(80);
+
+//  Future<String> downloadFile({String? filePath, String? url}) async {
+//           // CancelToken cancelToken = CancelToken();
+//         Dio dio = new Dio();
+//           await dio.download(
+//             url,
+//             filePath,
+//             onReceiveProgress: (count, total) {
+//               debugPrint('---Download----Rec: $count, Total: $total');
+//               setState(() {
+//                 _platformVersion = ((count / total) * 100).toStringAsFixed(0) + "%";
+//               });
+//           },
+//         );
+
+//         return filePath;
+//       }
+//   void openExported() async {
+//     final name = await OpenDocument.getNameFile(url: url);
+
+//       final path = await OpenDocument.getPathDocument();
+
+//       filePath = "$path/$name";
+
+//       final isCheck = await OpenDocument.checkDocument(filePath: filePath);
+
+//       try {
+//         if (!isCheck) {
+//           filePath = await downloadFile(filePath: "$filePath", url: url);
+//         }
+
+//       await OpenDocument.openDocument(filePath: filePath);
+
+//       } on OpenDocumentException catch (e) {
+//         debugPrint("ERROR: ${e.errorMessage}");
+//         filePath = 'Failed to get platform version.';
+//       }
+
+     
+//   }
+  Future<File?> openExported() async {
+    final result = await FilePicker.platform.pickFiles();
+
+  }
+
+  Future<File?> downloadFile(String url, String name) async {
+    
+
+    // try {
+    //   final response = await Dio().get(
+    //     url)
+    // }
+  }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,7 +422,31 @@ class _DetailRekapsStat extends State<DetailRekap>
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              exportToExcel();
+               ScaffoldMessenger.of(context)
+                      .showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            (lang == 0)
+                                ? 'Berhasil Export Rekap'
+                                : 'Export Report Success',
+                            style: GoogleFonts.inder(
+                                color: base),
+                          ),
+                          TextButton(onPressed: () {}, 
+                          child: Row(children: [ 
+                            Text("Open") ,SizedBox(width: 30), Icon(Icons.file_open, color: base)
+                            ]))
+                        ],
+                      ),
+                      backgroundColor: primary,
+                    ),
+                  );
+            },
             child: Text(
               "Export",
               style: GoogleFonts.inder(
