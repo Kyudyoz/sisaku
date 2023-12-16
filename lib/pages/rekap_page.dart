@@ -290,7 +290,7 @@ class _RekapPageState extends State<RekapPage> {
                                         // ===================================>All Inc Exp Data Map<===================================
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 25),
+                                              const EdgeInsets.only(top: 30),
                                           child: Text(
                                             (lang == 0)
                                                 ? "Berdasarkan Tipe"
@@ -365,11 +365,11 @@ class _RekapPageState extends State<RekapPage> {
                                         // ===================================>All Transaction Inc Name Map<===================================
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 25),
+                                              const EdgeInsets.only(top: 45),
                                           child: Text(
                                             (lang == 0)
-                                                ? "Berdasarkan Nama Kategori Pemasukan"
-                                                : "By Income Category Name",
+                                                ? "Berdasarkan Kategori Pemasukan"
+                                                : "By Income Category ",
                                             style: GoogleFonts.inder(
                                               fontSize: 17,
                                               color:
@@ -476,11 +476,11 @@ class _RekapPageState extends State<RekapPage> {
                                         // ===================================>All Transaction Expense Name Map<===================================
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 25),
+                                              const EdgeInsets.only(top: 45),
                                           child: Text(
                                             (lang == 0)
-                                                ? "Berdasarkan Nama Kategori Pengeluaran"
-                                                : "By Expense Category Name",
+                                                ? "Berdasarkan Kategori Pengeluaran"
+                                                : "By Expense Category",
                                             style: GoogleFonts.inder(
                                               fontSize: 17,
                                               color:
@@ -587,7 +587,7 @@ class _RekapPageState extends State<RekapPage> {
                                         // ===================================>All Transaction Data Map<===================================
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(top: 25),
+                                              const EdgeInsets.only(top: 45),
                                           child: Text(
                                             (lang == 0)
                                                 ? "Berdasarkan Semua Transaksi"
