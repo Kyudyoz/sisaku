@@ -816,7 +816,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                             context)
                                                                         .size
                                                                         .width *
-                                                                    0.85,
+                                                                    0.87,
                                                                 barRadius:
                                                                     const Radius
                                                                         .circular(
@@ -944,7 +944,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                             context)
                                                                         .size
                                                                         .width *
-                                                                    0.85,
+                                                                    0.87,
                                                                 barRadius:
                                                                     const Radius
                                                                         .circular(
@@ -1129,7 +1129,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                     children: [
                                                                       LinearPercentIndicator(
                                                                         width: MediaQuery.of(context).size.width *
-                                                                            0.5,
+                                                                            0.52,
                                                                         barRadius: const Radius
                                                                             .circular(
                                                                             16),
