@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 // import 'package:calendar_appbar/calendar_appbar.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
@@ -148,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                   markedDateMoreShowTotal: true,
                   nextDaysTextStyle: GoogleFonts.inder(color: base),
                   prevDaysTextStyle: GoogleFonts.inder(color: home),
-                ),
+                ).animate().fade().slide(duration: 400.ms),
               ),
             ),
             body: SafeArea(
@@ -468,16 +469,17 @@ class _HomePageState extends State<HomePage> {
                                                                       .black),
                                                         ),
                                                         subtitle: Text(
-                                                          snapshot
-                                                                  .data![index]
-                                                                  .category
-                                                                  .name +
-                                                              ' ( ' +
-                                                              snapshot
+                                                           snapshot
                                                                   .data![index]
                                                                   .transaction
-                                                                  .name +
-                                                              ' )',
+                                                                  .name
+                                                          
+                                                          +
+                                                              ' ~ ' +
+                                                               snapshot
+                                                                  .data![index]
+                                                                  .category
+                                                                  .name,
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -612,7 +614,9 @@ class _HomePageState extends State<HomePage> {
                                                           ],
                                                         ),
                                                       ),
-                                                    ),
+                                                      // Animasi Card
+                                                    ).animate().fade(begin: 0.5).then().slideX(begin: 0.7),
+                                                  
                                                   ),
                                                 );
                                               });
@@ -666,9 +670,12 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: primary,
               child: Icon(
                 Icons.add,
-                color: base,
-              ),
-            ),
+                size: 27,
+                color: primary,
+                // Animasi Icon
+              ).animate().fade(begin: 0.5).tint(color: base).shake(duration : 5000.ms),
+              // animasi Floating Action Button
+            ).animate().fadeIn(begin: 0.5).slideY(begin: 0.7, duration: 500.ms),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomAppBar(
