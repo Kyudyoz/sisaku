@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -1419,7 +1420,8 @@ class _RekapPageState extends State<RekapPage> {
             ),
           ],
         ),
-      ),
+      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 270.ms),
+      
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,
