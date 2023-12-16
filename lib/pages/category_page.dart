@@ -492,7 +492,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ],
         ),
-      ),
+      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 270.ms),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,
