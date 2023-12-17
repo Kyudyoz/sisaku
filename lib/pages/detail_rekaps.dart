@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' ;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 // import 'package:open_document/my_files/init.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,10 +18,12 @@ import 'package:sisaku/models/database.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:sisaku/pages/transaction_page.dart';
 import 'package:sisaku/widgets/details.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart ' as xlsio;
+// import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import '../models/transaction_with_category.dart';
-import 'package:excel/excel.dart';
-// import 'package:open_document/open_document.dart';
 
+// import 'package:open_document/open_document.dart';
+// import 'package:open_file_plus/open_file_plus.dart';
 
 class DetailRekap extends StatefulWidget {
   const DetailRekap({super.key, required this.rekap});
@@ -51,6 +54,10 @@ class _DetailRekapsStat extends State<DetailRekap>
   late bool isMonthly;
   late double dailyAverage;
 
+  // Untuk Export ke Excel
+  late var expenseCategory;
+  late var incomeCategory;
+  late var rekapTransactions;
   late String filePath;
   // Untuk dapetin categoi
   late var getCategory;
@@ -224,181 +231,244 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   final rekap_detail = Rekap;
 
+
+
+  // Export Rekap To Excel
   void exportToExcel() async {
-    Excel excel = Excel.createExcel();
-    excel.rename(excel.getDefaultSheet()!, name);
+    final xlsio.Workbook workbook = new xlsio.Workbook();
+    final xlsio.Worksheet sheet = workbook.worksheets[0];
+
+    sheet.getRangeByName('A1').setText((lang == 0) ? 'Periode' : 'Period');
+    sheet.getRangeByName('A2').setText((lang == 0) ? 'Total Pemasukan' : 'Total Income');
+    sheet.getRangeByName('A3').setText((lang == 0) ? 'Total Pengeluaran' : 'Total Expense');
+    sheet.getRangeByName('A4').setText((lang == 0) ? 'Rata-rata Harian' : 'Daily Average');
+    sheet.getRangeByName('A5').setText((lang == 0) ? 'Sisa' : 'Balance');
+    
+    // Isi Dari Database & Menformatnya
+    final periode = DateFormat('dd-MMMM-yyyy', (lang == 0) ? 'id_ID' : null)
+                      .format(dbStartDate).toString() + " ~ " + DateFormat('dd-MMMM-yyyy', 'id_ID').format(dbEndDate).toString();
+                      
+    var totIncome = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+              ).format(totalIncome,)).replaceAll('IDR', '');
+    var totExpense = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+              ).format(totalExpense,)).replaceAll('IDR', '');
+    var dailyAverages = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+              ).format(dailyAverage)).replaceAll('IDR', '');
+    var totSisa = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+              ).format(balance)).replaceAll('IDR', '');
 
 
-    Sheet sheet = excel[name];
+    sheet.getRangeByName('B1').setText(periode);
+    sheet.getRangeByName('B2').setText(totIncome);
+    sheet.getRangeByName('B3').setText(totExpense);
+    sheet.getRangeByName('B4').setText(dailyAverages);
+    sheet.getRangeByName('B5').setText(totSisa);
+    
+    // Berdasarkan Kategori Pemasukan
+    sheet.getRangeByName('B7:C7').merge(); //Nanti Dimerge
+    sheet.getRangeByName('B7:C7').setText((lang == 0) ? "Berdasarkan Kategori Pemasukan" : "By Income Category"); //Nanti Dimerge
+    sheet.getRangeByName('B8').setText((lang == 0) ? "Nama" : 'Name');
+    sheet.getRangeByName('C8').setText((lang == 0) ? "Jumlah" : 'Amount');
 
-        /*
-    * sheetObject.updateCell(cell, value, { CellStyle (Optional)});
-    * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-    * cell can be identified with Cell Address or by 2D array having row and column Index;
-    * Cell Style options are optional
-    */
+   
+    // ========================>Mapping Data Nama Kategori Pemasukan & Amount <==========================
+    // Inc Name
+    final int rowIncName = 9; // Represent the starting row.
+    final int columnIncName = 2; // Represent the starting column.
+    final bool incNameVertical = true; //  Represents that the data should be imported vertically.
+    
+    // Inc Name Amount
+    final int rowAmountInc = 9; // Represent the starting row.
+    final int columnAmountInc = 3;    // Represent the starting column.
+    final bool incAmountVertical = true; 
+
+    // Memasukkan data nama categori Income ke List
+    List incName = [];
+    List incAmount = [];
+    int length_income = incomeCategory.length + rowIncName; 
+    incomeCategory.forEach((inc) => {
+      print(inc["name"]),
+      incName.add(inc["name"]),
+      incAmount.add(inc["totalAmount"])
+    });
+    print("isi Inc name $incName");
+    print("isi Inc total Amount $incAmount");
+
+    //Import the Name to Sheet
+    sheet.importList(incName, rowIncName, columnIncName, incNameVertical);
+    sheet.autoFitColumn(2);
+    
+    //Import the Amount list to Sheet
+    sheet.importList(incAmount, rowAmountInc, columnAmountInc, incAmountVertical);
+    sheet.autoFitColumn(3);
+    
+   
+    
+
+    // ========================>Mapping Data Nama Kategori Pengeluaran & Amount <==========================
+    // Name
+    final int rowExpName = length_income + 2; // Represent the starting row.
+    final int columnExpName = 2; // Represent the starting column.
+    final bool expNameVertical = true; //  Represents that the data should be imported vertically.
+
+    // Amount
+    final int rowAmountExp = length_income + 2; // Represent the starting row.
+    final int columnAmountExp = 3;    // Represent the starting column.
+    final bool expAmountVertical = true; 
+    
+    
+    // Memasukkan data nama categori Income ke List
+    List expName = [];
+    List expAmount = [];
+    
+    expenseCategory.forEach((exp) => {
+      print(exp["name"]),
+      expName.add(exp["name"]),
+      expAmount.add(exp["totalAmount"])
+    });
+    print("isi Exp name $expName");
+    print("isi Exp total Amount $expAmount");
+    
+     // Berdasarkan Kategori Pengeluaran
+    String col = (rowExpName - 2).toString(); 
+    String col2 = (rowExpName - 1).toString(); 
+    sheet.getRangeByName('B$col:C$col').merge(); //Nanti Dimerge
+    sheet.getRangeByName('B$col:C$col').setText((lang == 0) ? "Berdasarkan Kategori Pengeluaran" : 'By Expense Category '); //Nanti Dimerge
+    sheet.getRangeByName('B$col2').setText((lang == 0) ? "Nama" : 'name');
+    sheet.getRangeByName('C$col2').setText((lang == 0) ? "Jumlah" : 'Amount');
+
+    //Import the Name to Sheet
+    sheet.importList(expName, rowExpName, columnExpName, expNameVertical);
+    sheet.autoFitColumn(2);
+    
+    //Import the Amount to Sheet
+    sheet.importList(expAmount, rowAmountExp, columnAmountExp, expAmountVertical);
+    sheet.autoFitColumn(3);
 
   
-
     
-
-    CellStyle cellStyle = CellStyle(backgroundColorHex: '#1AFF1A', fontFamily :getFontFamily(FontFamily.Calibri));
-    
-    cellStyle.underline = Underline.Single; // or Underline.Double
-
-    var a1 = sheet.cell(CellIndex.indexByString("A1"));
-    a1.value = TextCellValue("Periode");
-
-    var b2 = sheet.cell(CellIndex.indexByString("B2"));
-    a1.value = TextCellValue( DateFormat('dd-MMMM-yyyy', (lang == 0) ? "id_ID" : null).format(dbStartDate).toString() + " ~ " +
-                  DateFormat('dd-MMMM-yyyy', 'id_ID').format(dbEndDate));
-    sheet.merge(CellIndex.indexByString("D1"), CellIndex.indexByString("I1"));
    
-    // cell.value = null; // removing any value
-    // cell.value = TextCellValue('Some Text');
-    // cell.value = IntCellValue(8);
-    // cell.value = BoolCellValue(true);
-    // cell.value = DoubleCellValue(13.37);
-    // cell.value = DateCellValue(year: 2023, month: 4, day: 20);
-    // cell.value = TimeCellValue(hour: 20, minute: 15, second: 5, millisecond: ...);
-    // cell.value = DateTimeCellValue(year: 2023, month: 4, day: 20, hour: 15, ...);
-    // cell.cellStyle = cellStyle;
-
-
     
-    // Save to Excel
-  var fileBytes = excel.save();
-  var directory = await getApplicationDocumentsDirectory();
-  new Directory(directory.path+'/'+'dir').create(recursive: true)
-  // The created directory is returned as a Future.
-      .then((Directory directory) {
-    print('Path of New Dir: '+directory.path);
-    final new_dir = directory.path;
-    filePath = new_dir;
-     File(join('$new_dir/"nama".xlsx'))
-    ..createSync(recursive: true)
-    ..writeAsBytesSync(fileBytes!);
-  });
+    
+    //========================>Mapping Data Nama Kategori Pemasukan & Amount <==========================
+    sheet.getRangeByName('D1:I1').merge(); //Nanti Dimerge
+    sheet.getRangeByName('D1:I1').setText((lang == 0) ? "Daftar Transaksi" : 'Transactions List'); 
+    sheet.getRangeByName('D2').setText("No"); 
+    sheet.getRangeByName('E2').setText((lang == 0) ? 'Nama Transaksi' : 'Transaction Name'); 
+    sheet.getRangeByName('F2').setText((lang == 0) ? 'Tanggal' : 'Date'); 
+    sheet.getRangeByName('G2').setText((lang == 0) ? 'Jumlah' : 'Amount'); 
+    sheet.getRangeByName('H2').setText((lang == 0) ? 'Tipe' : 'Type'); 
+    sheet.getRangeByName('I2').setText((lang == 0) ? 'Kategori' : 'Category'); 
 
-  print("Berhasil Export Excel Cuy");
+
+
+    // Mapping Data Transaksi
+
+    // Name
+    final int rowName = 3; // Represent the starting row.
+    final int columnName = 5; // Represent the starting column.
+    final bool isNameVertical = true; //  Represents that the data should be imported vertically.
+    
+    // Date
+    final int rowDate = 3; // Represent the starting row.
+    final int columnDate = 6;    // Represent the starting column.
+    final bool isDateVertical = true;
+    
+    // Amount
+    final int rowAmount = 3; // Represent the starting row.
+    final int columnAmount = 7;    // Represent the starting column.
+    final bool isAmountVertical = true;
+
+    // Tipe
+    final int rowType = 3; // Represent the starting row.
+    final int columnType = 8;    // Represent the starting column.
+    final bool isTypeVertical = true;
+    
+    // Categori
+    final int rowCategory = 3; // Represent the starting row.
+    final int columnCategory = 9;    // Represent the starting column.
+    final bool isCategoryVertical = true;
+
+    List names = [];
+    List date = [];
+    List amount = [];
+    List type = [];
+    List category = [];
+
    
-        /*
-    * sheetObject.merge(CellIndex starting_cell, CellIndex ending_cell, TextCellValue('customValue'));
-    * sheetObject created by calling - // Sheet sheetObject = excel['SheetName'];
-    * starting_cell and ending_cell can be identified with Cell Address or by 2D array having row and column Index;
-    * customValue is optional
-    */
-
-    // sheet.merge(CellIndex.indexByString('A1'), CellIndex.indexByString('E4'), customValue: TextCellValue('Put this text after merge'));
-
-    // // setting the number style
-    // cell.cellStyle = (cell.cellStyle ?? CellStyle()).copyWith(
-
-    //   /// for IntCellValue, DoubleCellValue and BoolCellValue use; 
-    //   numberFormat: CustomNumericNumFormat('#,##0.00 \\m\\²'),
-
-    //   /// for DateCellValue and DateTimeCellValue use:
-    //   numberFormat: CustomDateTimeNumFormat('m/d/yy h:mm'),
-
-    //   /// for TimeCellValue use:
-    //   numberFormat: CustomDateTimeNumFormat('mm:ss'),
-
-    //   /// a builtin format for dates
-    //   numberFormat: NumFormat.standard_14,
+    // Mapping data rekap transactions yg memiliki insance class dari TransactionWithCategory
+    for (TransactionWithCategory tr in rekapTransactions) {
+      // Masukkan data ke dalam map
+      // var namess = tr.transaction.names;
+      names.add(tr.transaction.name);
+      date.add(tr.transaction.transaction_date);
+      amount.add(tr.transaction.amount);
+      category.add(tr.category.name);
       
-    //   /// a builtin format that uses a red text color for negative numbers
-    //   numberFormat: NumFormat.standard_38,
+      // Logic Khusus Untuk Type
+      if(tr.category.type == 1) {
+        type.add(lang == 0 ? "Pemasukan" : "Income");
+      }
 
-    //   // The numberFormat changes automatially if you set a CellValue that 
-    //   // does not work with the numberFormat set previously. So in case you
-    //   // want to set a new value, e.g. from a date to a decimal number, 
-    //   // make sure you set the new value first and then your custom
-    //   // numberFormat).
-    // );
+      else if(tr.category.type == 2) {
+        type.add(lang == 0 ? "Pengeluaran" : "Expense");
+      }
+    
+    }
 
+     //Import the Name to Sheet
+    sheet.importList(names, rowName, columnName, isNameVertical);
+    sheet.autoFitColumn(5);
+    
+    //Import the Date to Sheet
+    sheet.importList(date, rowDate, columnDate, isDateVertical);
+    sheet.autoFitColumn(6);
 
-    // // printing cell-type
-    // print('CellType: ' + switch(cell.value) {
-    //   null => 'empty cell',
-    //   TextCellValue() => 'text',
-    //   FormulaCellValue() => 'formula',
-    //   IntCellValue() => 'int',
-    //   BoolCellValue() => 'bool',
-    //   DoubleCellValue() => 'double',
-    //   DateCellValue() => 'date',
-    //   TimeCellValue => 'time',
-    //   DateTimeCellValue => 'date with time',
-    // });
+    //Import the Amount to Sheet
+    sheet.importList(amount, rowAmount, columnAmount, isAmountVertical);
+    sheet.autoFitColumn(7);
 
-    // ///
-    // /// Inserting and removing column and rows
+  
+    //Import the Type to Sheet
+    sheet.importList(type, rowType, columnType, isTypeVertical);
+    sheet.autoFitColumn(8);
 
-    // // insert column at index = 8
-    // sheetObject.insertColumn(8);
+  
+    //Import the Category to Sheet
+    sheet.importList(category, rowCategory, columnCategory, isCategoryVertical);
+    sheet.autoFitColumn(9);
+    
+  
+    
+    
+    
+    //Daftar Transaksi
+    sheet.getRangeByName('D1:I1').merge(); //Nanti Dimerge
+    sheet.getRangeByName('D1:I1').setText((lang == 0) ? "Daftar Transaksi" : 'Transactions List'); 
+    sheet.getRangeByName('D2').setText("No"); 
+    sheet.getRangeByName('E2').setText((lang == 0) ? 'Nama Transaksi' : 'Transaction Name'); 
+    sheet.getRangeByName('F2').setText((lang == 0) ? 'Tanggal' : 'Date'); 
+    sheet.getRangeByName('G2').setText((lang == 0) ? 'Jumlah' : 'Amount'); 
+    sheet.getRangeByName('H2').setText((lang == 0) ? 'Tipe' : 'Type'); 
+    sheet.getRangeByName('I2').setText((lang == 0) ? 'Kategori' : 'Category');
 
-    // // remove column at index = 18
-    // sheetObject.removeColumn(18);
+    
+    final List<int> bytes = workbook.saveAsStream();
+    workbook.dispose();
 
-    // // insert row at index = 82
-    // sheetObject.insertRow(82);
-
-    // // remove row at index = 80
-    // sheetObject.removeRow(80);
-
-//  Future<String> downloadFile({String? filePath, String? url}) async {
-//           // CancelToken cancelToken = CancelToken();
-//         Dio dio = new Dio();
-//           await dio.download(
-//             url,
-//             filePath,
-//             onReceiveProgress: (count, total) {
-//               debugPrint('---Download----Rec: $count, Total: $total');
-//               setState(() {
-//                 _platformVersion = ((count / total) * 100).toStringAsFixed(0) + "%";
-//               });
-//           },
-//         );
-
-//         return filePath;
-//       }
-//   void openExported() async {
-//     final name = await OpenDocument.getNameFile(url: url);
-
-//       final path = await OpenDocument.getPathDocument();
-
-//       filePath = "$path/$name";
-
-//       final isCheck = await OpenDocument.checkDocument(filePath: filePath);
-
-//       try {
-//         if (!isCheck) {
-//           filePath = await downloadFile(filePath: "$filePath", url: url);
-//         }
-
-//       await OpenDocument.openDocument(filePath: filePath);
-
-//       } on OpenDocumentException catch (e) {
-//         debugPrint("ERROR: ${e.errorMessage}");
-//         filePath = 'Failed to get platform version.';
-//       }
-
-     
-//   }
-  Future<File?> openExported() async {
-    final result = await FilePicker.platform.pickFiles();
-
-  }
-
-  Future<File?> downloadFile(String url, String name) async {
+    final String path = (await getApplicationSupportDirectory()).path;
+    final String fileName = '$path/$name.xlsx';
+    final File file = new File(fileName);
+    await file.writeAsBytes(bytes, flush: true);
+    filePath = fileName;
     
 
-    // try {
-    //   final response = await Dio().get(
-    //     url)
-    // }
+  }
+  
+  void openExported() {
+    OpenFile.open(filePath);
   }
 
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -427,6 +497,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                ScaffoldMessenger.of(context)
                       .showSnackBar(
                     SnackBar(
+                      
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -437,7 +508,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                             style: GoogleFonts.inder(
                                 color: base),
                           ),
-                          TextButton(onPressed: () {}, 
+                          TextButton(onPressed: openExported, 
                           child: Row(children: [ 
                             Text("Open") ,SizedBox(width: 30), Icon(Icons.file_open, color: base)
                             ]))
@@ -447,14 +518,14 @@ class _DetailRekapsStat extends State<DetailRekap>
                     ),
                   );
             },
-            child: Text(
+            child: (r == 2 || r == 3 ) ? Text(
               "Export",
               style: GoogleFonts.inder(
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
                 color: base,
               ),
-            ),
+            ) : SizedBox.shrink(),
           ),
         ],
         bottom: PreferredSize(
@@ -957,7 +1028,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                             future: database.getCatNameByRekaps(
                                                 dbStartDate, dbEndDate, 2),
                                             builder: (context, snapshot) {
-                                              final expenseCategory =
+                                              expenseCategory =
                                                   snapshot.data;
                                               print(
                                                   "isi  category $expenseCategory");
@@ -1089,7 +1160,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                             future: database.getCatNameByRekaps(
                                                 dbStartDate, dbEndDate, 1),
                                             builder: (context, snapshot) {
-                                              final incomeCategory =
+                                              incomeCategory =
                                                   snapshot.data;
                                               print(
                                                   "tes isi  category $incomeCategory");
@@ -1251,6 +1322,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                               .data![index]
                                                               .category
                                                               .type;
+                                                          rekapTransactions = snapshot.data;
                                                           return SingleChildScrollView(
                                                             child: ListTile(
                                                               leading:
