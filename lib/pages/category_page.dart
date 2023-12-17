@@ -229,7 +229,6 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
                 // Widget dibuat sendiri pake animasi
                 SwitchButton(type: type, updateType: updateType)
-          
               ],
             ),
           ),
@@ -492,7 +491,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ],
         ),
-      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 270.ms),
+      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 400.ms),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,

@@ -94,8 +94,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return (isLoading)
-        ? Center(
-            child: Image.asset('assets/img/loading.gif'),
+        ? Scaffold(
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.white,
+              child: Center(
+                child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.45),
+                    child: Column(
+                      children: [
+                        Image.asset('assets/img/Ventilator.gif'),
+                        Text('Loading'),
+                      ],
+                    )),
+              ),
+            ),
           )
         : Scaffold(
             appBar: PreferredSize(
@@ -469,14 +485,12 @@ class _HomePageState extends State<HomePage> {
                                                                       .black),
                                                         ),
                                                         subtitle: Text(
-                                                           snapshot
+                                                          snapshot
                                                                   .data![index]
                                                                   .transaction
-                                                                  .name
-                                                          
-                                                          +
+                                                                  .name +
                                                               ' ~ ' +
-                                                               snapshot
+                                                              snapshot
                                                                   .data![index]
                                                                   .category
                                                                   .name,
@@ -615,8 +629,11 @@ class _HomePageState extends State<HomePage> {
                                                         ),
                                                       ),
                                                       // Animasi Card
-                                                    ).animate().fade(begin: 0.5).then().slideX(begin: 0.7),
-                                                  
+                                                    )
+                                                        .animate()
+                                                        .fade(begin: 0.5)
+                                                        .then()
+                                                        .slideX(begin: 0.7),
                                                   ),
                                                 );
                                               });
@@ -673,7 +690,11 @@ class _HomePageState extends State<HomePage> {
                 size: 27,
                 color: primary,
                 // Animasi Icon
-              ).animate().fade(begin: 0.5).tint(color: base).shake(duration : 5000.ms),
+              )
+                  .animate()
+                  .fade(begin: 0.5)
+                  .tint(color: base)
+                  .shake(duration: 5000.ms),
               // animasi Floating Action Button
             ).animate().fadeIn(begin: 0.5).slideY(begin: 0.7, duration: 500.ms),
             floatingActionButtonLocation:

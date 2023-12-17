@@ -354,10 +354,55 @@ class _RekapPageState extends State<RekapPage> {
                                                     ],
                                                   );
                                                 } else {
-                                                  return Center();
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 85),
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(height: 35),
+                                                        Image.asset(
+                                                          'assets/img/tes.png',
+                                                          width: 200,
+                                                        ),
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? "Belum ada transaksi"
+                                                              : "No transactions yet",
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                                  color: isDark
+                                                                      ? base
+                                                                      : home),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
                                                 }
                                               } else {
-                                                return Center();
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 85),
+                                                  child: Column(
+                                                    children: [
+                                                      Image.asset(
+                                                        'assets/img/tes.png',
+                                                        width: 200,
+                                                      ),
+                                                      Text(
+                                                        (lang == 0)
+                                                            ? "Tidak Ada Data"
+                                                            : "No data",
+                                                        style:
+                                                            GoogleFonts.inder(
+                                                                color: isDark
+                                                                    ? base
+                                                                    : home),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
                                               }
                                             }
                                           },
@@ -785,7 +830,12 @@ class _RekapPageState extends State<RekapPage> {
                                                                     ? base
                                                                     : home),
                                                           ),
-                                                          SizedBox(width: MediaQuery.of(context).size.width * 0.2),
+                                                          SizedBox(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.2),
                                                         ],
                                                       ),
                                                       IconButton(
@@ -1420,8 +1470,7 @@ class _RekapPageState extends State<RekapPage> {
             ),
           ],
         ),
-      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 270.ms),
-      
+      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 400.ms),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,
