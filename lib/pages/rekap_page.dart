@@ -207,6 +207,7 @@ class _RekapPageState extends State<RekapPage> {
                                         ),
                                       ),
                                     ),
+
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
@@ -851,11 +852,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalIncome
-                                                                  .toString(),
+                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                          ).format(snapshot.data![index].totalIncome)).replaceAll('IDR', '').toString(),
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -878,11 +876,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalExpense
-                                                                  .toString(),
+                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                          ).format(snapshot.data![index].totalExpense)).replaceAll('IDR', '').toString(),
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -905,11 +900,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .sisa
-                                                                  .toString(),
+                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                          ).format(snapshot.data![index].sisa)).replaceAll('IDR', '').toString(),
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -1228,11 +1220,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalIncome
-                                                                  .toString(),
+                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                          ).format(snapshot.data![index].totalIncome)).replaceAll('IDR', '').toString(),
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -1255,11 +1244,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .totalExpense
-                                                                  .toString(),
+                                                           "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                          ).format(snapshot.data![index].totalExpense)).replaceAll('IDR', '').toString(),
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
@@ -1282,11 +1268,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .sisa
-                                                                  .toString(),
+                                                           "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                          ).format(snapshot.data![index].sisa)).replaceAll('IDR', '').toString(),
                                                           style: TextStyle(
                                                               color: isDark
                                                                   ? base
