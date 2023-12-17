@@ -244,6 +244,14 @@ class _DetailRekapsStat extends State<DetailRekap>
     sheet.getRangeByName('A4').setText((lang == 0) ? 'Rata-rata Harian' : 'Daily Average');
     sheet.getRangeByName('A5').setText((lang == 0) ? 'Sisa' : 'Balance');
     
+    // Styling dikit :v
+    
+    sheet.getRangeByName('A1').cellStyle.backColor = '#00eeee';
+    sheet.getRangeByName('A2').cellStyle.backColor = '#03c03c';
+    sheet.getRangeByName('A3').cellStyle.backColor = '#FF0000';
+    sheet.getRangeByName('A4').cellStyle.backColor = '#00eeee';
+    sheet.getRangeByName('A5').cellStyle.backColor = '#00eeee';
+
     // Isi Dari Database & Menformatnya
     final periode = DateFormat('dd-MMMM-yyyy', (lang == 0) ? 'id_ID' : null)
                       .format(dbStartDate).toString() + " ~ " + DateFormat('dd-MMMM-yyyy', 'id_ID').format(dbEndDate).toString();
@@ -267,6 +275,7 @@ class _DetailRekapsStat extends State<DetailRekap>
     // Berdasarkan Kategori Pemasukan
     sheet.getRangeByName('B7:C7').merge(); //Nanti Dimerge
     sheet.getRangeByName('B7:C7').setText((lang == 0) ? "Berdasarkan Kategori Pemasukan" : "By Income Category"); //Nanti Dimerge
+    sheet.getRangeByName('B7:C7').cellStyle.backColor = '#03c03c'; //Nanti Dimerge
     sheet.getRangeByName('B8').setText((lang == 0) ? "Nama" : 'Name');
     sheet.getRangeByName('C8').setText((lang == 0) ? "Jumlah" : 'Amount');
 
@@ -289,7 +298,9 @@ class _DetailRekapsStat extends State<DetailRekap>
     incomeCategory.forEach((inc) => {
       print(inc["name"]),
       incName.add(inc["name"]),
-      incAmount.add(inc["totalAmount"])
+       
+      incAmount.add("Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+              ).format(inc["totalAmount"])).replaceAll('IDR', ''))
     });
     print("isi Inc name $incName");
     print("isi Inc total Amount $incAmount");
@@ -307,12 +318,12 @@ class _DetailRekapsStat extends State<DetailRekap>
 
     // ========================>Mapping Data Nama Kategori Pengeluaran & Amount <==========================
     // Name
-    final int rowExpName = length_income + 2; // Represent the starting row.
+    final int rowExpName = length_income + 3; // Represent the starting row.
     final int columnExpName = 2; // Represent the starting column.
     final bool expNameVertical = true; //  Represents that the data should be imported vertically.
 
     // Amount
-    final int rowAmountExp = length_income + 2; // Represent the starting row.
+    final int rowAmountExp = length_income + 3; // Represent the starting row.
     final int columnAmountExp = 3;    // Represent the starting column.
     final bool expAmountVertical = true; 
     
@@ -324,7 +335,8 @@ class _DetailRekapsStat extends State<DetailRekap>
     expenseCategory.forEach((exp) => {
       print(exp["name"]),
       expName.add(exp["name"]),
-      expAmount.add(exp["totalAmount"])
+      expAmount.add("Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+              ).format(exp["totalAmount"])).replaceAll('IDR', ''))
     });
     print("isi Exp name $expName");
     print("isi Exp total Amount $expAmount");
@@ -334,6 +346,11 @@ class _DetailRekapsStat extends State<DetailRekap>
     String col2 = (rowExpName - 1).toString(); 
     sheet.getRangeByName('B$col:C$col').merge(); //Nanti Dimerge
     sheet.getRangeByName('B$col:C$col').setText((lang == 0) ? "Berdasarkan Kategori Pengeluaran" : 'By Expense Category '); //Nanti Dimerge
+    
+    // Styling Dikit :v
+    sheet.getRangeByName('B$col:C$col').cellStyle.backColor = '#FF0000'; //Nanti Dimerge
+    sheet.getRangeByName('B$col:C$col').cellStyle.hAlign = xlsio.HAlignType.center; //Nanti Dimerge
+
     sheet.getRangeByName('B$col2').setText((lang == 0) ? "Nama" : 'name');
     sheet.getRangeByName('C$col2').setText((lang == 0) ? "Jumlah" : 'Amount');
 
@@ -350,20 +367,27 @@ class _DetailRekapsStat extends State<DetailRekap>
    
     
     
-    //========================>Mapping Data Nama Kategori Pemasukan & Amount <==========================
+    //========================>Mapping Data All Transaksi <==========================
+   //Daftar Transaksi
     sheet.getRangeByName('D1:I1').merge(); //Nanti Dimerge
-    sheet.getRangeByName('D1:I1').setText((lang == 0) ? "Daftar Transaksi" : 'Transactions List'); 
+    sheet.getRangeByName('D1:I1').setText((lang == 0) ? "Daftar Transaksi" : 'Transactions List');
+    sheet.getRangeByName('D1:I1').cellStyle.hAlign = xlsio.HAlignType.center; 
+    sheet.getRangeByName('D1:I1').cellStyle.backColor = '#00eeee';
     sheet.getRangeByName('D2').setText("No"); 
     sheet.getRangeByName('E2').setText((lang == 0) ? 'Nama Transaksi' : 'Transaction Name'); 
     sheet.getRangeByName('F2').setText((lang == 0) ? 'Tanggal' : 'Date'); 
     sheet.getRangeByName('G2').setText((lang == 0) ? 'Jumlah' : 'Amount'); 
     sheet.getRangeByName('H2').setText((lang == 0) ? 'Tipe' : 'Type'); 
-    sheet.getRangeByName('I2').setText((lang == 0) ? 'Kategori' : 'Category'); 
-
+    sheet.getRangeByName('I2').setText((lang == 0) ? 'Kategori' : 'Category');
 
 
     // Mapping Data Transaksi
 
+    // No
+    final int rowNo = 3; // Represent the starting row.
+    final int columnNo = 4; // Represent the starting column.
+    final bool isNoVertical = true; //  Represents that the data should be imported vertically.
+    
     // Name
     final int rowName = 3; // Represent the starting row.
     final int columnName = 5; // Represent the starting column.
@@ -389,20 +413,34 @@ class _DetailRekapsStat extends State<DetailRekap>
     final int columnCategory = 9;    // Represent the starting column.
     final bool isCategoryVertical = true;
 
+    List no = [];
     List names = [];
     List date = [];
     List amount = [];
     List type = [];
     List category = [];
 
-   
+    // Ngedapatin Nomor      
+    int length = rekapTransactions.length; 
+      for (int i = 0; i < length; i++) {
+        no.add(i+1);
+      }
+
     // Mapping data rekap transactions yg memiliki insance class dari TransactionWithCategory
     for (TransactionWithCategory tr in rekapTransactions) {
       // Masukkan data ke dalam map
-      // var namess = tr.transaction.names;
+      
+
       names.add(tr.transaction.name);
-      date.add(tr.transaction.transaction_date);
-      amount.add(tr.transaction.amount);
+      
+      //Format Tanggal & Jumlah
+      var dateTr = DateFormat('dd-MMMM-yyyy', (lang == 0) ? 'id_ID' : null)
+                      .format(tr.transaction.transaction_date).toString(); 
+      var amounts = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+              ).format(tr.transaction.amount)).replaceAll('IDR', '').toString();
+      
+      date.add(dateTr);
+      amount.add(amounts);
       category.add(tr.category.name);
       
       // Logic Khusus Untuk Type
@@ -416,6 +454,10 @@ class _DetailRekapsStat extends State<DetailRekap>
     
     }
 
+     //Import the Index No to Sheet
+    sheet.importList(no, rowNo, columnNo, isNoVertical);
+    sheet.autoFitColumn(4);
+    
      //Import the Name to Sheet
     sheet.importList(names, rowName, columnName, isNameVertical);
     sheet.autoFitColumn(5);
@@ -442,16 +484,7 @@ class _DetailRekapsStat extends State<DetailRekap>
     
     
     
-    //Daftar Transaksi
-    sheet.getRangeByName('D1:I1').merge(); //Nanti Dimerge
-    sheet.getRangeByName('D1:I1').setText((lang == 0) ? "Daftar Transaksi" : 'Transactions List'); 
-    sheet.getRangeByName('D2').setText("No"); 
-    sheet.getRangeByName('E2').setText((lang == 0) ? 'Nama Transaksi' : 'Transaction Name'); 
-    sheet.getRangeByName('F2').setText((lang == 0) ? 'Tanggal' : 'Date'); 
-    sheet.getRangeByName('G2').setText((lang == 0) ? 'Jumlah' : 'Amount'); 
-    sheet.getRangeByName('H2').setText((lang == 0) ? 'Tipe' : 'Type'); 
-    sheet.getRangeByName('I2').setText((lang == 0) ? 'Kategori' : 'Category');
-
+    
     
     final List<int> bytes = workbook.saveAsStream();
     workbook.dispose();
