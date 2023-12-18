@@ -245,7 +245,7 @@ class _AboutState extends State<About> {
                                                       BorderRadius.circular(50),
                                                   image: DecorationImage(
                                                     image: AssetImage(
-                                                        'assets/img/images.png'),
+                                                        'assets/img/sabrian.jpg'),
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),
@@ -853,7 +853,7 @@ class _AboutState extends State<About> {
                                                       BorderRadius.circular(50),
                                                   image: DecorationImage(
                                                     image: AssetImage(
-                                                        'assets/img/images.png'),
+                                                        'assets/img/clarisa.jpg'),
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),
