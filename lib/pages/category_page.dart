@@ -452,7 +452,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                                         isDark ? base : home),
                                               ),
                                             ),
-                                          ),
+                                          ).animate()
+                                                        .fade(begin: 0.5)
+                                                        .then()
+                                                        .slideX(begin: 0.7),
                                         ),
                                       );
                                     },
@@ -491,7 +494,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ],
         ),
-      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 400.ms),
+      ).animate().slideY(begin: 0.2, delay: 70.ms, duration: 400.ms),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,

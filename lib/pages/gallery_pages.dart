@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sisaku/models/database.dart';
@@ -346,6 +347,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                   ),
                                                                 ),
                                                               ],
+                                                            ).animate().fadeIn().then().slide().then().shakeY(duration: 270.ms, amount: 2 
                                                             ))
                                                         .toList()
                                                         .toSet()
@@ -413,7 +415,7 @@ class _GalleryPageState extends State<GalleryPage> {
             ),
           ],
         ),
-      ),
+      ).animate().slideY(begin: 0.2, delay: 70.ms, duration: 400.ms),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:sisaku/pages/main_page.dart';
-
 import 'pages/setting_page.dart';
-
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {

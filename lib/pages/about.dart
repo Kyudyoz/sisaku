@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/home_page.dart';
@@ -227,7 +228,7 @@ class _AboutState extends State<About> {
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ).animate().fadeIn().then(delay:100.ms,).slideX().then().shakeY(duration: 270.ms, amount: 1 ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.6,
@@ -385,7 +386,7 @@ class _AboutState extends State<About> {
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ).animate().fadeIn().then(delay:200.ms).slideX().then().shakeY( duration: 270.ms, amount: 1 ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.6,
@@ -543,7 +544,7 @@ class _AboutState extends State<About> {
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ).animate().fadeIn().then(delay:300.ms).slideX().then().shakeY( duration: 270.ms, amount: 1),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.6,
@@ -703,7 +704,7 @@ class _AboutState extends State<About> {
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ).animate().fadeIn().then(delay:400.ms).slideX().then().shakeY( duration: 270.ms, amount: 1),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.6,
@@ -861,7 +862,7 @@ class _AboutState extends State<About> {
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ).animate().fadeIn().then(delay:500.ms).slideX().then().shakeY( duration: 270.ms, amount: 1),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.6,
@@ -1019,7 +1020,7 @@ class _AboutState extends State<About> {
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ).animate().fadeIn().then(delay:600.ms).slideX().then().shakeY( duration: 270.ms, amount: 1),
                                   ],
                                 ),
                               ],

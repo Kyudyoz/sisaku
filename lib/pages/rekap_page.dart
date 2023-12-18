@@ -1053,7 +1053,10 @@ class _RekapPageState extends State<RekapPage> {
                                                       ]),
                                                   SizedBox(height: 30),
                                                 ],
-                                              );
+                                              ).animate()
+                                                        .fade(begin: 0.5)
+                                                        .then()
+                                                        .slideX(begin: 0.7);
                                             },
                                           );
                                         } else {
@@ -1454,7 +1457,10 @@ class _RekapPageState extends State<RekapPage> {
                                                       ]),
                                                   SizedBox(height: 30),
                                                 ],
-                                              );
+                                              ).animate()
+                                                        .fade(begin: 0.5)
+                                                        .then()
+                                                        .slideX(begin: 0.7);
                                             },
                                           );
                                         } else {
@@ -1530,9 +1536,12 @@ class _RekapPageState extends State<RekapPage> {
                                         backgroundColor: primary,
                                         child: Icon(
                                           Icons.add,
-                                          color: base,
-                                        ),
-                                      ),
+                                          color: primary,
+                                        ).animate()
+                                        .fade(begin: 0.5)
+                                        .tint(color: base)
+                                        .shake(duration: 5000.ms),
+                                        ).animate().fadeIn(begin: 0.5).slideY(begin: 0.7, duration: 500.ms),
                                     ),
                                   ),
                                 ],
@@ -1548,7 +1557,7 @@ class _RekapPageState extends State<RekapPage> {
             ),
           ],
         ),
-      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 400.ms),
+      ).animate().slideY(begin: 0.2, delay: 70.ms, duration: 400.ms),
       floatingActionButton: (r == 1)
           ? FloatingActionButton.extended(
               backgroundColor: primary,
@@ -1570,7 +1579,7 @@ class _RekapPageState extends State<RekapPage> {
                   color: base,
                 ),
               ),
-            )
+            ).animate().fade().slideY(begin: -1, delay: 70.ms, duration: 400.ms)
           : Center(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: primary,

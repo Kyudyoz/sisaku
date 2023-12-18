@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sisaku/models/database.dart';
@@ -348,7 +349,8 @@ class _GalleryRekapPageState extends State<GalleryRekapPage> {
                                                                   ),
                                                                 ),
                                                               ],
-                                                            ))
+                                                            ).animate().fadeIn().then().slide().then().shakeY(duration: 270.ms, amount: 2 )
+                                                            )
                                                         .toList()
                                                         .toSet()
                                                         .toList(),

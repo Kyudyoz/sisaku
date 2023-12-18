@@ -3,6 +3,7 @@ import 'dart:typed_data';
 // import 'package:dio/dio.dart';
 // import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
@@ -608,7 +609,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                     ),
                   )
                 : SizedBox.shrink(),
-          ),
+          ).animate().fade().slide(duration: 400.ms).then().shake(duration: 7000.ms),
         ],
         bottom: PreferredSize(
           preferredSize:
@@ -1177,6 +1178,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                               SizedBox(
                                                                   height: 7),
                                                               LinearPercentIndicator(
+                                                                animation: true,
+                                                                animationDuration: 500,
                                                                 width: MediaQuery.of(
                                                                             context)
                                                                         .size
@@ -1304,6 +1307,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                               SizedBox(
                                                                   height: 7),
                                                               LinearPercentIndicator(
+                                                                animation: true,
+                                                                animationDuration: 500,
                                                                 width: MediaQuery.of(
                                                                             context)
                                                                         .size
@@ -1533,6 +1538,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                         .spaceEvenly,
                                                                 children: [
                                                                   LinearPercentIndicator(
+                                                                    animation: true,
+                                                                    animationDuration: 500,
                                                                     width: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
@@ -1665,7 +1672,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                   color: base,
                 ),
               ),
-            )
+            ).animate().fade().slideY(begin: -1, delay: 70.ms, duration: 400.ms)
           : Center(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: BottomAppBar(
