@@ -100,7 +100,8 @@ class _HomePageState extends State<HomePage> {
             body: Container(
               width: double.infinity,
               height: double.infinity,
-              color: (SchedulerBinding.instance.window.platformBrightness ==
+              color: (SchedulerBinding
+                          .instance.platformDispatcher.platformBrightness ==
                       Brightness.dark)
                   ? background
                   : Colors.white,
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                     )),
               ),
             ),
-          )
+          ).animate().fadeOut(delay: 1000.ms, duration: 1250.ms)
         : Scaffold(
             appBar: PreferredSize(
               preferredSize:

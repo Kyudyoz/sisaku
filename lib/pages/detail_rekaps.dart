@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 // import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart' ;
+// import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 // import 'package:open_document/my_files/init.dart';
-import 'package:path/path.dart';
+// import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:sisaku/pages/category_page.dart';
@@ -137,29 +137,34 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   // Get All transaction for Piechart
   Future<Map<String, double>> getRekapType(DateTime start, DateTime end) async {
-    final Map<String, double> dataMap = await database.getRekapIncExpPieChart(start, end);
+    final Map<String, double> dataMap =
+        await database.getRekapIncExpPieChart(start, end);
     return dataMap;
   }
 
   // Get Income Name for Piechart
-  Future<Map<String, double>> getIncNamePieChart(DateTime start, DateTime end) async {
-    final Map<String, double> dataMap = await database.getRekapIncPieChart(start, end);
+  Future<Map<String, double>> getIncNamePieChart(
+      DateTime start, DateTime end) async {
+    final Map<String, double> dataMap =
+        await database.getRekapIncPieChart(start, end);
     return dataMap;
   }
 
-  // Get Expense for Piechart 
-  Future<Map<String, double>> getExpNamePieChart(DateTime start, DateTime end) async {
-    final Map<String, double> dataMap = await database.getRekapExpPieChart(start, end);
+  // Get Expense for Piechart
+  Future<Map<String, double>> getExpNamePieChart(
+      DateTime start, DateTime end) async {
+    final Map<String, double> dataMap =
+        await database.getRekapExpPieChart(start, end);
     return dataMap;
   }
 
- // Get All transaction for Piechart
-  Future<Map<String, double>> getAllTransactions(DateTime start, DateTime end) async {
-    final Map<String, double> dataMap = await database.getTransactionRekapPieChart(start, end);
+  // Get All transaction for Piechart
+  Future<Map<String, double>> getAllTransactions(
+      DateTime start, DateTime end) async {
+    final Map<String, double> dataMap =
+        await database.getTransactionRekapPieChart(start, end);
     return dataMap;
   }
-
- 
 
 // =============================> load Data, Etc <=============================
   @override
@@ -169,7 +174,6 @@ class _DetailRekapsStat extends State<DetailRekap>
     }
     super.initState();
 
-  
     getDailyAverage(totalExpense, totalIncome);
 
     _tabController = TabController(length: 3, vsync: this);
@@ -177,13 +181,12 @@ class _DetailRekapsStat extends State<DetailRekap>
     updateR(0);
     _loadData();
 
-
     getRekapType(dbStartDate, dbEndDate).then((dataMap) {
       setState(() {
         _pieChartIncExp = dataMap;
       });
     });
-    
+
     getAllTransactions(dbStartDate, dbEndDate).then((dataMap) {
       setState(() {
         _allTransactionPieChart = dataMap;
@@ -203,8 +206,6 @@ class _DetailRekapsStat extends State<DetailRekap>
         _pieChartExpName = dataMap;
       });
     });
-
-
   }
 
   Stream<List<Rekap>> getCustomRekaps() {
@@ -231,21 +232,25 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   final rekap_detail = Rekap;
 
-
-
   // Export Rekap To Excel
   void exportToExcel() async {
     final xlsio.Workbook workbook = new xlsio.Workbook();
     final xlsio.Worksheet sheet = workbook.worksheets[0];
 
     sheet.getRangeByName('A1').setText((lang == 0) ? 'Periode' : 'Period');
-    sheet.getRangeByName('A2').setText((lang == 0) ? 'Total Pemasukan' : 'Total Income');
-    sheet.getRangeByName('A3').setText((lang == 0) ? 'Total Pengeluaran' : 'Total Expense');
-    sheet.getRangeByName('A4').setText((lang == 0) ? 'Rata-rata Harian' : 'Daily Average');
+    sheet
+        .getRangeByName('A2')
+        .setText((lang == 0) ? 'Total Pemasukan' : 'Total Income');
+    sheet
+        .getRangeByName('A3')
+        .setText((lang == 0) ? 'Total Pengeluaran' : 'Total Expense');
+    sheet
+        .getRangeByName('A4')
+        .setText((lang == 0) ? 'Rata-rata Harian' : 'Daily Average');
     sheet.getRangeByName('A5').setText((lang == 0) ? 'Sisa' : 'Balance');
-    
+
     // Styling dikit :v
-    
+
     sheet.getRangeByName('A1').cellStyle.backColor = '#00eeee';
     sheet.getRangeByName('A2').cellStyle.backColor = '#03c03c';
     sheet.getRangeByName('A3').cellStyle.backColor = '#FF0000';
@@ -254,102 +259,134 @@ class _DetailRekapsStat extends State<DetailRekap>
 
     // Isi Dari Database & Menformatnya
     final periode = DateFormat('dd-MMMM-yyyy', (lang == 0) ? 'id_ID' : null)
-                      .format(dbStartDate).toString() + " ~ " + DateFormat('dd-MMMM-yyyy', 'id_ID').format(dbEndDate).toString();
-                      
-    var totIncome = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-              ).format(totalIncome,)).replaceAll('IDR', '');
-    var totExpense = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-              ).format(totalExpense,)).replaceAll('IDR', '');
-    var dailyAverages = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-              ).format(dailyAverage)).replaceAll('IDR', '');
-    var totSisa = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-              ).format(balance)).replaceAll('IDR', '');
+            .format(dbStartDate)
+            .toString() +
+        " ~ " +
+        DateFormat('dd-MMMM-yyyy', 'id_ID').format(dbEndDate).toString();
 
+    var totIncome = "Rp." +
+        (NumberFormat.currency(
+          locale: 'id',
+          decimalDigits: 0,
+        ).format(
+          totalIncome,
+        )).replaceAll('IDR', '');
+    var totExpense = "Rp." +
+        (NumberFormat.currency(
+          locale: 'id',
+          decimalDigits: 0,
+        ).format(
+          totalExpense,
+        )).replaceAll('IDR', '');
+    var dailyAverages = "Rp." +
+        (NumberFormat.currency(
+          locale: 'id',
+          decimalDigits: 0,
+        ).format(dailyAverage))
+            .replaceAll('IDR', '');
+    var totSisa = "Rp." +
+        (NumberFormat.currency(
+          locale: 'id',
+          decimalDigits: 0,
+        ).format(balance))
+            .replaceAll('IDR', '');
 
     sheet.getRangeByName('B1').setText(periode);
     sheet.getRangeByName('B2').setText(totIncome);
     sheet.getRangeByName('B3').setText(totExpense);
     sheet.getRangeByName('B4').setText(dailyAverages);
     sheet.getRangeByName('B5').setText(totSisa);
-    
+
     // Berdasarkan Kategori Pemasukan
     sheet.getRangeByName('B7:C7').merge(); //Nanti Dimerge
-    sheet.getRangeByName('B7:C7').setText((lang == 0) ? "Berdasarkan Kategori Pemasukan" : "By Income Category"); //Nanti Dimerge
-    sheet.getRangeByName('B7:C7').cellStyle.backColor = '#03c03c'; //Nanti Dimerge
+    sheet.getRangeByName('B7:C7').setText((lang == 0)
+        ? "Berdasarkan Kategori Pemasukan"
+        : "By Income Category"); //Nanti Dimerge
+    sheet.getRangeByName('B7:C7').cellStyle.backColor =
+        '#03c03c'; //Nanti Dimerge
     sheet.getRangeByName('B8').setText((lang == 0) ? "Nama" : 'Name');
     sheet.getRangeByName('C8').setText((lang == 0) ? "Jumlah" : 'Amount');
 
-   
     // ========================>Mapping Data Nama Kategori Pemasukan & Amount <==========================
     // Inc Name
     final int rowIncName = 9; // Represent the starting row.
     final int columnIncName = 2; // Represent the starting column.
-    final bool incNameVertical = true; //  Represents that the data should be imported vertically.
-    
+    final bool incNameVertical =
+        true; //  Represents that the data should be imported vertically.
+
     // Inc Name Amount
     final int rowAmountInc = 9; // Represent the starting row.
-    final int columnAmountInc = 3;    // Represent the starting column.
-    final bool incAmountVertical = true; 
+    final int columnAmountInc = 3; // Represent the starting column.
+    final bool incAmountVertical = true;
 
     // Memasukkan data nama categori Income ke List
     List incName = [];
     List incAmount = [];
-    int length_income = incomeCategory.length + rowIncName; 
+    int length_income = incomeCategory.length + rowIncName;
     incomeCategory.forEach((inc) => {
-      print(inc["name"]),
-      incName.add(inc["name"]),
-       
-      incAmount.add("Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-              ).format(inc["totalAmount"])).replaceAll('IDR', ''))
-    });
+          print(inc["name"]),
+          incName.add(inc["name"]),
+          incAmount.add("Rp." +
+              (NumberFormat.currency(
+                locale: 'id',
+                decimalDigits: 0,
+              ).format(inc["totalAmount"]))
+                  .replaceAll('IDR', ''))
+        });
     print("isi Inc name $incName");
     print("isi Inc total Amount $incAmount");
 
     //Import the Name to Sheet
     sheet.importList(incName, rowIncName, columnIncName, incNameVertical);
     sheet.autoFitColumn(2);
-    
+
     //Import the Amount list to Sheet
-    sheet.importList(incAmount, rowAmountInc, columnAmountInc, incAmountVertical);
+    sheet.importList(
+        incAmount, rowAmountInc, columnAmountInc, incAmountVertical);
     sheet.autoFitColumn(3);
-    
-   
-    
 
     // ========================>Mapping Data Nama Kategori Pengeluaran & Amount <==========================
     // Name
     final int rowExpName = length_income + 3; // Represent the starting row.
     final int columnExpName = 2; // Represent the starting column.
-    final bool expNameVertical = true; //  Represents that the data should be imported vertically.
+    final bool expNameVertical =
+        true; //  Represents that the data should be imported vertically.
 
     // Amount
     final int rowAmountExp = length_income + 3; // Represent the starting row.
-    final int columnAmountExp = 3;    // Represent the starting column.
-    final bool expAmountVertical = true; 
-    
-    
+    final int columnAmountExp = 3; // Represent the starting column.
+    final bool expAmountVertical = true;
+
     // Memasukkan data nama categori Income ke List
     List expName = [];
     List expAmount = [];
-    
+
     expenseCategory.forEach((exp) => {
-      print(exp["name"]),
-      expName.add(exp["name"]),
-      expAmount.add("Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-              ).format(exp["totalAmount"])).replaceAll('IDR', ''))
-    });
+          print(exp["name"]),
+          expName.add(exp["name"]),
+          expAmount.add("Rp." +
+              (NumberFormat.currency(
+                locale: 'id',
+                decimalDigits: 0,
+              ).format(exp["totalAmount"]))
+                  .replaceAll('IDR', ''))
+        });
     print("isi Exp name $expName");
     print("isi Exp total Amount $expAmount");
-    
-     // Berdasarkan Kategori Pengeluaran
-    String col = (rowExpName - 2).toString(); 
-    String col2 = (rowExpName - 1).toString(); 
+
+    // Berdasarkan Kategori Pengeluaran
+    String col = (rowExpName - 2).toString();
+    String col2 = (rowExpName - 1).toString();
     sheet.getRangeByName('B$col:C$col').merge(); //Nanti Dimerge
-    sheet.getRangeByName('B$col:C$col').setText((lang == 0) ? "Berdasarkan Kategori Pengeluaran" : 'By Expense Category '); //Nanti Dimerge
-    
+    sheet.getRangeByName('B$col:C$col').setText((lang == 0)
+        ? "Berdasarkan Kategori Pengeluaran"
+        : 'By Expense Category '); //Nanti Dimerge
+
     // Styling Dikit :v
-    sheet.getRangeByName('B$col:C$col').cellStyle.backColor = '#FF0000'; //Nanti Dimerge
-    sheet.getRangeByName('B$col:C$col').cellStyle.hAlign = xlsio.HAlignType.center; //Nanti Dimerge
+    sheet.getRangeByName('B$col:C$col').cellStyle.backColor =
+        '#FF0000'; //Nanti Dimerge
+    sheet.getRangeByName('B$col:C$col').cellStyle.hAlign =
+        xlsio.HAlignType.center; //Nanti Dimerge
 
     sheet.getRangeByName('B$col2').setText((lang == 0) ? "Nama" : 'name');
     sheet.getRangeByName('C$col2').setText((lang == 0) ? "Jumlah" : 'Amount');
@@ -357,60 +394,61 @@ class _DetailRekapsStat extends State<DetailRekap>
     //Import the Name to Sheet
     sheet.importList(expName, rowExpName, columnExpName, expNameVertical);
     sheet.autoFitColumn(2);
-    
+
     //Import the Amount to Sheet
-    sheet.importList(expAmount, rowAmountExp, columnAmountExp, expAmountVertical);
+    sheet.importList(
+        expAmount, rowAmountExp, columnAmountExp, expAmountVertical);
     sheet.autoFitColumn(3);
 
-  
-    
-   
-    
-    
     //========================>Mapping Data All Transaksi <==========================
-   //Daftar Transaksi
+    //Daftar Transaksi
     sheet.getRangeByName('D1:I1').merge(); //Nanti Dimerge
-    sheet.getRangeByName('D1:I1').setText((lang == 0) ? "Daftar Transaksi" : 'Transactions List');
-    sheet.getRangeByName('D1:I1').cellStyle.hAlign = xlsio.HAlignType.center; 
+    sheet
+        .getRangeByName('D1:I1')
+        .setText((lang == 0) ? "Daftar Transaksi" : 'Transactions List');
+    sheet.getRangeByName('D1:I1').cellStyle.hAlign = xlsio.HAlignType.center;
     sheet.getRangeByName('D1:I1').cellStyle.backColor = '#00eeee';
-    sheet.getRangeByName('D2').setText("No"); 
-    sheet.getRangeByName('E2').setText((lang == 0) ? 'Nama Transaksi' : 'Transaction Name'); 
-    sheet.getRangeByName('F2').setText((lang == 0) ? 'Tanggal' : 'Date'); 
-    sheet.getRangeByName('G2').setText((lang == 0) ? 'Jumlah' : 'Amount'); 
-    sheet.getRangeByName('H2').setText((lang == 0) ? 'Tipe' : 'Type'); 
+    sheet.getRangeByName('D2').setText("No");
+    sheet
+        .getRangeByName('E2')
+        .setText((lang == 0) ? 'Nama Transaksi' : 'Transaction Name');
+    sheet.getRangeByName('F2').setText((lang == 0) ? 'Tanggal' : 'Date');
+    sheet.getRangeByName('G2').setText((lang == 0) ? 'Jumlah' : 'Amount');
+    sheet.getRangeByName('H2').setText((lang == 0) ? 'Tipe' : 'Type');
     sheet.getRangeByName('I2').setText((lang == 0) ? 'Kategori' : 'Category');
-
 
     // Mapping Data Transaksi
 
     // No
     final int rowNo = 3; // Represent the starting row.
     final int columnNo = 4; // Represent the starting column.
-    final bool isNoVertical = true; //  Represents that the data should be imported vertically.
-    
+    final bool isNoVertical =
+        true; //  Represents that the data should be imported vertically.
+
     // Name
     final int rowName = 3; // Represent the starting row.
     final int columnName = 5; // Represent the starting column.
-    final bool isNameVertical = true; //  Represents that the data should be imported vertically.
-    
+    final bool isNameVertical =
+        true; //  Represents that the data should be imported vertically.
+
     // Date
     final int rowDate = 3; // Represent the starting row.
-    final int columnDate = 6;    // Represent the starting column.
+    final int columnDate = 6; // Represent the starting column.
     final bool isDateVertical = true;
-    
+
     // Amount
     final int rowAmount = 3; // Represent the starting row.
-    final int columnAmount = 7;    // Represent the starting column.
+    final int columnAmount = 7; // Represent the starting column.
     final bool isAmountVertical = true;
 
     // Tipe
     final int rowType = 3; // Represent the starting row.
-    final int columnType = 8;    // Represent the starting column.
+    final int columnType = 8; // Represent the starting column.
     final bool isTypeVertical = true;
-    
+
     // Categori
     final int rowCategory = 3; // Represent the starting row.
-    final int columnCategory = 9;    // Represent the starting column.
+    final int columnCategory = 9; // Represent the starting column.
     final bool isCategoryVertical = true;
 
     List no = [];
@@ -420,48 +458,50 @@ class _DetailRekapsStat extends State<DetailRekap>
     List type = [];
     List category = [];
 
-    // Ngedapatin Nomor      
-    int length = rekapTransactions.length; 
-      for (int i = 0; i < length; i++) {
-        no.add(i+1);
-      }
+    // Ngedapatin Nomor
+    int length = rekapTransactions.length;
+    for (int i = 0; i < length; i++) {
+      no.add(i + 1);
+    }
 
     // Mapping data rekap transactions yg memiliki insance class dari TransactionWithCategory
     for (TransactionWithCategory tr in rekapTransactions) {
       // Masukkan data ke dalam map
-      
 
       names.add(tr.transaction.name);
-      
+
       //Format Tanggal & Jumlah
       var dateTr = DateFormat('dd-MMMM-yyyy', (lang == 0) ? 'id_ID' : null)
-                      .format(tr.transaction.transaction_date).toString(); 
-      var amounts = "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-              ).format(tr.transaction.amount)).replaceAll('IDR', '').toString();
-      
+          .format(tr.transaction.transaction_date)
+          .toString();
+      var amounts = "Rp." +
+          (NumberFormat.currency(
+            locale: 'id',
+            decimalDigits: 0,
+          ).format(tr.transaction.amount))
+              .replaceAll('IDR', '')
+              .toString();
+
       date.add(dateTr);
       amount.add(amounts);
       category.add(tr.category.name);
-      
-      // Logic Khusus Untuk Type
-      if(tr.category.type == 1) {
-        type.add(lang == 0 ? "Pemasukan" : "Income");
-      }
 
-      else if(tr.category.type == 2) {
+      // Logic Khusus Untuk Type
+      if (tr.category.type == 1) {
+        type.add(lang == 0 ? "Pemasukan" : "Income");
+      } else if (tr.category.type == 2) {
         type.add(lang == 0 ? "Pengeluaran" : "Expense");
       }
-    
     }
 
-     //Import the Index No to Sheet
+    //Import the Index No to Sheet
     sheet.importList(no, rowNo, columnNo, isNoVertical);
     sheet.autoFitColumn(4);
-    
-     //Import the Name to Sheet
+
+    //Import the Name to Sheet
     sheet.importList(names, rowName, columnName, isNameVertical);
     sheet.autoFitColumn(5);
-    
+
     //Import the Date to Sheet
     sheet.importList(date, rowDate, columnDate, isDateVertical);
     sheet.autoFitColumn(6);
@@ -470,22 +510,14 @@ class _DetailRekapsStat extends State<DetailRekap>
     sheet.importList(amount, rowAmount, columnAmount, isAmountVertical);
     sheet.autoFitColumn(7);
 
-  
     //Import the Type to Sheet
     sheet.importList(type, rowType, columnType, isTypeVertical);
     sheet.autoFitColumn(8);
 
-  
     //Import the Category to Sheet
     sheet.importList(category, rowCategory, columnCategory, isCategoryVertical);
     sheet.autoFitColumn(9);
-    
-  
-    
-    
-    
-    
-    
+
     final List<int> bytes = workbook.saveAsStream();
     workbook.dispose();
 
@@ -494,14 +526,11 @@ class _DetailRekapsStat extends State<DetailRekap>
     final File file = new File(fileName);
     await file.writeAsBytes(bytes, flush: true);
     filePath = fileName;
-    
-
   }
-  
+
   void openExported() {
     OpenFile.open(filePath);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -527,38 +556,40 @@ class _DetailRekapsStat extends State<DetailRekap>
           TextButton(
             onPressed: () {
               exportToExcel();
-               ScaffoldMessenger.of(context)
-                      .showSnackBar(
-                    SnackBar(
-                      
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            (lang == 0)
-                                ? 'Berhasil Export Rekap'
-                                : 'Export Report Success',
-                            style: GoogleFonts.inder(
-                                color: base),
-                          ),
-                          TextButton(onPressed: openExported, 
-                          child: Row(children: [ 
-                            Text("Open") ,SizedBox(width: 30), Icon(Icons.file_open, color: base)
-                            ]))
-                        ],
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        (lang == 0)
+                            ? 'Berhasil Export Rekap'
+                            : 'Export Report Success',
+                        style: GoogleFonts.inder(color: base),
                       ),
-                      backgroundColor: primary,
-                    ),
-                  );
+                      TextButton(
+                          onPressed: openExported,
+                          child: Row(children: [
+                            Text("Open"),
+                            SizedBox(width: 30),
+                            Icon(Icons.file_open, color: base)
+                          ]))
+                    ],
+                  ),
+                  backgroundColor: primary,
+                ),
+              );
             },
-            child: (r == 2 || r == 3 ) ? Text(
-              "Export",
-              style: GoogleFonts.inder(
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-                color: base,
-              ),
-            ) : SizedBox.shrink(),
+            child: (r == 2 || r == 3)
+                ? Text(
+                    "Export",
+                    style: GoogleFonts.inder(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: base,
+                    ),
+                  )
+                : SizedBox.shrink(),
           ),
         ],
         bottom: PreferredSize(
@@ -610,7 +641,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                             children: [
                               // Kalo Chart
                               if (r == 1) ...[
-                                    Expanded(
+                                Expanded(
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
@@ -631,7 +662,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         ),
 
                                         FutureBuilder<Map<String, double>>(
-                                          future: getRekapType(dbStartDate, dbEndDate),
+                                          future: getRekapType(
+                                              dbStartDate, dbEndDate),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
@@ -706,7 +738,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         ),
 
                                         FutureBuilder<Map<String, double>>(
-                                          future: getIncNamePieChart(dbStartDate, dbEndDate),
+                                          future: getIncNamePieChart(
+                                              dbStartDate, dbEndDate),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
@@ -817,7 +850,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         ),
 
                                         FutureBuilder<Map<String, double>>(
-                                          future: getExpNamePieChart(dbStartDate, dbEndDate),
+                                          future: getExpNamePieChart(
+                                              dbStartDate, dbEndDate),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
@@ -928,7 +962,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         ),
 
                                         FutureBuilder<Map<String, double>>(
-                                          future: getAllTransactions(dbStartDate, dbEndDate),
+                                          future: getAllTransactions(
+                                              dbStartDate, dbEndDate),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
@@ -943,7 +978,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                             const EdgeInsets
                                                                 .only(top: 35),
                                                         child: PieChart(
-                                                          dataMap: _allTransactionPieChart,
+                                                          dataMap:
+                                                              _allTransactionPieChart,
                                                           chartRadius: 200,
                                                           legendOptions:
                                                               LegendOptions(
@@ -1024,289 +1060,284 @@ class _DetailRekapsStat extends State<DetailRekap>
                                     ),
                                   ),
                                 ),
-        
-                             
-                             
                               ]
 
                               // Kalo Kategori
                               else if (r == 2) ...[
                                 Expanded(
-                                  child: Column(
-                                    children: [
-                                      // Details
-                                      Details(
-                                        name: name,
-                                        startDate: dbStartDate,
-                                        endDate: dbEndDate,
-                                        totalExpense: totalExpense,
-                                        totalIncome: totalIncome,
-                                        dailyAverage: dailyAverage,
-                                        isMonthly: isMonthly,
-                                      ),
+                                    child: Column(
+                                  children: [
+                                    // Details
+                                    Details(
+                                      name: name,
+                                      startDate: dbStartDate,
+                                      endDate: dbEndDate,
+                                      totalExpense: totalExpense,
+                                      totalIncome: totalIncome,
+                                      dailyAverage: dailyAverage,
+                                      isMonthly: isMonthly,
+                                    ),
 
-                                      // ---------------------------> Mapping data Expense <---------------------------------------
-                                      Text(
-                                        (lang == 0)
-                                            ? "Pengeluaran Berdasarkan Kategori"
-                                            : "Expense by Category",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: isDark ? base : Colors.black),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Expanded(
-                                        child: FutureBuilder<
-                                                List<Map<String, Object>?>>(
-                                            future: database.getCatNameByRekaps(
-                                                dbStartDate, dbEndDate, 2),
-                                            builder: (context, snapshot) {
-                                              expenseCategory =
-                                                  snapshot.data;
-                                              print(
-                                                  "isi  category $expenseCategory");
-                                              // final expenseCategory =
-                                              //     snapshot.data![1];
+                                    // ---------------------------> Mapping data Expense <---------------------------------------
+                                    Text(
+                                      (lang == 0)
+                                          ? "Pengeluaran Berdasarkan Kategori"
+                                          : "Expense by Category",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark ? base : Colors.black),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Expanded(
+                                      child: FutureBuilder<
+                                              List<Map<String, Object>?>>(
+                                          future: database.getCatNameByRekaps(
+                                              dbStartDate, dbEndDate, 2),
+                                          builder: (context, snapshot) {
+                                            expenseCategory = snapshot.data;
+                                            print(
+                                                "isi  category $expenseCategory");
+                                            // final expenseCategory =
+                                            //     snapshot.data![1];
 
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(primary));
-                                              } else {
-                                                if (snapshot.hasData) {
-                                                  if (snapshot.data!.length > 0) {
-                                                    return ListView.builder(
-                                                        itemCount:
-                                                            snapshot.data!.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          var expenseNames =
-                                                              snapshot.data![
-                                                                  index]!["name"];
-                                                          var expenseAmount =
-                                                              snapshot.data![
-                                                                      index]![
-                                                                  "totalAmount"];
-                                                          print(
-                                                              "xpense $expenseNames");
-                                                          print(
-                                                              "amount $expenseAmount");
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(primary));
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length > 0) {
+                                                  return ListView.builder(
+                                                      itemCount:
+                                                          snapshot.data!.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        var expenseNames =
+                                                            snapshot.data![
+                                                                index]!["name"];
+                                                        var expenseAmount =
+                                                            snapshot.data![
+                                                                    index]![
+                                                                "totalAmount"];
+                                                        print(
+                                                            "xpense $expenseNames");
+                                                        print(
+                                                            "amount $expenseAmount");
 
-                                                          // Convert to Rp
-                                                          var amountString =
-                                                              (NumberFormat
-                                                                      .currency(
-                                                            locale: 'id',
-                                                            decimalDigits: 0,
-                                                          ).format(expenseAmount))
-                                                                  .replaceAll(
-                                                                      'IDR', '');
+                                                        // Convert to Rp
+                                                        var amountString =
+                                                            (NumberFormat
+                                                                    .currency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0,
+                                                        ).format(expenseAmount))
+                                                                .replaceAll(
+                                                                    'IDR', '');
 
-                                                          // Kalo Pengeluaran
-                                                          return SingleChildScrollView(
-                                                            child: Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                    height: 20),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      expenseNames
-                                                                          .toString(),
-                                                                      style: TextStyle(
-                                                                          color: isDark
-                                                                              ? base
-                                                                              : home),
-                                                                    ), // Nama kategori income
-                                                                    Text(
-                                                                      "Rp." +
-                                                                          amountString,
-                                                                      style: TextStyle(
-                                                                          color: isDark
-                                                                              ? base
-                                                                              : home),
-                                                                    ), // Total Expense
-                                                                  ],
-                                                                ),
-                                                                SizedBox(
-                                                                    height: 7),
-                                                                LinearPercentIndicator(
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.87,
-                                                                  barRadius:
-                                                                      const Radius
-                                                                          .circular(
-                                                                          16),
-                                                                  lineHeight: 8.0,
-                                                                  percent:
-                                                                      calculatePercentage(
-                                                                    (expenseAmount
-                                                                            as num)
-                                                                        .toDouble(),
-                                                                    totalExpense
-                                                                        .toDouble(),
-                                                                  ), // Ganti nilai persentase sesuai kebutuhan
-                                                                  progressColor:
-                                                                      Colors.red,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        });
-                                                  }
+                                                        // Kalo Pengeluaran
+                                                        return SingleChildScrollView(
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                  height: 20),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    expenseNames
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Nama kategori income
+                                                                  Text(
+                                                                    "Rp." +
+                                                                        amountString,
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Total Expense
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 7),
+                                                              LinearPercentIndicator(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.87,
+                                                                barRadius:
+                                                                    const Radius
+                                                                        .circular(
+                                                                        16),
+                                                                lineHeight: 8.0,
+                                                                percent:
+                                                                    calculatePercentage(
+                                                                  (expenseAmount
+                                                                          as num)
+                                                                      .toDouble(),
+                                                                  totalExpense
+                                                                      .toDouble(),
+                                                                ), // Ganti nilai persentase sesuai kebutuhan
+                                                                progressColor:
+                                                                    Colors.red,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      });
                                                 }
-                                                return Text(
-                                                  (lang == 0)
-                                                      ? "Belum ada pengeluaran"
-                                                      : "No expenses yet",
-                                                  style: TextStyle(
-                                                      color:
-                                                          isDark ? base : home),
-                                                );
                                               }
-                                            }),
-                                      ),
+                                              return Text(
+                                                (lang == 0)
+                                                    ? "Belum ada pengeluaran"
+                                                    : "No expenses yet",
+                                                style: TextStyle(
+                                                    color:
+                                                        isDark ? base : home),
+                                              );
+                                            }
+                                          }),
+                                    ),
 
-                                      SizedBox(height: 5),
-                                      Text(
-                                        (lang == 0)
-                                            ? "Pemasukan Berdasarkan Kategori"
-                                            : "Income by Category",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: isDark ? base : Colors.black),
-                                      ),
-                                      SizedBox(height: 10),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      (lang == 0)
+                                          ? "Pemasukan Berdasarkan Kategori"
+                                          : "Income by Category",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark ? base : Colors.black),
+                                    ),
+                                    SizedBox(height: 10),
 
-                                      // ---------------------------> Mapping data Income <---------------------------------------
-                                      Expanded(
-                                        child: FutureBuilder<
-                                                List<Map<String, Object>?>>(
-                                            future: database.getCatNameByRekaps(
-                                                dbStartDate, dbEndDate, 1),
-                                            builder: (context, snapshot) {
-                                              incomeCategory =
-                                                  snapshot.data;
-                                              print(
-                                                  "tes isi  category $incomeCategory");
-                                              // final expenseCategory =
-                                              //     snapshot.data![1];
+                                    // ---------------------------> Mapping data Income <---------------------------------------
+                                    Expanded(
+                                      child: FutureBuilder<
+                                              List<Map<String, Object>?>>(
+                                          future: database.getCatNameByRekaps(
+                                              dbStartDate, dbEndDate, 1),
+                                          builder: (context, snapshot) {
+                                            incomeCategory = snapshot.data;
+                                            print(
+                                                "tes isi  category $incomeCategory");
+                                            // final expenseCategory =
+                                            //     snapshot.data![1];
 
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(primary));
-                                              } else {
-                                                if (snapshot.hasData) {
-                                                  if (snapshot.data!.length > 0) {
-                                                    return ListView.builder(
-                                                        itemCount:
-                                                            snapshot.data!.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          var incomeNames =
-                                                              snapshot.data![
-                                                                  index]!["name"];
-                                                          var incomeAmount =
-                                                              snapshot.data![
-                                                                      index]![
-                                                                  "totalAmount"];
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(primary));
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length > 0) {
+                                                  return ListView.builder(
+                                                      itemCount:
+                                                          snapshot.data!.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        var incomeNames =
+                                                            snapshot.data![
+                                                                index]!["name"];
+                                                        var incomeAmount =
+                                                            snapshot.data![
+                                                                    index]![
+                                                                "totalAmount"];
 
-                                                          // Convert to Rp
-                                                          var amountString =
-                                                              (NumberFormat
-                                                                      .currency(
-                                                            locale: 'id',
-                                                            decimalDigits: 0,
-                                                          ).format(incomeAmount))
-                                                                  .replaceAll(
-                                                                      'IDR', '');
+                                                        // Convert to Rp
+                                                        var amountString =
+                                                            (NumberFormat
+                                                                    .currency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0,
+                                                        ).format(incomeAmount))
+                                                                .replaceAll(
+                                                                    'IDR', '');
 
-                                                          // Kalo Pengeluaran
-                                                          return SingleChildScrollView(
-                                                            child: Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                    height: 20),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Text(
-                                                                      incomeNames
-                                                                          .toString(),
-                                                                      style: TextStyle(
-                                                                          color: isDark
-                                                                              ? base
-                                                                              : home),
-                                                                    ), // Nama kategori income
-                                                                    Text(
-                                                                      "Rp." +
-                                                                          amountString,
-                                                                      style: TextStyle(
-                                                                          color: isDark
-                                                                              ? base
-                                                                              : home),
-                                                                    ), // Total Income
-                                                                  ],
-                                                                ),
-                                                                SizedBox(
-                                                                    height: 7),
-                                                                LinearPercentIndicator(
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.87,
-                                                                  barRadius:
-                                                                      const Radius
-                                                                          .circular(
-                                                                          16),
-                                                                  lineHeight: 8.0,
-                                                                  percent:
-                                                                      calculatePercentage(
-                                                                    (incomeAmount
-                                                                            as num)
-                                                                        .toDouble(),
-                                                                    totalIncome
-                                                                        .toDouble(),
-                                                                  ), // Ganti nilai persentase sesuai kebutuhan
-                                                                  progressColor:
-                                                                      Colors
-                                                                          .green,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        });
-                                                  }
+                                                        // Kalo Pengeluaran
+                                                        return SingleChildScrollView(
+                                                          child: Column(
+                                                            children: [
+                                                              SizedBox(
+                                                                  height: 20),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    incomeNames
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Nama kategori income
+                                                                  Text(
+                                                                    "Rp." +
+                                                                        amountString,
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ), // Total Income
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 7),
+                                                              LinearPercentIndicator(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width *
+                                                                    0.87,
+                                                                barRadius:
+                                                                    const Radius
+                                                                        .circular(
+                                                                        16),
+                                                                lineHeight: 8.0,
+                                                                percent:
+                                                                    calculatePercentage(
+                                                                  (incomeAmount
+                                                                          as num)
+                                                                      .toDouble(),
+                                                                  totalIncome
+                                                                      .toDouble(),
+                                                                ), // Ganti nilai persentase sesuai kebutuhan
+                                                                progressColor:
+                                                                    Colors
+                                                                        .green,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      });
                                                 }
-                                                return Text(
-                                                  (lang == 0)
-                                                      ? "Belum ada pemasukan"
-                                                      : "No incomes yet",
-                                                  style: TextStyle(
-                                                      color:
-                                                          isDark ? base : home),
-                                                );
                                               }
-                                            }),
-                                      ),
+                                              return Text(
+                                                (lang == 0)
+                                                    ? "Belum ada pemasukan"
+                                                    : "No incomes yet",
+                                                style: TextStyle(
+                                                    color:
+                                                        isDark ? base : home),
+                                              );
+                                            }
+                                          }),
+                                    ),
 
-                                      SizedBox(height: 25),
-                                    ],
-                                  ))
+                                    SizedBox(height: 25),
+                                  ],
+                                ))
 
                                 // Kalo Transaksi
                               ] else if (r == 3) ...[
@@ -1355,7 +1386,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                               .data![index]
                                                               .category
                                                               .type;
-                                                          rekapTransactions = snapshot.data;
+                                                          rekapTransactions =
+                                                              snapshot.data;
                                                           return SingleChildScrollView(
                                                             child: ListTile(
                                                               leading:
@@ -1423,41 +1455,23 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                             .center,
                                                                     children: [
                                                                       Column(
-                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
                                                                         children: [
                                                                           Text(
-                                                                            snapshot
-                                                                                .data![index]
-                                                                                .transaction
-                                                                                .name,
-                                                                            style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                                color: isDark
-                                                                                    ? base
-                                                                                    : Colors.black),
+                                                                            snapshot.data![index].transaction.name,
+                                                                            style:
+                                                                                TextStyle(fontWeight: FontWeight.bold, color: isDark ? base : Colors.black),
                                                                           ),
                                                                           Text(
-                                                                              (lang == 0)
-                                                                                  ? DateFormat.yMMMMEEEEd(
-                                                                                          'id_ID')
-                                                                                      .format(
-                                                                                      DateTime.parse(snapshot
-                                                                                          .data![
-                                                                                              index]
-                                                                                          .transaction.transaction_date.toString()),
-                                                                                    )
-                                                                                  : DateFormat
-                                                                                          .yMMMMEEEEd()
-                                                                                      .format(DateTime.parse(snapshot
-                                                                                          .data![
-                                                                                              index]
-                                                                                          .transaction.transaction_date.toString())),
-                                                                              style: TextStyle(
-                                                                                  fontSize: 11,
-                                                                                  color: isDark
-                                                                                      ? base
-                                                                                      : home),
-                                                                            ),
+                                                                            (lang == 0)
+                                                                                ? DateFormat.yMMMMEEEEd('id_ID').format(
+                                                                                    DateTime.parse(snapshot.data![index].transaction.transaction_date.toString()),
+                                                                                  )
+                                                                                : DateFormat.yMMMMEEEEd().format(DateTime.parse(snapshot.data![index].transaction.transaction_date.toString())),
+                                                                            style:
+                                                                                TextStyle(fontSize: 11, color: isDark ? base : home),
+                                                                          ),
                                                                         ],
                                                                       ),
                                                                       Text(

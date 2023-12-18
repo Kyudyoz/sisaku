@@ -21,10 +21,11 @@ class _MainPageState extends State<MainPage> {
       nextScreen: HomePage(selectedDate: DateTime.now()),
       splashTransition: SplashTransition.scaleTransition,
       pageTransitionType: PageTransitionType.bottomToTop,
-      backgroundColor: (SchedulerBinding.instance.window.platformBrightness ==
-              Brightness.dark)
-          ? background
-          : Colors.white,
+      backgroundColor:
+          (SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+                  Brightness.dark)
+              ? background
+              : Colors.white,
     );
   }
 }
