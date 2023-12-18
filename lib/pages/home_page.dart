@@ -641,8 +641,8 @@ class _HomePageState extends State<HomePage> {
                                           return Center(
                                             child: Text(
                                               (lang == 0)
-                                                  ? 'Tidak ada data'
-                                                  : 'No data',
+                                                  ? 'Belum ada transaksi'
+                                                  : 'No transaction yet',
                                               style: TextStyle(
                                                 color: isDark ? base : home,
                                               ),
