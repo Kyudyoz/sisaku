@@ -323,6 +323,8 @@ class _RekapPageState extends State<RekapPage> {
                                                       : home,
                                                 ),
                                                 style: TextStyle(
+                                                    fontWeight: FontWeight.w400 ,
+                                                    fontSize: 17,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     color: isDark
@@ -355,21 +357,21 @@ class _RekapPageState extends State<RekapPage> {
                                         if (n == 0) ...[
                                           // ===================================>All Inc Exp Data Map<===================================
 
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 30),
-                                            child: Text(
-                                              (lang == 0)
-                                                  ? "Berdasarkan Tipe"
-                                                  : "By Type",
-                                              style: GoogleFonts.inder(
-                                                fontSize: 17,
-                                                color: isDark
-                                                    ? base
-                                                    : Colors.black,
-                                              ),
-                                            ),
-                                          ),
+                                          // Padding(
+                                          //   padding:
+                                          //       const EdgeInsets.only(top: 30),
+                                          //   child: Text(
+                                          //     (lang == 0)
+                                          //         ? "Berdasarkan Tipe"
+                                          //         : "By Type",
+                                          //     style: GoogleFonts.inder(
+                                          //       fontSize: 17,
+                                          //       color: isDark
+                                          //           ? base
+                                          //           : Colors.black,
+                                          //     ),
+                                          //   ),
+                                          // ),
 
                                           FutureBuilder<Map<String, double>>(
                                             future: getIncExpPieChart(),
@@ -485,21 +487,7 @@ class _RekapPageState extends State<RekapPage> {
                                         ],
                                         if (n == 1) ...[
                                           // ===================================>All Transaction Inc Name Map<===================================
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 45),
-                                            child: Text(
-                                              (lang == 0)
-                                                  ? "Berdasarkan Kategori Pemasukan"
-                                                  : "By Income Category ",
-                                              style: GoogleFonts.inder(
-                                                fontSize: 17,
-                                                color: isDark
-                                                    ? base
-                                                    : Colors.black,
-                                              ),
-                                            ),
-                                          ),
+                                         
 
                                           FutureBuilder<Map<String, double>>(
                                             future: getIncNamePieChart(),
@@ -605,21 +593,7 @@ class _RekapPageState extends State<RekapPage> {
                                         ],
                                         if (n == 2) ...[
                                           // ===================================>All Transaction Expense Name Map<===================================
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 45),
-                                            child: Text(
-                                              (lang == 0)
-                                                  ? "Berdasarkan Kategori Pengeluaran"
-                                                  : "By Expense Category",
-                                              style: GoogleFonts.inder(
-                                                fontSize: 17,
-                                                color: isDark
-                                                    ? base
-                                                    : Colors.black,
-                                              ),
-                                            ),
-                                          ),
+                                         
 
                                           FutureBuilder<Map<String, double>>(
                                             future: getExpNamePieChart(),
@@ -725,21 +699,6 @@ class _RekapPageState extends State<RekapPage> {
                                         ],
                                         if (n == 3) ...[
                                           // ===================================>All Transaction Data Map<===================================
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 45),
-                                            child: Text(
-                                              (lang == 0)
-                                                  ? "Berdasarkan Semua Transaksi"
-                                                  : "By All Transaction",
-                                              style: GoogleFonts.inder(
-                                                fontSize: 17,
-                                                color: isDark
-                                                    ? base
-                                                    : Colors.black,
-                                              ),
-                                            ),
-                                          ),
 
                                           FutureBuilder<Map<String, double>>(
                                             future: datamap(),
