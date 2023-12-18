@@ -178,6 +178,6 @@ class _SwitchButtonState extends State<SwitchButton> {
           ),
         ),
       ],
-    );
+    ).animate().fade().slide(duration: 400.ms);
   }
 }

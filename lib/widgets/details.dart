@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 
 // import 'package:sisaku/colors.dart';
@@ -136,6 +137,6 @@ class _DetailsState extends State<Details> {
         ),
       ]),
       SizedBox(height: 27)
-    ]);
+    ]).animate().fade().slideX(duration: 300.ms);
   }
 }
