@@ -64,8 +64,17 @@ class _DetailRekapsStat extends State<DetailRekap>
   // Untuk dapetin categoi
   late var getCategory;
   // Tab
+  late int n;
   late TabController _tabController;
 
+  List<String> _list = [
+    (lang == 0) ? "Berdasarkan Tipe" : "By Type",
+    (lang == 0) ? "Berdasarkan Kategori Pengeluaran" : "By Expense Category",
+    (lang == 0) ? "Berdasarkan Kategori Pemasukan" : "By Income Category ",
+    (lang == 0) ? "Berdasarkan Semua Transaksi" : "By All Transaction",
+  ];
+
+  late String dropDown = _list.first;
   final _selectedColor = primary;
   // final _unselectedColor = base;
 
@@ -181,6 +190,7 @@ class _DetailRekapsStat extends State<DetailRekap>
     _tabController = TabController(length: 3, vsync: this);
 
     updateR(0);
+    updateN(0);
     _loadData();
 
     getRekapType(dbStartDate, dbEndDate).then((dataMap) {
@@ -533,6 +543,11 @@ class _DetailRekapsStat extends State<DetailRekap>
   void openExported() {
     OpenFile.open(filePath);
   }
+  void updateN(int index) {
+    setState(() {
+      n = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -641,28 +656,63 @@ class _DetailRekapsStat extends State<DetailRekap>
                         Expanded(
                           child: Column(
                             children: [
-                              // Kalo Chart
+                            // Kalo Chart
                               if (r == 1) ...[
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        // ===================================>All Inc Exp Data Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 30),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Tipe"
-                                                : "By Type",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
-                                            ),
-                                          ),
-                                        ),
+                                // By Type
+                                 Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    0, 20, 20, 0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.end,
+                                  children: [
+                                    DropdownButton<String>(
+                                      dropdownColor: isDark
+                                          ? card
+                                          : Colors.white,
+                                      value: dropDown,
+                                      elevation: 16,
+                                      underline: Container(
+                                        height: 2,
+                                        color: isDark
+                                            ? Colors.white
+                                            : home,
+                                      ),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400 ,
+                                          fontSize: 17,
+                                          overflow:
+                                              TextOverflow.ellipsis,
+                                          color: isDark
+                                              ? base
+                                              : Colors.black),
+                                      onChanged: (String? value) {
+                                        // This is called when the user selects an item.
+                                        setState(() {
+                                          dropDown = value!;
+                                          int index =
+                                              _list.indexOf(value);
 
+                                          updateN(index);
+                                        });
+                                      },
+                                      items: _list.map<
+                                              DropdownMenuItem<
+                                                  String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<
+                                            String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+     
+                                if (n == 0) ...[
+                                // ===================================>All Inc Exp Data Map<===================================
                                         FutureBuilder<Map<String, double>>(
                                           future: getRekapType(
                                               dbStartDate, dbEndDate),
@@ -722,22 +772,24 @@ class _DetailRekapsStat extends State<DetailRekap>
                                             }
                                           },
                                         ),
-
+                              ],
+  
+                              if (n == 1) ...[
                                         // ===================================>All Transaction Inc Name Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 45),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Kategori Pemasukan"
-                                                : "By Income Category ",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
-                                            ),
-                                          ),
-                                        ),
+                                        // Padding(
+                                        //   padding:
+                                        //       const EdgeInsets.only(top: 45),
+                                        //   child: Text(
+                                        //     (lang == 0)
+                                        //         ? "Berdasarkan Kategori Pemasukan"
+                                        //         : "By Income Category ",
+                                        //     style: GoogleFonts.inder(
+                                        //       fontSize: 17,
+                                        //       color:
+                                        //           isDark ? base : Colors.black,
+                                        //     ),
+                                        //   ),
+                                        // ),
 
                                         FutureBuilder<Map<String, double>>(
                                           future: getIncNamePieChart(
@@ -834,23 +886,9 @@ class _DetailRekapsStat extends State<DetailRekap>
                                             }
                                           },
                                         ),
-
+                                        ],
                                         // ===================================>All Transaction Expense Name Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 45),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Kategori Pengeluaran"
-                                                : "By Expense Category",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-
+                               if (n == 2) ...[
                                         FutureBuilder<Map<String, double>>(
                                           future: getExpNamePieChart(
                                               dbStartDate, dbEndDate),
@@ -946,23 +984,10 @@ class _DetailRekapsStat extends State<DetailRekap>
                                             }
                                           },
                                         ),
-
-                                        // ===================================>All Transaction Data Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 45),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Semua Transaksi"
-                                                : "By All Transaction",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-
+                                    ],
+      
+                                if (n == 3) ...[
+                                     // ===================================>All Transaction Data Map<===================================
                                         FutureBuilder<Map<String, double>>(
                                           future: getAllTransactions(
                                               dbStartDate, dbEndDate),
@@ -1060,12 +1085,12 @@ class _DetailRekapsStat extends State<DetailRekap>
                                             }
                                           },
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ]
+                                 ],   
+                                  
+                                
+                              
 
+                              ]
                               // Kalo Kategori
                               else if (r == 2) ...[
                                 Expanded(
