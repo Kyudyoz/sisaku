@@ -40,8 +40,8 @@ class _RekapPageState extends State<RekapPage> {
 
   List<String> _list = [
     (lang == 0) ? "Berdasarkan Tipe" : "By Type",
-    (lang == 0) ? "Berdasarkan Kategori Pengeluaran" : "By Expense Category",
     (lang == 0) ? "Berdasarkan Kategori Pemasukan" : "By Income Category ",
+    (lang == 0) ? "Berdasarkan Kategori Pengeluaran" : "By Expense Category",
     (lang == 0) ? "Berdasarkan Semua Transaksi" : "By All Transaction",
   ];
   late String dropDown = _list.first;
@@ -323,7 +323,7 @@ class _RekapPageState extends State<RekapPage> {
                                                       : home,
                                                 ),
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w400 ,
+                                                    fontWeight: FontWeight.w400,
                                                     fontSize: 17,
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -487,7 +487,6 @@ class _RekapPageState extends State<RekapPage> {
                                         ],
                                         if (n == 1) ...[
                                           // ===================================>All Transaction Inc Name Map<===================================
-                                         
 
                                           FutureBuilder<Map<String, double>>(
                                             future: getIncNamePieChart(),
@@ -593,7 +592,6 @@ class _RekapPageState extends State<RekapPage> {
                                         ],
                                         if (n == 2) ...[
                                           // ===================================>All Transaction Expense Name Map<===================================
-                                         
 
                                           FutureBuilder<Map<String, double>>(
                                             future: getExpNamePieChart(),

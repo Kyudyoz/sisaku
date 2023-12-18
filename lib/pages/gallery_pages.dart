@@ -21,13 +21,14 @@ class GalleryPage extends StatefulWidget {
 }
 
 class _GalleryPageState extends State<GalleryPage> {
-  late int type;
   final AppDb database = AppDb();
 
   void initState() {
     updateType(1);
     super.initState();
   }
+
+  late int type;
 
   void updateType(int index) {
     setState(() {
@@ -45,7 +46,7 @@ class _GalleryPageState extends State<GalleryPage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.25),
         child: Container(
           color: primary,
           child: Padding(
@@ -63,8 +64,8 @@ class _GalleryPageState extends State<GalleryPage> {
                 SizedBox(
                   height: 20,
                 ),
-               SwitchButton(type: type, updateType: updateType)
-                   ],
+                SwitchButton(type: type, updateType: updateType)
+              ],
             ),
           ),
         ),
@@ -74,6 +75,7 @@ class _GalleryPageState extends State<GalleryPage> {
           children: [
             Expanded(
               child: Container(
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: isDark ? background : base,
                   borderRadius: BorderRadius.only(
@@ -81,77 +83,189 @@ class _GalleryPageState extends State<GalleryPage> {
                     topRight: Radius.circular(20.0),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Center(),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: StreamBuilder<List<TransactionWithCategory>>(
-                        stream: getGallery(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                  valueColor:
-                                      AlwaysStoppedAnimation<Color>(primary)),
-                            );
-                          } else {
-                            if (snapshot.hasData) {
-                              if (snapshot.data!.length > 0) {
-                                return SingleChildScrollView(
-                                  child: Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.all(20),
-                                    child: Column(
-                                      children: [
-                                        Wrap(
-                                          spacing: 15,
-                                          runSpacing: 15,
-                                          
-                                          children: snapshot.data!
-                                              .map((e) => Stack(
-                                                    alignment:
-                                                        Alignment.bottomCenter,
-                                                    children: [
-                                                      InkWell(
-                                                        onTap: () {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (context) =>
-                                                                    AlertDialog(
-                                                              // title: Text(
-                                                              //   e.transaction
-                                                              //           .name +
-                                                              //       " (" +
-                                                              //       e.category
-                                                              //           .name +
-                                                              //       ")",
-                                                              //   style:
-                                                              //       GoogleFonts
-                                                              //           .inder(
-                                                              //     fontSize: 28,
-                                                              //   ),
-                                                              // ),
-                                                              content: Stack(
-                                                                alignment: Alignment
-                                                                    .bottomCenter,
-                                                                children: [
-                                                                  Container(
+                child: SafeArea(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: StreamBuilder<List<TransactionWithCategory>>(
+                          stream: database.getGallery(type),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                    valueColor:
+                                        AlwaysStoppedAnimation<Color>(primary)),
+                              );
+                            } else {
+                              if (snapshot.hasData) {
+                                if (snapshot.data!.length > 0) {
+                                  return ListView.builder(
+                                    itemCount: 1,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SingleChildScrollView(
+                                          child: SafeArea(
+                                            child: Container(
+                                              width: double.infinity,
+                                              margin: EdgeInsets.all(20),
+                                              child: Column(
+                                                children: [
+                                                  Wrap(
+                                                    spacing: 15,
+                                                    runSpacing: 15,
+                                                    children: snapshot.data!
+                                                        .map((e) => Stack(
+                                                              alignment: Alignment
+                                                                  .bottomCenter,
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) =>
+                                                                              AlertDialog(
+                                                                        content:
+                                                                            Stack(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          children: [
+                                                                            Container(
+                                                                              width: MediaQuery.of(context).size.width / 1,
+                                                                              height: MediaQuery.of(context).size.height / 2,
+                                                                              decoration: BoxDecoration(
+                                                                                borderRadius: BorderRadius.circular(10),
+                                                                                image: DecorationImage(
+                                                                                  fit: BoxFit.fill,
+                                                                                  image: MemoryImage(e.transaction.image ?? Uint8List(0)),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Positioned(
+                                                                              child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: Color.fromRGBO(
+                                                                                    0,
+                                                                                    0,
+                                                                                    0,
+                                                                                    0.7,
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.only(
+                                                                                    bottomLeft: Radius.circular(10),
+                                                                                    bottomRight: Radius.circular(10),
+                                                                                  ),
+                                                                                ),
+                                                                                width: MediaQuery.of(context).size.width / 1,
+                                                                                height: MediaQuery.of(context).size.height / 6,
+                                                                                alignment: Alignment.center,
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      e.transaction.name,
+                                                                                      style: GoogleFonts.inder(
+                                                                                        fontSize: 24,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                        color: base,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      " (" + e.category.name + ")",
+                                                                                      style: GoogleFonts.inder(
+                                                                                        fontSize: 20,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                        color: (e.category.type == 1) ? Colors.green : Colors.redAccent,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Divider(
+                                                                                      thickness: 3,
+                                                                                      color: primary,
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 5,
+                                                                                    ),
+                                                                                    Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                      children: [
+                                                                                        Column(
+                                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                          children: [
+                                                                                            Text(
+                                                                                              (lang == 0) ? "Tanggal Transaksi" : "Transaction Date",
+                                                                                              style: GoogleFonts.inder(
+                                                                                                fontSize: 14,
+                                                                                                color: base,
+                                                                                              ),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              DateFormat('dd-MMMM-yyyy').format(e.transaction.transaction_date),
+                                                                                              style: GoogleFonts.inder(
+                                                                                                fontSize: 14,
+                                                                                                color: base,
+                                                                                              ),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 20,
+                                                                                          child: Container(
+                                                                                            decoration: BoxDecoration(border: Border.all(color: base)),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Column(
+                                                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                          children: [
+                                                                                            Text(
+                                                                                              (lang == 0) ? 'Jumlah Uang' : "Amount",
+                                                                                              style: GoogleFonts.inder(
+                                                                                                fontSize: 14,
+                                                                                                color: base,
+                                                                                              ),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              'Rp. ' +
+                                                                                                  (NumberFormat.currency(
+                                                                                                    locale: 'id',
+                                                                                                    decimalDigits: 0,
+                                                                                                  ).format(
+                                                                                                    e.transaction.amount,
+                                                                                                  )).replaceAll('IDR', ''),
+                                                                                              style: GoogleFonts.inder(
+                                                                                                fontSize: 14,
+                                                                                                color: base,
+                                                                                              ),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        backgroundColor:
+                                                                            Colors.transparent,
+                                                                        scrollable:
+                                                                            true,
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  child:
+                                                                      Container(
                                                                     width: MediaQuery.of(context)
                                                                             .size
                                                                             .width /
-                                                                        1,
+                                                                        2.5,
                                                                     height: MediaQuery.of(context)
                                                                             .size
                                                                             .height /
-                                                                        2,
+                                                                        4.2,
                                                                     decoration:
                                                                         BoxDecoration(
                                                                       borderRadius:
@@ -161,251 +275,93 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                           DecorationImage(
                                                                         fit: BoxFit
                                                                             .fill,
+                                                                        // fit: BoxFit.cover,// OR BoxFit.fitWidth
+                                                                        // alignment: FractionalOffset.topCenter,
                                                                         image: MemoryImage(e.transaction.image ??
                                                                             Uint8List(0)),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                  Positioned(
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: Color
-                                                                            .fromRGBO(
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          0.7,
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.only(
-                                                                          bottomLeft:
-                                                                              Radius.circular(10),
-                                                                          bottomRight:
-                                                                              Radius.circular(10),
-                                                                        ),
-                                                                      ),
-                                                                      width: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width /
-                                                                          1,
-                                                                      height:
-                                                                          MediaQuery.of(context).size.height /
-                                                                              6,
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      child:
-                                                                          Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          Text(
-                                                                            e.transaction.name,
-                                                                            style:
-                                                                                GoogleFonts.inder(
-                                                                              fontSize: 24,
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: base,
-                                                                            ),
-                                                                          ),
-                                                                          Text(
-                                                                                " (" +
-                                                                                e.category.name +
-                                                                                ")",
-                                                                            style:
-                                                                                GoogleFonts.inder(
-                                                                              fontSize: 20,
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: (e.category.type == 1 ) ? Colors.green : Colors.redAccent,
-                                                                            ),
-                                                                          ),
-                                                                          Divider(
-                                                                            thickness:
-                                                                                3,
-                                                                            color:
-                                                                                primary,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceEvenly,
-                                                                            children: [
-                                                                              Column(
-                                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                children: [
-                                                                                  Text(
-                                                                                    (lang == 0) ? "Tanggal Transaksi" : "Transaction Date",
-                                                                                    style: GoogleFonts.inder(
-                                                                                      fontSize: 14,
-                                                                                      color: base,
-                                                                                    ),
-                                                                                  ),
-                                                                                  Text(
-                                                                                    DateFormat('dd-MMMM-yyyy').format(e.transaction.transaction_date),
-                                                                                    style: GoogleFonts.inder(
-                                                                                      fontSize: 14,
-                                                                                      color: base,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                              SizedBox(
-                                                                                height: 20,
-                                                                                child: Container(
-                                                                                  decoration: BoxDecoration(border: Border.all(color: base)),
-                                                                                ),
-                                                                              ),
-                                                                              Column(
-                                                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                                                children: [
-                                                                                  Text(
-                                                                                    (lang == 0) ? 'Jumlah Uang' : "Amount",
-                                                                                    style: GoogleFonts.inder(
-                                                                                      fontSize: 14,
-                                                                                      color: base,
-                                                                                    ),
-                                                                                  ),
-                                                                                  Text(
-                                                                                    'Rp. ' +
-                                                                                        (NumberFormat.currency(
-                                                                                          locale: 'id',
-                                                                                          decimalDigits: 0,
-                                                                                        ).format(
-                                                                                          e.transaction.amount,
-                                                                                        )).replaceAll('IDR', ''),
-                                                                                    style: GoogleFonts.inder(
-                                                                                      fontSize: 14,
-                                                                                      color: base,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
+                                                                ),
+                                                                Positioned(
+                                                                  child:
+                                                                      Container(
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Color
+                                                                          .fromRGBO(
+                                                                              0,
+                                                                              0,
+                                                                              0,
+                                                                              0.7),
+                                                                      borderRadius:
+                                                                          BorderRadius
+                                                                              .only(
+                                                                        bottomLeft:
+                                                                            Radius.circular(10),
+                                                                        bottomRight:
+                                                                            Radius.circular(10),
                                                                       ),
                                                                     ),
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width /
+                                                                        2.5,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        Text(
+                                                                          e.transaction
+                                                                              .name,
+                                                                          style:
+                                                                              GoogleFonts.inder(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
+                                                                        Text(
+                                                                          " (" +
+                                                                              e.category.name +
+                                                                              ")",
+                                                                          style:
+                                                                              GoogleFonts.inder(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: (e.category.type == 1)
+                                                                                ? Colors.green
+                                                                                : Colors.redAccent,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
-                                                                ],
-                                                              ),
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .transparent,
-                                                              scrollable: true,
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              2.5,
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height /
-                                                              4.2,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            image:
-                                                                DecorationImage(
-                                                              fit: BoxFit.fill,
-                                                              // fit: BoxFit.cover,// OR BoxFit.fitWidth
-                                                              // alignment: FractionalOffset.topCenter,
-                                                              image: MemoryImage(e
-                                                                      .transaction
-                                                                      .image ??
-                                                                  Uint8List(0)),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    0,
-                                                                    0,
-                                                                    0,
-                                                                    0.7),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                              bottomLeft: Radius
-                                                                  .circular(10),
-                                                              bottomRight:
-                                                                  Radius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                          ),
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              2.5,
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Column(
-                                                            children: [
-                                                              Text(
-                                                                e.transaction.name,
-                                                                style: GoogleFonts
-                                                                    .inder(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color:
-                                                                      Colors.white,
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                    " (" +
-                                                                    e.category
-                                                                        .name +
-                                                                    ")",
-                                                                style: GoogleFonts
-                                                                    .inder(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color: (e.category
-                                                                        .type == 1) ?
-                                                                      Colors.green : Colors.redAccent,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ))
-                                              .toList()
-                                              .toSet()
-                                              .toList(),
+                                                              ],
+                                                            ))
+                                                        .toList()
+                                                        .toSet()
+                                                        .toList(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 85),
-                                  child: Expanded(
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 85),
                                     child: Column(
                                       children: [
                                         SizedBox(height: 35),
@@ -423,13 +379,11 @@ class _GalleryPageState extends State<GalleryPage> {
                                         ),
                                       ],
                                     ),
-                                  ),
-                                );
-                              }
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 85),
-                                child: Expanded(
+                                  );
+                                }
+                              } else {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 85),
                                   child: Column(
                                     children: [
                                       Image.asset(
@@ -446,14 +400,14 @@ class _GalleryPageState extends State<GalleryPage> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              );
+                                );
+                              }
                             }
-                          }
-                        },
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -469,12 +423,12 @@ class _GalleryPageState extends State<GalleryPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          HomePage(selectedDate: DateTime.now()),
-                    ),
-                  );
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HomePage(selectedDate: DateTime.now()),
+                      ),
+                      (route) => false);
                 },
                 icon: Icon(
                   Icons.home,
@@ -488,11 +442,11 @@ class _GalleryPageState extends State<GalleryPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
-                    ),
-                  );
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPage(),
+                      ),
+                      (route) => false);
                 },
                 icon: Icon(
                   Icons.list,
@@ -504,12 +458,13 @@ class _GalleryPageState extends State<GalleryPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => RekapPage(
                         r: 1,
                       ),
                     ),
+                    (route) => false,
                   );
                 },
                 icon: Icon(
@@ -521,10 +476,11 @@ class _GalleryPageState extends State<GalleryPage> {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => SettingPage(),
                     ),
+                    (route) => false,
                   );
                 },
                 icon: Icon(

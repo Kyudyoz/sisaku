@@ -440,8 +440,9 @@ class _HomePageState extends State<HomePage> {
                                                                           0),
                                                                   // width: 80,
                                                                   fit: BoxFit
-                                                                      .cover,
+                                                                      .fill,
                                                                   width: 80,
+                                                                  height: 50,
                                                                 )
                                                               : Column(
                                                                   mainAxisAlignment:

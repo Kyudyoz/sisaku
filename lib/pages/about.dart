@@ -106,116 +106,122 @@ class _AboutState extends State<About> {
                                             ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Nama : '
-                                                            : 'Name : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Nama : '
+                                                              : 'Name : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Asal : '
-                                                            : 'University : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Asal : '
+                                                              : 'University : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Prodi : '
-                                                            : 'Major : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Prodi : '
+                                                              : 'Major : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Role : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Role : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Muhammad Iqbal Firdaus',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Muhammad Iqbal Firdaus',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Universitas Jambi'
-                                                            : 'Jambi University',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Universitas Jambi'
+                                                              : 'Jambi University',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Sistem Informasi'
-                                                            : 'Information System',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Sistem Informasi'
+                                                              : 'Information System',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Programmer(Fullstack)',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Programmer(Fullstack)',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -258,116 +264,122 @@ class _AboutState extends State<About> {
                                             ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Nama : '
-                                                            : 'Name : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Nama : '
+                                                              : 'Name : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Asal : '
-                                                            : 'University : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Asal : '
+                                                              : 'University : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Prodi : '
-                                                            : 'Major : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Prodi : '
+                                                              : 'Major : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Role : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Role : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Sabrian Maulana',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Sabrian Maulana',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Universitas Jambi'
-                                                            : 'Jambi University',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Universitas Jambi'
+                                                              : 'Jambi University',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Sistem Informasi'
-                                                            : 'Information System',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Sistem Informasi'
+                                                              : 'Information System',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Programmer(Fullstack)',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Programmer(Fullstack)',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -410,116 +422,122 @@ class _AboutState extends State<About> {
                                             ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Nama : '
-                                                            : 'Name : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Nama : '
+                                                              : 'Name : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Asal : '
-                                                            : 'University : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Asal : '
+                                                              : 'University : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Prodi : '
-                                                            : 'Major : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Prodi : '
+                                                              : 'Major : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Role : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Role : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Muhammad Zainul Ikhsan',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Muhammad Zainul Ikhsan',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Universitas Jambi'
-                                                            : 'Jambi University',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Universitas Jambi'
+                                                              : 'Jambi University',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Sistem Informasi'
-                                                            : 'Information System',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Sistem Informasi'
+                                                              : 'Information System',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Programmer(Fullstack)',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Programmer(Front End)',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -562,116 +580,124 @@ class _AboutState extends State<About> {
                                             ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Nama : '
-                                                            : 'Name : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Nama : '
+                                                              : 'Name : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Asal : '
-                                                            : 'University : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Asal : '
+                                                              : 'University : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Prodi : '
-                                                            : 'Major : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Prodi : '
+                                                              : 'Major : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Role : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Role : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Abdurrahman Fathan Muharrik',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Abdurrahman Fathan Muharrik',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Universitas Jambi'
-                                                            : 'Jambi University',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Universitas Jambi'
+                                                              : 'Jambi University',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Sistem Informasi'
-                                                            : 'Information System',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Sistem Informasi'
+                                                              : 'Information System',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Designer',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          lang == 0
+                                                              ? 'Analis'
+                                                              : 'Analyst',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -714,116 +740,122 @@ class _AboutState extends State<About> {
                                             ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Nama : '
-                                                            : 'Name : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Nama : '
+                                                              : 'Name : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Asal : '
-                                                            : 'University : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Asal : '
+                                                              : 'University : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Prodi : '
-                                                            : 'Major : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Prodi : '
+                                                              : 'Major : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Role : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Role : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Ikvi Akmal Rivaldi',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Ikvi Akmal Rivaldi',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Universitas Jambi'
-                                                            : 'Jambi University',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Universitas Jambi'
+                                                              : 'Jambi University',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Sistem Informasi'
-                                                            : 'Information System',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Sistem Informasi'
+                                                              : 'Information System',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Designer',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Designer',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -866,116 +898,122 @@ class _AboutState extends State<About> {
                                             ),
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Nama : '
-                                                            : 'Name : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Nama : '
+                                                              : 'Name : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Asal : '
-                                                            : 'University : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Asal : '
+                                                              : 'University : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Prodi : '
-                                                            : 'Major : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Prodi : '
+                                                              : 'Major : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Role : ',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Role : ',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Selly Clarisa Valentin Panggabean',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Selly Clarisa Valentin Panggabean',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Universitas Jambi'
-                                                            : 'Jambi University',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Universitas Jambi'
+                                                              : 'Jambi University',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? 'Sistem Informasi'
-                                                            : 'Information System',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? 'Sistem Informasi'
+                                                              : 'Information System',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        'Designer',
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                          color: isDark
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontSize: 14,
+                                                        Text(
+                                                          'Designer',
+                                                          style:
+                                                              GoogleFonts.inder(
+                                                            color: isDark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 14,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],

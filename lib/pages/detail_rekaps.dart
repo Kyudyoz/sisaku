@@ -69,8 +69,8 @@ class _DetailRekapsStat extends State<DetailRekap>
 
   List<String> _list = [
     (lang == 0) ? "Berdasarkan Tipe" : "By Type",
-    (lang == 0) ? "Berdasarkan Kategori Pengeluaran" : "By Expense Category",
     (lang == 0) ? "Berdasarkan Kategori Pemasukan" : "By Income Category ",
+    (lang == 0) ? "Berdasarkan Kategori Pengeluaran" : "By Expense Category",
     (lang == 0) ? "Berdasarkan Semua Transaksi" : "By All Transaction",
   ];
 
@@ -543,6 +543,7 @@ class _DetailRekapsStat extends State<DetailRekap>
   void openExported() {
     OpenFile.open(filePath);
   }
+
   void updateN(int index) {
     setState(() {
       n = index;
@@ -656,440 +657,419 @@ class _DetailRekapsStat extends State<DetailRekap>
                         Expanded(
                           child: Column(
                             children: [
-                            // Kalo Chart
+                              // Kalo Chart
                               if (r == 1) ...[
                                 // By Type
-                                 Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    0, 20, 20, 0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.end,
-                                  children: [
-                                    DropdownButton<String>(
-                                      dropdownColor: isDark
-                                          ? card
-                                          : Colors.white,
-                                      value: dropDown,
-                                      elevation: 16,
-                                      underline: Container(
-                                        height: 2,
-                                        color: isDark
-                                            ? Colors.white
-                                            : home,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 20, 20, 0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      DropdownButton<String>(
+                                        dropdownColor:
+                                            isDark ? card : Colors.white,
+                                        value: dropDown,
+                                        elevation: 16,
+                                        underline: Container(
+                                          height: 2,
+                                          color: isDark ? Colors.white : home,
+                                        ),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 17,
+                                            overflow: TextOverflow.ellipsis,
+                                            color:
+                                                isDark ? base : Colors.black),
+                                        onChanged: (String? value) {
+                                          // This is called when the user selects an item.
+                                          setState(() {
+                                            dropDown = value!;
+                                            int index = _list.indexOf(value);
+
+                                            updateN(index);
+                                          });
+                                        },
+                                        items: _list
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
                                       ),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400 ,
-                                          fontSize: 17,
-                                          overflow:
-                                              TextOverflow.ellipsis,
-                                          color: isDark
-                                              ? base
-                                              : Colors.black),
-                                      onChanged: (String? value) {
-                                        // This is called when the user selects an item.
-                                        setState(() {
-                                          dropDown = value!;
-                                          int index =
-                                              _list.indexOf(value);
-
-                                          updateN(index);
-                                        });
-                                      },
-                                      items: _list.map<
-                                              DropdownMenuItem<
-                                                  String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<
-                                            String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ],
-                                ),
-                              ),
-     
-                                if (n == 0) ...[
-                                // ===================================>All Inc Exp Data Map<===================================
-                                        FutureBuilder<Map<String, double>>(
-                                          future: getRekapType(
-                                              dbStartDate, dbEndDate),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center(
-                                                child: CircularProgressIndicator(
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(primary)),
-                                              );
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 35),
-                                                        child: PieChart(
-                                                          dataMap:
-                                                              _pieChartIncExp,
-                                                          colorList: [
-                                                            Colors.greenAccent,
-                                                            Colors.redAccent
-                                                          ],
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Center();
-                                                }
-                                              } else {
-                                                return Center();
-                                              }
-                                            }
-                                          },
-                                        ),
-                              ],
-  
-                              if (n == 1) ...[
-                                        // ===================================>All Transaction Inc Name Map<===================================
-                                        // Padding(
-                                        //   padding:
-                                        //       const EdgeInsets.only(top: 45),
-                                        //   child: Text(
-                                        //     (lang == 0)
-                                        //         ? "Berdasarkan Kategori Pemasukan"
-                                        //         : "By Income Category ",
-                                        //     style: GoogleFonts.inder(
-                                        //       fontSize: 17,
-                                        //       color:
-                                        //           isDark ? base : Colors.black,
-                                        //     ),
-                                        //   ),
-                                        // ),
-
-                                        FutureBuilder<Map<String, double>>(
-                                          future: getIncNamePieChart(
-                                              dbStartDate, dbEndDate),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center();
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 35),
-                                                        child: PieChart(
-                                                          dataMap:
-                                                              _pieChartIncName,
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 85),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 35),
-                                                        Image.asset(
-                                                          'assets/img/tes.png',
-                                                          width: 200,
-                                                        ),
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Belum ada transaksi"
-                                                              : "No transactions yet",
-                                                          style:
-                                                              GoogleFonts.inder(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : home),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }
-                                              } else {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 85),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/tes.png',
-                                                        width: 200,
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? "Tidak Ada Data"
-                                                            : "No data",
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
-                                        ],
-                                        // ===================================>All Transaction Expense Name Map<===================================
-                               if (n == 2) ...[
-                                        FutureBuilder<Map<String, double>>(
-                                          future: getExpNamePieChart(
-                                              dbStartDate, dbEndDate),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center();
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 35),
-                                                        child: PieChart(
-                                                          dataMap:
-                                                              _pieChartExpName,
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 85),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 35),
-                                                        Image.asset(
-                                                          'assets/img/tes.png',
-                                                          width: 200,
-                                                        ),
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Belum ada transaksi"
-                                                              : "No transactions yet",
-                                                          style:
-                                                              GoogleFonts.inder(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : home),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }
-                                              } else {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 85),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/tes.png',
-                                                        width: 200,
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? "Tidak Ada Data"
-                                                            : "No data",
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
                                     ],
-      
-                                if (n == 3) ...[
-                                     // ===================================>All Transaction Data Map<===================================
-                                        FutureBuilder<Map<String, double>>(
-                                          future: getAllTransactions(
-                                              dbStartDate, dbEndDate),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center();
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                top: 35,
-                                                                bottom: 60),
-                                                        child: PieChart(
-                                                          dataMap:
-                                                              _allTransactionPieChart,
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 85),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 35),
-                                                        Image.asset(
-                                                          'assets/img/tes.png',
-                                                          width: 200,
-                                                        ),
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Belum ada transaksi"
-                                                              : "No transactions yet",
-                                                          style:
-                                                              GoogleFonts.inder(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : home),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }
-                                              } else {
-                                                return Padding(
+                                  ),
+                                ),
+
+                                if (n == 0) ...[
+                                  // ===================================>All Inc Exp Data Map<===================================
+                                  FutureBuilder<Map<String, double>>(
+                                    future:
+                                        getRekapType(dbStartDate, dbEndDate),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      primary)),
+                                        );
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.length > 0) {
+                                            return Column(
+                                              children: [
+                                                Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          bottom: 85),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/tes.png',
-                                                        width: 200,
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? "Tidak Ada Data"
-                                                            : "No data",
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                      ),
+                                                          top: 35),
+                                                  child: PieChart(
+                                                    dataMap: _pieChartIncExp,
+                                                    colorList: [
+                                                      Colors.greenAccent,
+                                                      Colors.redAccent
                                                     ],
+                                                    chartRadius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
+                                                    legendOptions:
+                                                        LegendOptions(
+                                                      legendTextStyle:
+                                                          GoogleFonts.inder(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                      legendPosition:
+                                                          LegendPosition.bottom,
+                                                    ),
+                                                    chartValuesOptions:
+                                                        ChartValuesOptions(
+                                                      showChartValuesInPercentage:
+                                                          true,
+                                                      decimalPlaces: 0,
+                                                    ),
                                                   ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
-                                 ],   
-                                  
-                                
-                              
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            return Center();
+                                          }
+                                        } else {
+                                          return Center();
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
 
+                                if (n == 1) ...[
+                                  // ===================================>All Transaction Inc Name Map<===================================
+                                  // Padding(
+                                  //   padding:
+                                  //       const EdgeInsets.only(top: 45),
+                                  //   child: Text(
+                                  //     (lang == 0)
+                                  //         ? "Berdasarkan Kategori Pemasukan"
+                                  //         : "By Income Category ",
+                                  //     style: GoogleFonts.inder(
+                                  //       fontSize: 17,
+                                  //       color:
+                                  //           isDark ? base : Colors.black,
+                                  //     ),
+                                  //   ),
+                                  // ),
+
+                                  FutureBuilder<Map<String, double>>(
+                                    future: getIncNamePieChart(
+                                        dbStartDate, dbEndDate),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center();
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.length > 0) {
+                                            return Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 35),
+                                                  child: PieChart(
+                                                    dataMap: _pieChartIncName,
+                                                    chartRadius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
+                                                    legendOptions:
+                                                        LegendOptions(
+                                                      legendTextStyle:
+                                                          GoogleFonts.inder(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                      legendPosition:
+                                                          LegendPosition.bottom,
+                                                    ),
+                                                    chartValuesOptions:
+                                                        ChartValuesOptions(
+                                                      showChartValuesInPercentage:
+                                                          true,
+                                                      decimalPlaces: 0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 85),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height: 35),
+                                                  Image.asset(
+                                                    'assets/img/tes.png',
+                                                    width: 200,
+                                                  ),
+                                                  Text(
+                                                    (lang == 0)
+                                                        ? "Belum ada transaksi"
+                                                        : "No transactions yet",
+                                                    style: GoogleFonts.inder(
+                                                        color: isDark
+                                                            ? base
+                                                            : home),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 85),
+                                            child: Column(
+                                              children: [
+                                                Image.asset(
+                                                  'assets/img/tes.png',
+                                                  width: 200,
+                                                ),
+                                                Text(
+                                                  (lang == 0)
+                                                      ? "Tidak Ada Data"
+                                                      : "No data",
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
+                                // ===================================>All Transaction Expense Name Map<===================================
+                                if (n == 2) ...[
+                                  FutureBuilder<Map<String, double>>(
+                                    future: getExpNamePieChart(
+                                        dbStartDate, dbEndDate),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center();
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.length > 0) {
+                                            return Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 35),
+                                                  child: PieChart(
+                                                    dataMap: _pieChartExpName,
+                                                    chartRadius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
+                                                    legendOptions:
+                                                        LegendOptions(
+                                                      legendTextStyle:
+                                                          GoogleFonts.inder(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                      legendPosition:
+                                                          LegendPosition.bottom,
+                                                    ),
+                                                    chartValuesOptions:
+                                                        ChartValuesOptions(
+                                                      showChartValuesInPercentage:
+                                                          true,
+                                                      decimalPlaces: 0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 85),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height: 35),
+                                                  Image.asset(
+                                                    'assets/img/tes.png',
+                                                    width: 200,
+                                                  ),
+                                                  Text(
+                                                    (lang == 0)
+                                                        ? "Belum ada transaksi"
+                                                        : "No transactions yet",
+                                                    style: GoogleFonts.inder(
+                                                        color: isDark
+                                                            ? base
+                                                            : home),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 85),
+                                            child: Column(
+                                              children: [
+                                                Image.asset(
+                                                  'assets/img/tes.png',
+                                                  width: 200,
+                                                ),
+                                                Text(
+                                                  (lang == 0)
+                                                      ? "Tidak Ada Data"
+                                                      : "No data",
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
+
+                                if (n == 3) ...[
+                                  // ===================================>All Transaction Data Map<===================================
+                                  FutureBuilder<Map<String, double>>(
+                                    future: getAllTransactions(
+                                        dbStartDate, dbEndDate),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center();
+                                      } else {
+                                        if (snapshot.hasData) {
+                                          if (snapshot.data!.length > 0) {
+                                            return Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 35, bottom: 60),
+                                                  child: PieChart(
+                                                    dataMap:
+                                                        _allTransactionPieChart,
+                                                    chartRadius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
+                                                    legendOptions:
+                                                        LegendOptions(
+                                                      legendTextStyle:
+                                                          GoogleFonts.inder(
+                                                              color: isDark
+                                                                  ? base
+                                                                  : home),
+                                                      legendPosition:
+                                                          LegendPosition.bottom,
+                                                    ),
+                                                    chartValuesOptions:
+                                                        ChartValuesOptions(
+                                                      showChartValuesInPercentage:
+                                                          true,
+                                                      decimalPlaces: 0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          } else {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 85),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height: 35),
+                                                  Image.asset(
+                                                    'assets/img/tes.png',
+                                                    width: 200,
+                                                  ),
+                                                  Text(
+                                                    (lang == 0)
+                                                        ? "Belum ada transaksi"
+                                                        : "No transactions yet",
+                                                    style: GoogleFonts.inder(
+                                                        color: isDark
+                                                            ? base
+                                                            : home),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 85),
+                                            child: Column(
+                                              children: [
+                                                Image.asset(
+                                                  'assets/img/tes.png',
+                                                  width: 200,
+                                                ),
+                                                Text(
+                                                  (lang == 0)
+                                                      ? "Tidak Ada Data"
+                                                      : "No data",
+                                                  style: GoogleFonts.inder(
+                                                      color:
+                                                          isDark ? base : home),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ],
                               ]
                               // Kalo Kategori
                               else if (r == 2) ...[

@@ -276,7 +276,8 @@ class _TransactionPageState extends State<TransactionPage> {
                 SizedBox(
                   height: 20,
                 ),
-               SwitchButton(type: type, updateType: updateType)     ],
+                SwitchButton(type: type, updateType: updateType)
+              ],
             ),
           ),
         ),
@@ -641,6 +642,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                                 ),
                                                 child: Image.memory(
                                                   imageLama!,
+                                                  fit: BoxFit.cover,
                                                   width: 200,
                                                   height: 200,
                                                 ),
