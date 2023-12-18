@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sisaku/pages/home_page.dart';
-// import 'package:sisaku/colors.dart';
+
+import 'package:sisaku/pages/main_page.dart';
+
 import 'pages/setting_page.dart';
-// import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
@@ -35,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         Locale('en', 'EN'),
         Locale('id', 'ID'),
       ],
-      home: HomePage(selectedDate: DateTime.now()),
+      home: MainPage(),
       theme: ThemeData(
         primaryColor: primary,
         primarySwatch: MaterialColor(primary.value, {
