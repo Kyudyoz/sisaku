@@ -65,53 +65,53 @@ class _SettingPageState extends State<SettingPage> {
                         padding: EdgeInsets.all(45),
                         child: Column(
                           children: [
-                            // Remove Ads
-                            Row(children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  child: Icon(
-                                    Icons.price_check_rounded,
-                                    color: base,
-                                    size: 27,
-                                  )),
-                              SizedBox(width: 20),
-                              TextButton(
-                                  child: Text(
-                                    (lang == 0) ? "Hapus Iklan" : 'Remove Ads',
-                                    style: TextStyle(
-                                        color: isDark ? base : Colors.black),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                      foregroundColor: Colors.black),
-                                  onPressed: () {}),
-                            ]),
-                            SizedBox(height: 18),
+                            // // Remove Ads
+                            // Row(children: [
+                            //   Container(
+                            //       decoration: BoxDecoration(
+                            //           color: primary,
+                            //           borderRadius: BorderRadius.circular(3)),
+                            //       child: Icon(
+                            //         Icons.price_check_rounded,
+                            //         color: base,
+                            //         size: 27,
+                            //       )),
+                            //   SizedBox(width: 20),
+                            //   TextButton(
+                            //       child: Text(
+                            //         (lang == 0) ? "Hapus Iklan" : 'Remove Ads',
+                            //         style: TextStyle(
+                            //             color: isDark ? base : Colors.black),
+                            //       ),
+                            //       style: TextButton.styleFrom(
+                            //           foregroundColor: Colors.black),
+                            //       onPressed: () {}),
+                            // ]),
+                            // SizedBox(height: 18),
 
-                            // Backup and Restore Data
-                            Row(children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: primary,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  child: Icon(
-                                    Icons.restore_page,
-                                    color: base,
-                                    size: 27,
-                                  )),
-                              SizedBox(width: 20),
-                              TextButton(
-                                  child: Text(
-                                    "Backup dan Restore Data",
-                                    style: TextStyle(
-                                        color: isDark ? base : Colors.black),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                      foregroundColor: Colors.black),
-                                  onPressed: () {}),
-                            ]),
-                            SizedBox(height: 18),
+                            // // Backup and Restore Data
+                            // Row(children: [
+                            //   Container(
+                            //       decoration: BoxDecoration(
+                            //           color: primary,
+                            //           borderRadius: BorderRadius.circular(3)),
+                            //       child: Icon(
+                            //         Icons.restore_page,
+                            //         color: base,
+                            //         size: 27,
+                            //       )),
+                            //   SizedBox(width: 20),
+                            //   TextButton(
+                            //       child: Text(
+                            //         "Backup dan Restore Data",
+                            //         style: TextStyle(
+                            //             color: isDark ? base : Colors.black),
+                            //       ),
+                            //       style: TextButton.styleFrom(
+                            //           foregroundColor: Colors.black),
+                            //       onPressed: () {}),
+                            // ]),
+                            // SizedBox(height: 18),
                             Row(children: [
                               Container(
                                 decoration: BoxDecoration(

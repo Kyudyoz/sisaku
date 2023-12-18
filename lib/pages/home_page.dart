@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 // import 'package:calendar_appbar/calendar_appbar.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -16,6 +17,7 @@ import 'package:sisaku/pages/category_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
 import 'package:sisaku/pages/transaction_page.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 bool isLoading = true;
 
@@ -48,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     _loadData();
     loadData();
     if (isLoading) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(Duration(milliseconds: 2300), () {
         if (mounted) {
           setState(() {
             isLoading = false;
@@ -98,21 +100,33 @@ class _HomePageState extends State<HomePage> {
             body: Container(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.white,
+              color: (SchedulerBinding
+                          .instance.platformDispatcher.platformBrightness ==
+                      Brightness.dark)
+                  ? background
+                  : Colors.white,
               child: Center(
                 child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.45),
-                    child: Column(
+                    child: Stack(
+                      alignment: Alignment.center,
                       children: [
-                        Image.asset('assets/img/Ventilator.gif'),
-                        Text('Loading'),
+                        LoadingAnimationWidget.discreteCircle(
+                          color: defaultTheme[0],
+                          size: 160,
+                          secondRingColor: defaultTheme[1],
+                          thirdRingColor: defaultTheme[2],
+                        ).animate().fadeIn(duration: 500.ms),
+                        Positioned(
+                            child: Image.asset(
+                          'assets/img/logo.png',
+                          width: 60,
+                        ))
                       ],
                     )),
               ),
             ),
-          )
+          ).animate().fadeOut(delay: 1000.ms, duration: 1250.ms)
         : Scaffold(
             appBar: PreferredSize(
               preferredSize:
