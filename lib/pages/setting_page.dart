@@ -288,6 +288,8 @@ class _SettingPageState extends State<SettingPage> {
                                           content: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
+
+                                              // Cyan (Default)
                                               RadioListTile.adaptive(
                                                 tileColor: isDark ? base : home,
                                                 fillColor:
@@ -309,6 +311,8 @@ class _SettingPageState extends State<SettingPage> {
                                                 activeColor: defaultTheme[0],
                                                 selected: true,
                                               ),
+
+                                              // Magenta
                                               RadioListTile.adaptive(
                                                 tileColor: isDark ? base : home,
                                                 fillColor:
@@ -325,11 +329,13 @@ class _SettingPageState extends State<SettingPage> {
                                                   });
                                                   saveData();
                                                 },
-                                                title: Text("Magenta",
+                                                title: Text("Dark Magenta",
                                                     style: GoogleFonts.inder()),
                                                 activeColor: defaultTheme[1],
                                                 selected: true,
                                               ),
+
+                                              // Green
                                               RadioListTile.adaptive(
                                                 tileColor: isDark ? base : home,
                                                 fillColor:
@@ -349,6 +355,53 @@ class _SettingPageState extends State<SettingPage> {
                                                 title: Text("Green",
                                                     style: GoogleFonts.inder()),
                                                 activeColor: defaultTheme[2],
+                                                selected: true,
+                                              ),
+
+                                              // Dark Orange
+                                              RadioListTile.adaptive(
+                                                tileColor: isDark ? base : home,
+                                                fillColor:
+                                                    MaterialStatePropertyAll(
+                                                        defaultTheme[3]),
+                                                value: 3,
+                                                groupValue: _kode,
+                                                onChanged: (newKode) {
+                                                  setState(() {
+                                                    _kode = newKode!;
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop('dialog');
+                                                  });
+                                                  saveData();
+                                                },
+                                                title: Text("Dark Orange",
+                                                    style: GoogleFonts.inder()),
+                                                activeColor: defaultTheme[3],
+                                                selected: true,
+                                              ),
+
+                                              // Dark Aqua Marine
+                                            
+                                              RadioListTile.adaptive(
+                                                tileColor: isDark ? base : home,
+                                                fillColor:
+                                                    MaterialStatePropertyAll(
+                                                        defaultTheme[4]),
+                                                value: 4,
+                                                groupValue: _kode,
+                                                onChanged: (newKode) {
+                                                  setState(() {
+                                                    _kode = newKode!;
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop('dialog');
+                                                  });
+                                                  saveData();
+                                                },
+                                                title: Text("Aqua Marine",
+                                                    style: GoogleFonts.inder()),
+                                                activeColor: defaultTheme[4],
                                                 selected: true,
                                               ),
                                             ],
@@ -614,7 +667,7 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ],
         ),
-      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 400.ms),
+      ).animate().slideY(begin: 0.2, delay: 70.ms, duration: 400.ms),
       backgroundColor: primary,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,
@@ -725,6 +778,8 @@ const defaultTheme = [
   Color.fromARGB(255, 0, 171, 194),
   Color.fromARGB(255, 134, 27, 155),
   Color.fromARGB(255, 62, 166, 106),
+  Color.fromARGB(209, 205, 117, 9),
+  Color.fromARGB(187, 97, 207, 170)
 ];
 
 const secondary = Color.fromARGB(255, 151, 221, 230);

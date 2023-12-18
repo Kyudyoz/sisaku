@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                           color: defaultTheme[0],
                           size: 160,
                           secondRingColor: defaultTheme[1],
-                          thirdRingColor: defaultTheme[2],
+                          thirdRingColor: defaultTheme[4],
                         ).animate().fadeIn(duration: 500.ms),
                         Positioned(
                             child: Image.asset(
