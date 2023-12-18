@@ -11,6 +11,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:sisaku/pages/category_page.dart';
+import 'package:sisaku/pages/gallery_rekap_pages.dart';
 import 'package:sisaku/pages/home_page.dart';
 import 'package:sisaku/pages/rekap_page.dart';
 import 'package:sisaku/pages/setting_page.dart';
@@ -21,6 +22,7 @@ import 'package:sisaku/widgets/details.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart ' as xlsio;
 // import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import '../models/transaction_with_category.dart';
+import 'gallery_pages.dart';
 
 // import 'package:open_document/open_document.dart';
 // import 'package:open_file_plus/open_file_plus.dart';
@@ -941,7 +943,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(top: 35),
+                                                                .only(top: 35, bottom: 60),
                                                         child: PieChart(
                                                           dataMap: _allTransactionPieChart,
                                                           chartRadius: 200,
@@ -1311,236 +1313,218 @@ class _DetailRekapsStat extends State<DetailRekap>
                                 // Kalo Transaksi
                               ] else if (r == 3) ...[
                                 Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 30),
-                                    child: Column(
-                                      children: [
-                                        Details(
-                                          name: name,
-                                          startDate: dbStartDate,
-                                          endDate: dbEndDate,
-                                          totalExpense: totalExpense,
-                                          totalIncome: totalIncome,
-                                          dailyAverage: dailyAverage,
-                                          isMonthly: isMonthly,
-                                        ),
+                                  child: Column(
+                                    children: [
+                                      Details(
+                                        name: name,
+                                        startDate: dbStartDate,
+                                        endDate: dbEndDate,
+                                        totalExpense: totalExpense,
+                                        totalIncome: totalIncome,
+                                        dailyAverage: dailyAverage,
+                                        isMonthly: isMonthly,
+                                      ),
 
-                                        // ---------------------------> Mapping Transaction Name <---------------------------------------
-                                        Expanded(
-                                          child: StreamBuilder<
-                                              List<TransactionWithCategory>>(
-                                            stream:
-                                                database.getTransactionByRekaps(
-                                                    dbStartDate, dbEndDate),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Center(
-                                                  child: CircularProgressIndicator(
-                                                      valueColor:
-                                                          AlwaysStoppedAnimation<
-                                                              Color>(primary)),
-                                                );
-                                              } else {
-                                                if (snapshot.hasData) {
-                                                  if (snapshot.data!.length >
-                                                      0) {
-                                                    return ListView.builder(
-                                                        shrinkWrap: true,
-                                                        itemCount: snapshot
-                                                            .data!.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          final type = snapshot
-                                                              .data![index]
-                                                              .category
-                                                              .type;
-                                                          rekapTransactions = snapshot.data;
-                                                          return SingleChildScrollView(
-                                                            child: ListTile(
-                                                              leading:
-                                                                  Container(
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: isDark
-                                                                      ? card
-                                                                      : base,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              35),
-                                                                ),
-                                                                child: (snapshot
-                                                                            .data![
-                                                                                index]
-                                                                            .transaction
-                                                                            .image !=
-                                                                        null)
-                                                                    ? Image
-                                                                        .memory(
-                                                                        snapshot.data![index].transaction.image ??
-                                                                            Uint8List(0),
-                                                                        // width: 80,
-                                                                        fit: BoxFit
-                                                                            .cover,
+                                      // ---------------------------> Mapping Transaction Name <---------------------------------------
+                                      Expanded(
+                                        child: StreamBuilder<
+                                            List<TransactionWithCategory>>(
+                                          stream:
+                                              database.getTransactionByRekaps(
+                                                  dbStartDate, dbEndDate),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                            Color>(primary)),
+                                              );
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length >
+                                                    0) {
+                                                  return ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: snapshot
+                                                          .data!.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        final type = snapshot
+                                                            .data![index]
+                                                            .category
+                                                            .type;
+                                                        rekapTransactions = snapshot.data;
+                                                        return ListTile(
+                                                          leading:
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: isDark
+                                                                  ? card
+                                                                  : base,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          35),
+                                                            ),
+                                                            child: (snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .transaction
+                                                                        .image !=
+                                                                    null)
+                                                                ? Image
+                                                                    .memory(
+                                                                    snapshot.data![index].transaction.image ??
+                                                                        Uint8List(0),
+                                                                    // width: 80,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                    width:
+                                                                        50,
+                                                                  )
+                                                                : Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment.center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment.center,
+                                                                    children: [
+                                                                      Container(
                                                                         width:
                                                                             50,
-                                                                      )
-                                                                    : Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        children: [
-                                                                          Container(
-                                                                            width:
-                                                                                50,
-                                                                            decoration:
-                                                                                BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color.fromRGBO(0, 0, 0, 0.1)),
-                                                                            child: snapshot.data![index].category.type == 2
-                                                                                ? Icon(
-                                                                                    Icons.upload_rounded,
-                                                                                    color: Colors.red,
-                                                                                    size: 40,
-                                                                                  )
-                                                                                : Icon(
-                                                                                    Icons.download_rounded,
-                                                                                    color: Colors.green,
-                                                                                    size: 40,
-                                                                                  ),
-                                                                          ),
-                                                                        ],
+                                                                        decoration:
+                                                                            BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color.fromRGBO(0, 0, 0, 0.1)),
+                                                                        child: snapshot.data![index].category.type == 2
+                                                                            ? Icon(
+                                                                                Icons.upload_rounded,
+                                                                                color: Colors.red,
+                                                                                size: 40,
+                                                                              )
+                                                                            : Icon(
+                                                                                Icons.download_rounded,
+                                                                                color: Colors.green,
+                                                                                size: 40,
+                                                                              ),
                                                                       ),
-                                                              ),
-                                                              subtitle: Column(
+                                                                    ],
+                                                                  ),
+                                                          ),
+                                                          subtitle: Column(
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
                                                                 children: [
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
+                                                                  Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: [
-                                                                      Column(
-                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            snapshot
-                                                                                .data![index]
-                                                                                .transaction
-                                                                                .name,
-                                                                            style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                                color: isDark
-                                                                                    ? base
-                                                                                    : Colors.black),
-                                                                          ),
-                                                                          Text(
-                                                                              (lang == 0)
-                                                                                  ? DateFormat.yMMMMEEEEd(
-                                                                                          'id_ID')
-                                                                                      .format(
-                                                                                      DateTime.parse(snapshot
-                                                                                          .data![
-                                                                                              index]
-                                                                                          .transaction.transaction_date.toString()),
-                                                                                    )
-                                                                                  : DateFormat
-                                                                                          .yMMMMEEEEd()
-                                                                                      .format(DateTime.parse(snapshot
-                                                                                          .data![
-                                                                                              index]
-                                                                                          .transaction.transaction_date.toString())),
-                                                                              style: TextStyle(
-                                                                                  fontSize: 11,
-                                                                                  color: isDark
-                                                                                      ? base
-                                                                                      : home),
-                                                                            ),
-                                                                        ],
-                                                                      ),
                                                                       Text(
-                                                                        'Rp. ' +
-                                                                            (NumberFormat.currency(
-                                                                              locale: 'id',
-                                                                              decimalDigits: 0,
-                                                                            ).format(
-                                                                              snapshot.data![index].transaction.amount,
-                                                                            )).replaceAll('IDR', ''),
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .transaction
+                                                                            .name,
                                                                         style: TextStyle(
+                                                                          fontWeight: FontWeight.bold,
                                                                             color: isDark
                                                                                 ? base
                                                                                 : Colors.black),
                                                                       ),
+                                                                      Text(
+                                                                          (lang == 0)
+                                                                              ? DateFormat.yMMMMEEEEd(
+                                                                                      'id_ID')
+                                                                                  .format(
+                                                                                  DateTime.parse(snapshot
+                                                                                      .data![
+                                                                                          index]
+                                                                                      .transaction.transaction_date.toString()),
+                                                                                )
+                                                                              : DateFormat
+                                                                                      .yMMMMEEEEd()
+                                                                                  .format(DateTime.parse(snapshot
+                                                                                      .data![
+                                                                                          index]
+                                                                                      .transaction.transaction_date.toString())),
+                                                                          style: TextStyle(
+                                                                              fontSize: 11,
+                                                                              color: isDark
+                                                                                  ? base
+                                                                                  : home),
+                                                                        ),
                                                                     ],
                                                                   ),
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceEvenly,
-                                                                    children: [
-                                                                      LinearPercentIndicator(
-                                                                        width: MediaQuery.of(context).size.width *
-                                                                            0.52,
-                                                                        barRadius: const Radius
-                                                                            .circular(
-                                                                            16),
-                                                                        lineHeight:
-                                                                            7.0,
-                                                                        percent:
-                                                                            calculatePercentage(
-                                                                          (snapshot.data![index].transaction.amount)
-                                                                              .toDouble(),
-                                                                          (type == 1)
-                                                                              ? totalIncome.toDouble()
-                                                                              : totalExpense.toDouble(),
-                                                                        ), // Ganti nilai persentase sesuai kebutuhan
-                                                                        progressColor: (type ==
-                                                                                1)
-                                                                            ? Colors.green
-                                                                            : Colors.red,
-                                                                      ),
-                                                                      IconButton(
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.arrow_forward_ios_sharp,
-                                                                            color:
-                                                                                primary,
-                                                                            size:
-                                                                                16,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () {
-                                                                            Navigator.of(context).push(
-                                                                              MaterialPageRoute(
-                                                                                builder: ((context) => TransactionPage(
-                                                                                      transactionWithCategory: snapshot.data![index],
-                                                                                    )),
-                                                                              ),
-                                                                            );
-                                                                          })
-                                                                    ],
+                                                                  Text(
+                                                                    'Rp. ' +
+                                                                        (NumberFormat.currency(
+                                                                          locale: 'id',
+                                                                          decimalDigits: 0,
+                                                                        ).format(
+                                                                          snapshot.data![index].transaction.amount,
+                                                                        )).replaceAll('IDR', ''),
+                                                                    style: TextStyle(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : Colors.black),
                                                                   ),
                                                                 ],
                                                               ),
-                                                            ),
-                                                          );
-                                                        });
-                                                  } else {
-                                                    return Center(
-                                                      child: Text(
-                                                        (lang == 0)
-                                                            ? 'Tidak ada data'
-                                                            : "No data",
-                                                        style: TextStyle(
-                                                          color: isDark
-                                                              ? base
-                                                              : home,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  LinearPercentIndicator(
+                                                                    width: MediaQuery.of(context).size.width *
+                                                                        0.52,
+                                                                    barRadius: const Radius
+                                                                        .circular(
+                                                                        16),
+                                                                    lineHeight:
+                                                                        7.0,
+                                                                    percent:
+                                                                        calculatePercentage(
+                                                                      (snapshot.data![index].transaction.amount)
+                                                                          .toDouble(),
+                                                                      (type == 1)
+                                                                          ? totalIncome.toDouble()
+                                                                          : totalExpense.toDouble(),
+                                                                    ), // Ganti nilai persentase sesuai kebutuhan
+                                                                    progressColor: (type ==
+                                                                            1)
+                                                                        ? Colors.green
+                                                                        : Colors.red,
+                                                                  ),
+                                                                  IconButton(
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons.arrow_forward_ios_sharp,
+                                                                        color:
+                                                                            primary,
+                                                                        size:
+                                                                            16,
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context).push(
+                                                                          MaterialPageRoute(
+                                                                            builder: ((context) => TransactionPage(
+                                                                                  transactionWithCategory: snapshot.data![index],
+                                                                                )),
+                                                                          ),
+                                                                        );
+                                                                      })
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      });
                                                 } else {
                                                   return Center(
                                                     child: Text(
@@ -1555,12 +1539,27 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                     ),
                                                   );
                                                 }
+                                              } else {
+                                                return Center(
+                                                  child: Text(
+                                                    (lang == 0)
+                                                        ? 'Tidak ada data'
+                                                        : "No data",
+                                                    style: TextStyle(
+                                                      color: isDark
+                                                          ? base
+                                                          : home,
+                                                    ),
+                                                  ),
+                                                );
                                               }
-                                            },
-                                          ),
+                                            }
+                                          },
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Padding(padding: EdgeInsets.only(bottom: 35), child: SizedBox.shrink())
+                                    // SizedBox.shrink()
+                                    ],
                                   ),
                                 ),
                               ],
@@ -1576,6 +1575,34 @@ class _DetailRekapsStat extends State<DetailRekap>
           ],
         ),
       ),
+      floatingActionButton: (r == 1 || r == 3)
+                ? FloatingActionButton.extended(
+                    backgroundColor:primary,
+                    
+                    shape: ContinuousRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(100),
+                        ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        // DetailPage adalah halaman yang dituju
+                        MaterialPageRoute(
+                          builder: (context) => GalleryRekapPage(startDate: dbStartDate, endDate: dbEndDate),
+                        ),
+                      );
+                    },
+                    label: Text(
+                      (lang == 0)
+                          ? 'Lihat Galeri'
+                          : 'View Gallery',
+                      style: GoogleFonts.inder(
+                        color: base,
+                      ),
+                    ),
+                  )
+                : Center(),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat ,
       bottomNavigationBar: BottomAppBar(
         color: isDark ? dialog : null,
         child: Row(
