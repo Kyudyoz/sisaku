@@ -122,1406 +122,1402 @@ class _RekapPageState extends State<RekapPage> {
     setState(() {});
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
-        child: Container(
-          color: primary,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
-            child: Text(
-              (lang == 0) ? "Rekap" : "Report",
-              style: GoogleFonts.inder(
-                fontSize: 23,
-                color: base,
-              ),
-            ),
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: isDark ? background : base,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
+          @override
+          Widget build(BuildContext context) {
+            return Scaffold(
+              appBar: PreferredSize(
+                preferredSize:
+                    Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
+                child: Container(
+                  color: primary,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
+                    child: Text(
+                      (lang == 0) ? "Rekap" : "Report",
+                      style: GoogleFonts.inder(
+                        fontSize: 23,
+                        color: base,
+                      ),
+                    ),
                   ),
                 ),
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.fromBorderSide(
-                                      BorderSide(color: primary)),
-                                  color: base,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+              ),
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: isDark ? background : base,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
+                        ),
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                            child: Column(
+                              children: [
+                                Row(
                                   children: [
                                     Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            5, 5, 0, 5),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: (r == 1) ? primary : base,
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(16),
-                                              topLeft: Radius.circular(16),
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  updateR(1);
-                                                },
-                                                child: Text(
-                                                  "Realtime",
-                                                  style: GoogleFonts.inder(
-                                                    color: (r == 1)
-                                                        ? base
-                                                        : primary,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.fromBorderSide(
+                                              BorderSide(color: primary)),
+                                          color: base,
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.fromLTRB(
+                                                    5, 5, 0, 5),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: (r == 1) ? primary : base,
+                                                    borderRadius: BorderRadius.only(
+                                                      bottomLeft: Radius.circular(16),
+                                                      topLeft: Radius.circular(16),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    children: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          updateR(1);
+                                                        },
+                                                        child: Text(
+                                                          "Realtime",
+                                                          style: GoogleFonts.inder(
+                                                            color: (r == 1)
+                                                                ? base
+                                                                : primary,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                            ),
 
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 5, 5, 5),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: (r == 2) ? primary : base,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  updateR(2);
-                                                },
-                                                child: Text(
-                                                  (lang == 0)
-                                                      ? "Bulanan"
-                                                      : "Monthly",
-                                                  style: GoogleFonts.inder(
-                                                    color: (r == 2)
-                                                        ? base
-                                                        : primary,
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.fromLTRB(
+                                                    0, 5, 5, 5),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: (r == 2) ? primary : base,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    children: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          updateR(2);
+                                                        },
+                                                        child: Text(
+                                                          (lang == 0)
+                                                              ? "Bulanan"
+                                                              : "Monthly",
+                                                          style: GoogleFonts.inder(
+                                                            color: (r == 2)
+                                                                ? base
+                                                                : primary,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 5, 5, 5),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: (r == 3) ? primary : base,
-                                            borderRadius: BorderRadius.only(
-                                              bottomRight: Radius.circular(16),
-                                              topRight: Radius.circular(16),
                                             ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  updateR(3);
-                                                },
-                                                child: Text(
-                                                  "Custom",
-                                                  style: GoogleFonts.inder(
-                                                    color: (r == 3)
-                                                        ? base
-                                                        : primary,
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.fromLTRB(
+                                                    0, 5, 5, 5),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: (r == 3) ? primary : base,
+                                                    borderRadius: BorderRadius.only(
+                                                      bottomRight: Radius.circular(16),
+                                                      topRight: Radius.circular(16),
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    children: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          updateR(3);
+                                                        },
+                                                        child: Text(
+                                                          "Custom",
+                                                          style: GoogleFonts.inder(
+                                                            color: (r == 3)
+                                                                ? base
+                                                                : primary,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              // Kalo Realtime
-                              if (r == 1) ...[
                                 Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        // ===================================>All Inc Exp Data Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 30),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Tipe"
-                                                : "By Type",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
+                                  child: Column(
+                                    children: [
+                                      // Kalo Realtime
+                                      if (r == 1) ...[
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                // ===================================>All Inc Exp Data Map<===================================
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(top: 30),
+                                                  child: Text(
+                                                    (lang == 0)
+                                                        ? "Berdasarkan Tipe"
+                                                        : "By Type",
+                                                    style: GoogleFonts.inder(
+                                                      fontSize: 17,
+                                                      color:
+                                                          isDark ? base : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                FutureBuilder<Map<String, double>>(
+                                                  future: getIncExpPieChart(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.connectionState ==
+                                                        ConnectionState.waiting) {
+                                                      return Center(
+                                                        child: CircularProgressIndicator(
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                    Color>(primary)),
+                                                      );
+                                                    } else {
+                                                      if (snapshot.hasData) {
+                                                        if (snapshot.data!.length > 0) {
+                                                          return Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(top: 35),
+                                                                child: PieChart(
+                                                                  dataMap:
+                                                                      _pieChartIncExp,
+                                                                  colorList: [
+                                                                    Colors.greenAccent,
+                                                                    Colors.redAccent
+                                                                  ],
+                                                                  chartRadius: 200,
+                                                                  legendOptions:
+                                                                      LegendOptions(
+                                                                    legendTextStyle:
+                                                                        GoogleFonts.inder(
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : home),
+                                                                    legendPosition:
+                                                                        LegendPosition
+                                                                            .right,
+                                                                  ),
+                                                                  chartValuesOptions:
+                                                                      ChartValuesOptions(
+                                                                    showChartValuesInPercentage:
+                                                                        true,
+                                                                    decimalPlaces: 0,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        } else {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets.only(
+                                                                    bottom: 85),
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(height: 35),
+                                                                Image.asset(
+                                                                  'assets/img/tes.png',
+                                                                  width: 200,
+                                                                ),
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Belum ada transaksi"
+                                                                      : "No transactions yet",
+                                                                  style:
+                                                                      GoogleFonts.inder(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                      } else {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets.only(
+                                                                  bottom: 85),
+                                                          child: Column(
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/img/tes.png',
+                                                                width: 200,
+                                                              ),
+                                                              Text(
+                                                                (lang == 0)
+                                                                    ? "Tidak Ada Data"
+                                                                    : "No data",
+                                                                style:
+                                                                    GoogleFonts.inder(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      }
+                                                    }
+                                                  },
+                                                ),
+
+                                                // ===================================>All Transaction Inc Name Map<===================================
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(top: 45),
+                                                  child: Text(
+                                                    (lang == 0)
+                                                        ? "Berdasarkan Kategori Pemasukan"
+                                                        : "By Income Category ",
+                                                    style: GoogleFonts.inder(
+                                                      fontSize: 17,
+                                                      color:
+                                                          isDark ? base : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                FutureBuilder<Map<String, double>>(
+                                                  future: getIncNamePieChart(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.connectionState ==
+                                                        ConnectionState.waiting) {
+                                                      return Center();
+                                                    } else {
+                                                      if (snapshot.hasData) {
+                                                        if (snapshot.data!.length > 0) {
+                                                          return Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(top: 35),
+                                                                child: PieChart(
+                                                                  dataMap: _pieChartIncName,
+                                                                  chartRadius: 200,
+                                                                  legendOptions:
+                                                                      LegendOptions(
+                                                                    legendTextStyle:
+                                                                        GoogleFonts.inder(
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : home),
+                                                                    legendPosition:
+                                                                        LegendPosition
+                                                                            .right,
+                                                                  ),
+                                                                  chartValuesOptions:
+                                                                      ChartValuesOptions(
+                                                                    showChartValuesInPercentage:
+                                                                        true,
+                                                                    decimalPlaces: 0,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        } else {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets.only(
+                                                                    bottom: 85),
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(height: 35),
+                                                                Image.asset(
+                                                                  'assets/img/tes.png',
+                                                                  width: 200,
+                                                                ),
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Belum ada transaksi"
+                                                                      : "No transactions yet",
+                                                                  style:
+                                                                      GoogleFonts.inder(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                      } else {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets.only(
+                                                                  bottom: 85),
+                                                          child: Column(
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/img/tes.png',
+                                                                width: 200,
+                                                              ),
+                                                              Text(
+                                                                (lang == 0)
+                                                                    ? "Tidak Ada Data"
+                                                                    : "No data",
+                                                                style:
+                                                                    GoogleFonts.inder(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      }
+                                                    }
+                                                  },
+                                                ),
+
+                                                // ===================================>All Transaction Expense Name Map<===================================
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(top: 45),
+                                                  child: Text(
+                                                    (lang == 0)
+                                                        ? "Berdasarkan Kategori Pengeluaran"
+                                                        : "By Expense Category",
+                                                    style: GoogleFonts.inder(
+                                                      fontSize: 17,
+                                                      color:
+                                                          isDark ? base : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                FutureBuilder<Map<String, double>>(
+                                                  future: getExpNamePieChart(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.connectionState ==
+                                                        ConnectionState.waiting) {
+                                                      return Center();
+                                                    } else {
+                                                      if (snapshot.hasData) {
+                                                        if (snapshot.data!.length > 0) {
+                                                          return Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(top: 35),
+                                                                child: PieChart(
+                                                                  dataMap: _pieChartExpName,
+                                                                  chartRadius: 200,
+                                                                  legendOptions:
+                                                                      LegendOptions(
+                                                                    legendTextStyle:
+                                                                        GoogleFonts.inder(
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : home),
+                                                                    legendPosition:
+                                                                        LegendPosition
+                                                                            .right,
+                                                                  ),
+                                                                  chartValuesOptions:
+                                                                      ChartValuesOptions(
+                                                                    showChartValuesInPercentage:
+                                                                        true,
+                                                                    decimalPlaces: 0,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        } else {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets.only(
+                                                                    bottom: 85),
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(height: 35),
+                                                                Image.asset(
+                                                                  'assets/img/tes.png',
+                                                                  width: 200,
+                                                                ),
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Belum ada transaksi"
+                                                                      : "No transactions yet",
+                                                                  style:
+                                                                      GoogleFonts.inder(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                      } else {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets.only(
+                                                                  bottom: 85),
+                                                          child: Column(
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/img/tes.png',
+                                                                width: 200,
+                                                              ),
+                                                              Text(
+                                                                (lang == 0)
+                                                                    ? "Tidak Ada Data"
+                                                                    : "No data",
+                                                                style:
+                                                                    GoogleFonts.inder(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      }
+                                                    }
+                                                  },
+                                                ),
+
+                                                // ===================================>All Transaction Data Map<===================================
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(top: 45),
+                                                  child: Text(
+                                                    (lang == 0)
+                                                        ? "Berdasarkan Semua Transaksi"
+                                                        : "By All Transaction",
+                                                    style: GoogleFonts.inder(
+                                                      fontSize: 17,
+                                                      color:
+                                                          isDark ? base : Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                FutureBuilder<Map<String, double>>(
+                                                  future: datamap(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.connectionState ==
+                                                        ConnectionState.waiting) {
+                                                      return Center();
+                                                    } else {
+                                                      if (snapshot.hasData) {
+                                                        if (snapshot.data!.length > 0) {
+                                                          return Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(top: 35, bottom: 67),
+                                                                child: PieChart(
+                                                                  dataMap: _dataMap,
+                                                                  chartRadius: 200,
+                                                                  legendOptions:
+                                                                      LegendOptions(
+                                                                    legendTextStyle:
+                                                                        GoogleFonts.inder(
+                                                                            color: isDark
+                                                                                ? base
+                                                                                : home),
+                                                                    legendPosition:
+                                                                        LegendPosition
+                                                                            .right,
+                                                                  ),
+                                                                  chartValuesOptions:
+                                                                      ChartValuesOptions(
+                                                                    showChartValuesInPercentage:
+                                                                        true,
+                                                                    decimalPlaces: 0,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        } else {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets.only(
+                                                                    bottom: 85),
+                                                            child: Column(
+                                                              children: [
+                                                                SizedBox(height: 35),
+                                                                Image.asset(
+                                                                  'assets/img/tes.png',
+                                                                  width: 200,
+                                                                ),
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Belum ada transaksi"
+                                                                      : "No transactions yet",
+                                                                  style:
+                                                                      GoogleFonts.inder(
+                                                                          color: isDark
+                                                                              ? base
+                                                                              : home),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                      } else {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets.only(
+                                                                  bottom: 85),
+                                                          child: Column(
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/img/tes.png',
+                                                                width: 200,
+                                                              ),
+                                                              Text(
+                                                                (lang == 0)
+                                                                    ? "Tidak Ada Data"
+                                                                    : "No data",
+                                                                style:
+                                                                    GoogleFonts.inder(
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      }
+                                                    }
+                                                  },
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
+                                      ]
 
-                                        FutureBuilder<Map<String, double>>(
-                                          future: getIncExpPieChart(),
+                                      // Kalo Bulanan
+                                      else if (r == 2) ...[
+                                        Expanded(
+                                            child: StreamBuilder<List<Rekap>>(
+                                          stream: getMonthlyRekaps(),
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
                                               return Center(
                                                 child: CircularProgressIndicator(
                                                     valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                            Color>(primary)),
+                                                        AlwaysStoppedAnimation<Color>(
+                                                            primary)),
                                               );
                                             } else {
                                               if (snapshot.hasData) {
                                                 if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 35),
-                                                        child: PieChart(
-                                                          dataMap:
-                                                              _pieChartIncExp,
-                                                          colorList: [
-                                                            Colors.greenAccent,
-                                                            Colors.redAccent
-                                                          ],
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 85),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 35),
-                                                        Image.asset(
-                                                          'assets/img/tes.png',
-                                                          width: 200,
-                                                        ),
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Belum ada transaksi"
-                                                              : "No transactions yet",
-                                                          style:
-                                                              GoogleFonts.inder(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : home),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }
-                                              } else {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 85),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/tes.png',
-                                                        width: 200,
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? "Tidak Ada Data"
-                                                            : "No data",
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
-
-                                        // ===================================>All Transaction Inc Name Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 45),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Kategori Pemasukan"
-                                                : "By Income Category ",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-
-                                        FutureBuilder<Map<String, double>>(
-                                          future: getIncNamePieChart(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center();
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 35),
-                                                        child: PieChart(
-                                                          dataMap:
-                                                              _pieChartIncName,
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 85),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 35),
-                                                        Image.asset(
-                                                          'assets/img/tes.png',
-                                                          width: 200,
-                                                        ),
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Belum ada transaksi"
-                                                              : "No transactions yet",
-                                                          style:
-                                                              GoogleFonts.inder(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : home),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }
-                                              } else {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 85),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/tes.png',
-                                                        width: 200,
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? "Tidak Ada Data"
-                                                            : "No data",
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
-
-                                        // ===================================>All Transaction Expense Name Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 45),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Kategori Pengeluaran"
-                                                : "By Expense Category",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-
-                                        FutureBuilder<Map<String, double>>(
-                                          future: getExpNamePieChart(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center();
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 35),
-                                                        child: PieChart(
-                                                          dataMap:
-                                                              _pieChartExpName,
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 85),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 35),
-                                                        Image.asset(
-                                                          'assets/img/tes.png',
-                                                          width: 200,
-                                                        ),
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Belum ada transaksi"
-                                                              : "No transactions yet",
-                                                          style:
-                                                              GoogleFonts.inder(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : home),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }
-                                              } else {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 85),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/tes.png',
-                                                        width: 200,
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? "Tidak Ada Data"
-                                                            : "No data",
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
-
-                                        // ===================================>All Transaction Data Map<===================================
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 45),
-                                          child: Text(
-                                            (lang == 0)
-                                                ? "Berdasarkan Semua Transaksi"
-                                                : "By All Transaction",
-                                            style: GoogleFonts.inder(
-                                              fontSize: 17,
-                                              color:
-                                                  isDark ? base : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-
-                                        FutureBuilder<Map<String, double>>(
-                                          future: datamap(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center();
-                                            } else {
-                                              if (snapshot.hasData) {
-                                                if (snapshot.data!.length > 0) {
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 35),
-                                                        child: PieChart(
-                                                          dataMap: _dataMap,
-                                                          chartRadius: 200,
-                                                          legendOptions:
-                                                              LegendOptions(
-                                                            legendTextStyle:
-                                                                GoogleFonts.inder(
-                                                                    color: isDark
-                                                                        ? base
-                                                                        : home),
-                                                            legendPosition:
-                                                                LegendPosition
-                                                                    .right,
-                                                          ),
-                                                          chartValuesOptions:
-                                                              ChartValuesOptions(
-                                                            showChartValuesInPercentage:
-                                                                true,
-                                                            decimalPlaces: 0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 85),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(height: 35),
-                                                        Image.asset(
-                                                          'assets/img/tes.png',
-                                                          width: 200,
-                                                        ),
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Belum ada transaksi"
-                                                              : "No transactions yet",
-                                                          style:
-                                                              GoogleFonts.inder(
-                                                                  color: isDark
-                                                                      ? base
-                                                                      : home),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }
-                                              } else {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 85),
-                                                  child: Column(
-                                                    children: [
-                                                      Image.asset(
-                                                        'assets/img/tes.png',
-                                                        width: 200,
-                                                      ),
-                                                      Text(
-                                                        (lang == 0)
-                                                            ? "Tidak Ada Data"
-                                                            : "No data",
-                                                        style:
-                                                            GoogleFonts.inder(
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ]
-
-                              // Kalo Bulanan
-                              else if (r == 2) ...[
-                                Expanded(
-                                    child: StreamBuilder<List<Rekap>>(
-                                  stream: getMonthlyRekaps(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    primary)),
-                                      );
-                                    } else {
-                                      if (snapshot.hasData) {
-                                        if (snapshot.data!.length > 0) {
-                                          return ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot.data!.length,
-                                            itemBuilder: (context, index) {
-                                              String startDate = (lang == 0)
-                                                  ? DateFormat('dd-MMMM-yyyy',
-                                                          'id_ID')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .startDate)
-                                                  : DateFormat('dd-MMMM-yyyy')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .startDate);
-                                              String endDate = (lang == 1)
-                                                  ? DateFormat('dd-MMMM-yyyy',
-                                                          'id_ID')
-                                                      .format(snapshot
-                                                          .data![index].endDate)
-                                                  : DateFormat('dd-MMMM-yyyy',
-                                                          'id_ID')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .endDate);
-                                              if (!isUpdate) {
-                                                update(
-                                                    snapshot.data![index].id,
-                                                    snapshot
-                                                        .data![index].startDate,
-                                                    snapshot
-                                                        .data![index].endDate);
-
-                                                isUpdate = true;
-                                              }
-
-                                              return Column(
-                                                children: [
-                                                  SizedBox(height: 35),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            (lang == 0)
-                                                                ? DateFormat.yMMMM(
-                                                                        'id_ID')
-                                                                    .format(
-                                                                    DateTime.parse(snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .name),
-                                                                  )
-                                                                : DateFormat
-                                                                        .yMMMM()
-                                                                    .format(DateTime.parse(snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .name)),
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                          ),
-                                                          SizedBox(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.2),
-                                                        ],
-                                                      ),
-                                                      IconButton(
-                                                        // Pindah ke halaman Edit Rekap
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            // DetailPage adalah halaman yang dituju
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  DetailRekap(
-                                                                      rekap: snapshot
-                                                                              .data![
-                                                                          index]),
-                                                            ),
-                                                          );
-                                                        },
-                                                        color: primary,
-                                                        hoverColor: secondary,
-                                                        icon: Icon(Icons
-                                                            .arrow_forward_ios),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 20),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Periode "
-                                                              : "Period",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          startDate +
-                                                              " ~ " +
-                                                              endDate,
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Total Pemasukan "
-                                                              : "Total Income",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-                                                          ).format(snapshot.data![index].totalIncome)).replaceAll('IDR', '').toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Total Pengeluaran "
-                                                              : "Total Expense",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-                                                          ).format(snapshot.data![index].totalExpense)).replaceAll('IDR', '').toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Sisa "
-                                                              : "Balance",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-                                                          ).format(snapshot.data![index].sisa)).replaceAll('IDR', '').toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 30),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 85),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(height: 35),
-                                                Image.asset(
-                                                  'assets/img/tes.png',
-                                                  width: 200,
-                                                ),
-                                                Text(
-                                                  (lang == 0)
-                                                      ? "Belum ada transaksi pada bulan ini"
-                                                      : "No transactions yet this month",
-                                                  style: GoogleFonts.inder(
-                                                      color:
-                                                          isDark ? base : home),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }
-                                      } else {
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 85),
-                                          child: Column(
-                                            children: [
-                                              Image.asset(
-                                                'assets/img/tes.png',
-                                                width: 200,
-                                              ),
-                                              Text(
-                                                (lang == 0)
-                                                    ? "Tidak Ada Data"
-                                                    : "No data",
-                                                style: GoogleFonts.inder(
-                                                    color:
-                                                        isDark ? base : home),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  },
-                                ))
-
-                                // Kalo Custom
-                              ] else if (r == 3) ...[
-                                Expanded(
-                                    child: StreamBuilder<List<Rekap>>(
-                                  stream: getCustomRekaps(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    primary)),
-                                      );
-                                    } else {
-                                      if (snapshot.hasData) {
-                                        if (snapshot.data!.length > 0) {
-                                          return ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot.data!.length,
-                                            itemBuilder: (context, index) {
-                                              String startDate = (lang == 0)
-                                                  ? DateFormat('dd-MMMM-yyyy',
-                                                          'id_ID')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .startDate)
-                                                  : DateFormat('dd-MMMM-yyyy')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .startDate);
-                                              String endDate = (lang == 1)
-                                                  ? DateFormat('dd-MMMM-yyyy',
-                                                          'id_ID')
-                                                      .format(snapshot
-                                                          .data![index].endDate)
-                                                  : DateFormat('dd-MMMM-yyyy',
-                                                          'id_ID')
-                                                      .format(snapshot
-                                                          .data![index]
-                                                          .endDate);
-                                              if (!isUpdate) {
-                                                update(
-                                                    snapshot.data![index].id,
-                                                    snapshot
-                                                        .data![index].startDate,
-                                                    snapshot
-                                                        .data![index].endDate);
-                                                isUpdate = true;
-                                              }
-
-                                              return Column(
-                                                children: [
-                                                  SizedBox(height: 35),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
+                                                  return ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: snapshot.data!.length,
+                                                    itemBuilder: (context, index) {
+                                                      String startDate = (lang == 0)
+                                                          ? DateFormat('dd-MMMM-yyyy',
+                                                                  'id_ID')
+                                                              .format(snapshot
+                                                                  .data![index]
+                                                                  .startDate)
+                                                          : DateFormat('dd-MMMM-yyyy')
+                                                              .format(snapshot
+                                                                  .data![index]
+                                                                  .startDate);
+                                                      String endDate = (lang == 1)
+                                                          ? DateFormat('dd-MMMM-yyyy',
+                                                                  'id_ID')
+                                                              .format(snapshot
+                                                                  .data![index].endDate)
+                                                          : DateFormat('dd-MMMM-yyyy',
+                                                                  'id_ID')
+                                                              .format(snapshot
+                                                                  .data![index]
+                                                                  .endDate);
+                                                      if (!isUpdate) {
+                                                        update(
+                                                            snapshot.data![index].id,
                                                             snapshot
-                                                                .data![index]
-                                                                .name
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: isDark
-                                                                    ? base
-                                                                    : home),
-                                                          ),
-                                                          SizedBox(width: 35),
-                                                        ],
-                                                      ),
-                                                      Row(
+                                                                .data![index].startDate,
+                                                            snapshot
+                                                                .data![index].endDate);
+
+                                                        isUpdate = true;
+                                                      }
+
+                                                      return Column(
                                                         children: [
-                                                          IconButton(
-                                                            // Pindah ke halaman Detail Rekap
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      DetailRekap(
-                                                                          rekap:
-                                                                              snapshot.data![index]),
-                                                                ),
-                                                              );
-                                                            },
-                                                            color: primary,
-                                                            hoverColor:
-                                                                secondary,
-                                                            icon: Icon(Icons
-                                                                .arrow_forward_ios),
+                                                          SizedBox(height: 35),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment.end,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    (lang == 0)
+                                                                        ? DateFormat.yMMMM(
+                                                                                'id_ID')
+                                                                            .format(
+                                                                            DateTime.parse(snapshot
+                                                                                .data![
+                                                                                    index]
+                                                                                .name),
+                                                                          )
+                                                                        : DateFormat
+                                                                                .yMMMM()
+                                                                            .format(DateTime.parse(snapshot
+                                                                                .data![
+                                                                                    index]
+                                                                                .name)),
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      width: MediaQuery.of(
+                                                                                  context)
+                                                                              .size
+                                                                              .width *
+                                                                          0.2),
+                                                                ],
+                                                              ),
+                                                              IconButton(
+                                                                // Pindah ke halaman Edit Rekap
+                                                                onPressed: () {
+                                                                  Navigator.push(
+                                                                    context,
+                                                                    // DetailPage adalah halaman yang dituju
+                                                                    MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          DetailRekap(
+                                                                              rekap: snapshot
+                                                                                      .data![
+                                                                                  index]),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                color: primary,
+                                                                hoverColor: secondary,
+                                                                icon: Icon(Icons
+                                                                    .arrow_forward_ios),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          IconButton(
-                                                            // Pindah ke halaman edit
-                                                            onPressed: () {
-                                                              Navigator.push(
-                                                                context,
-                                                                // DetailPage adalah halaman yang dituju
-                                                                MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      AddEditRekap(
-                                                                          rekap:
-                                                                              snapshot.data![index]),
+                                                          SizedBox(height: 20),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Periode "
+                                                                      : "Period",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
                                                                 ),
-                                                              );
-                                                            },
-                                                            color: primary,
-                                                            focusColor:
-                                                                secondary,
-                                                            hoverColor:
-                                                                secondary,
-                                                            iconSize: 20,
-                                                            icon: Icon(
-                                                                Icons.edit),
-                                                          ),
-                                                          IconButton(
-                                                              // Pindah ke halaman Detail Rekap
-                                                              onPressed: () {
-                                                                showDialog(
-                                                                    context:
+                                                                Text(
+                                                                  startDate +
+                                                                      " ~ " +
+                                                                      endDate,
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 15),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Total Pemasukan "
+                                                                      : "Total Income",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                                Text(
+                                                                  "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                                  ).format(snapshot.data![index].totalIncome)).replaceAll('IDR', '').toString(),
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 15),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Total Pengeluaran "
+                                                                      : "Total Expense",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                                Text(
+                                                                  "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                                  ).format(snapshot.data![index].totalExpense)).replaceAll('IDR', '').toString(),
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 15),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Sisa "
+                                                                      : "Balance",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                                Text(
+                                                                  "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                                  ).format(snapshot.data![index].sisa)).replaceAll('IDR', '').toString(),
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 30),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  return Padding(
+                                                    padding: const EdgeInsets.only(
+                                                        bottom: 85),
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(height: 35),
+                                                        Image.asset(
+                                                          'assets/img/tes.png',
+                                                          width: 200,
+                                                        ),
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? "Belum ada transaksi pada bulan ini"
+                                                              : "No transactions yet this month",
+                                                          style: GoogleFonts.inder(
+                                                              color:
+                                                                  isDark ? base : home),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                }
+                                              } else {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(bottom: 85),
+                                                  child: Column(
+                                                    children: [
+                                                      Image.asset(
+                                                        'assets/img/tes.png',
+                                                        width: 200,
+                                                      ),
+                                                      Text(
+                                                        (lang == 0)
+                                                            ? "Tidak Ada Data"
+                                                            : "No data",
+                                                        style: GoogleFonts.inder(
+                                                            color:
+                                                                isDark ? base : home),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              }
+                                            }
+                                          },
+                                        ))
+
+                                        // Kalo Custom
+                                      ] else if (r == 3) ...[
+                                        Expanded(
+                                            child: StreamBuilder<List<Rekap>>(
+                                          stream: getCustomRekaps(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<Color>(
+                                                            primary)),
+                                              );
+                                            } else {
+                                              if (snapshot.hasData) {
+                                                if (snapshot.data!.length > 0) {
+                                                  return ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: snapshot.data!.length,
+                                                    itemBuilder: (context, index) {
+                                                      String startDate = (lang == 0)
+                                                          ? DateFormat('dd-MMMM-yyyy',
+                                                                  'id_ID')
+                                                              .format(snapshot
+                                                                  .data![index]
+                                                                  .startDate)
+                                                          : DateFormat('dd-MMMM-yyyy')
+                                                              .format(snapshot
+                                                                  .data![index]
+                                                                  .startDate);
+                                                      String endDate = (lang == 1)
+                                                          ? DateFormat('dd-MMMM-yyyy',
+                                                                  'id_ID')
+                                                              .format(snapshot
+                                                                  .data![index].endDate)
+                                                          : DateFormat('dd-MMMM-yyyy',
+                                                                  'id_ID')
+                                                              .format(snapshot
+                                                                  .data![index]
+                                                                  .endDate);
+                                                      if (!isUpdate) {
+                                                        update(
+                                                            snapshot.data![index].id,
+                                                            snapshot
+                                                                .data![index].startDate,
+                                                            snapshot
+                                                                .data![index].endDate);
+                                                        isUpdate = true;
+                                                      }
+
+                                                      return Column(
+                                                        children: [
+                                                          SizedBox(height: 35),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    snapshot
+                                                                        .data![index]
+                                                                        .name
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: isDark
+                                                                            ? base
+                                                                            : home),
+                                                                  ),
+                                                                  SizedBox(width: 35),
+                                                                ],
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  IconButton(
+                                                                    // Pindah ke halaman Detail Rekap
+                                                                    onPressed: () {
+                                                                      Navigator.push(
                                                                         context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            context) {
-                                                                      return AlertDialog(
-                                                                        backgroundColor: isDark
-                                                                            ? dialog
-                                                                            : Colors.white,
-                                                                        shadowColor:
-                                                                            Colors.red[50],
-                                                                        content:
-                                                                            SingleChildScrollView(
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                Column(
-                                                                              children: [
-                                                                                Center(
-                                                                                  child: Text(
-                                                                                    (lang == 0) ? 'Yakin ingin Hapus?' : "Are you sure want to delete this recap?",
-                                                                                    style: GoogleFonts.inder(
-                                                                                      fontSize: 16,
-                                                                                      fontWeight: FontWeight.bold,
-                                                                                      color: isDark ? base : Colors.black,
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              DetailRekap(
+                                                                                  rekap:
+                                                                                      snapshot.data![index]),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    color: primary,
+                                                                    hoverColor:
+                                                                        secondary,
+                                                                    icon: Icon(Icons
+                                                                        .arrow_forward_ios),
+                                                                  ),
+                                                                  IconButton(
+                                                                    // Pindah ke halaman edit
+                                                                    onPressed: () {
+                                                                      Navigator.push(
+                                                                        context,
+                                                                        // DetailPage adalah halaman yang dituju
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              AddEditRekap(
+                                                                                  rekap:
+                                                                                      snapshot.data![index]),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    color: primary,
+                                                                    focusColor:
+                                                                        secondary,
+                                                                    hoverColor:
+                                                                        secondary,
+                                                                    iconSize: 20,
+                                                                    icon: Icon(
+                                                                        Icons.edit),
+                                                                  ),
+                                                                  IconButton(
+                                                                      // Pindah ke halaman Detail Rekap
+                                                                      onPressed: () {
+                                                                        showDialog(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (BuildContext
+                                                                                    context) {
+                                                                              return AlertDialog(
+                                                                                backgroundColor: isDark
+                                                                                    ? dialog
+                                                                                    : Colors.white,
+                                                                                shadowColor:
+                                                                                    Colors.red[50],
+                                                                                content:
+                                                                                    SingleChildScrollView(
+                                                                                  child:
+                                                                                      Center(
+                                                                                    child:
+                                                                                        Column(
+                                                                                      children: [
+                                                                                        Center(
+                                                                                          child: Text(
+                                                                                            (lang == 0) ? 'Yakin ingin Hapus?' : "Are you sure want to delete this recap?",
+                                                                                            style: GoogleFonts.inder(
+                                                                                              fontSize: 16,
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: isDark ? base : Colors.black,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 30,
+                                                                                        ),
+                                                                                        Row(
+                                                                                          mainAxisAlignment: MainAxisAlignment.end,
+                                                                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                          children: [
+                                                                                            TextButton(
+                                                                                              onPressed: () {
+                                                                                                Navigator.of(context).pop();
+                                                                                              },
+                                                                                              child: Text(
+                                                                                                (lang == 0) ? 'Batal' : "Cancel",
+                                                                                                style: GoogleFonts.inder(
+                                                                                                  color: isDark ? base : home,
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                            ElevatedButton(
+                                                                                              style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(primary)),
+                                                                                              onPressed: () {
+                                                                                                Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                                                                database.deleteRekap(snapshot.data![index].id);
+                                                                                                setState(() {});
+                                                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                                                  SnackBar(
+                                                                                                    content: Text(
+                                                                                                      (lang == 0) ? 'Berhasil Hapus Rekap' : 'Delete Report Success',
+                                                                                                      style: GoogleFonts.inder(color: base),
+                                                                                                    ),
+                                                                                                    backgroundColor: primary,
+                                                                                                  ),
+                                                                                                );
+                                                                                              },
+                                                                                              child: Text(
+                                                                                                (lang == 0) ? 'Ya' : "Yes",
+                                                                                                style: GoogleFonts.inder(
+                                                                                                  color: base,
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ],
                                                                                     ),
                                                                                   ),
                                                                                 ),
-                                                                                SizedBox(
-                                                                                  height: 30,
-                                                                                ),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                                                                  children: [
-                                                                                    TextButton(
-                                                                                      onPressed: () {
-                                                                                        Navigator.of(context).pop();
-                                                                                      },
-                                                                                      child: Text(
-                                                                                        (lang == 0) ? 'Batal' : "Cancel",
-                                                                                        style: GoogleFonts.inder(
-                                                                                          color: isDark ? base : home,
-                                                                                          fontWeight: FontWeight.bold,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    ElevatedButton(
-                                                                                      style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(primary)),
-                                                                                      onPressed: () {
-                                                                                        Navigator.of(context, rootNavigator: true).pop('dialog');
-                                                                                        database.deleteRekap(snapshot.data![index].id);
-                                                                                        setState(() {});
-                                                                                        ScaffoldMessenger.of(context).showSnackBar(
-                                                                                          SnackBar(
-                                                                                            content: Text(
-                                                                                              (lang == 0) ? 'Berhasil Hapus Rekap' : 'Delete Report Success',
-                                                                                              style: GoogleFonts.inder(color: base),
-                                                                                            ),
-                                                                                            backgroundColor: primary,
-                                                                                          ),
-                                                                                        );
-                                                                                      },
-                                                                                      child: Text(
-                                                                                        (lang == 0) ? 'Ya' : "Yes",
-                                                                                        style: GoogleFonts.inder(
-                                                                                          color: base,
-                                                                                          fontWeight: FontWeight.bold,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    });
-                                                              },
-                                                              color: primary,
-                                                              focusColor:
-                                                                  secondary,
-                                                              hoverColor:
-                                                                  secondary,
-                                                              iconSize: 20,
-                                                              icon: Icon(Icons
-                                                                  .delete)),
+                                                                              );
+                                                                            });
+                                                                      },
+                                                                      color: primary,
+                                                                      focusColor:
+                                                                          secondary,
+                                                                      hoverColor:
+                                                                          secondary,
+                                                                      iconSize: 20,
+                                                                      icon: Icon(Icons
+                                                                          .delete)),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 20),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Durasi "
+                                                                      : "Period",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                                Text(
+                                                                  startDate +
+                                                                      " ~ " +
+                                                                      endDate,
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 15),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Total Pemasukan "
+                                                                      : "Total Income",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                                Text(
+                                                                  "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                                  ).format(snapshot.data![index].totalIncome)).replaceAll('IDR', '').toString(),
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 15),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Total Pengeluaran "
+                                                                      : "Total Expense",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                                Text(
+                                                                  "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                                  ).format(snapshot.data![index].totalExpense)).replaceAll('IDR', '').toString(),
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 15),
+                                                          Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  (lang == 0)
+                                                                      ? "Sisa "
+                                                                      : " Balance ",
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                                Text(
+                                                                  "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
+                                                                  ).format(snapshot.data![index].sisa)).replaceAll('IDR', '').toString(),
+                                                                  style: TextStyle(
+                                                                      color: isDark
+                                                                          ? base
+                                                                          : home),
+                                                                ),
+                                                              ]),
+                                                          SizedBox(height: 30),
                                                         ],
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  return Padding(
+                                                    padding: const EdgeInsets.only(
+                                                        bottom: 85),
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 35,
+                                                        ),
+                                                        Image.asset(
+                                                          'assets/img/tes.png',
+                                                          width: 200,
+                                                        ),
+                                                        Text(
+                                                          (lang == 0)
+                                                              ? "Tidak Ada Data"
+                                                              : "No data",
+                                                          style: GoogleFonts.inder(
+                                                              color:
+                                                                  isDark ? base : home),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                }
+                                              } else {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(bottom: 85),
+                                                  child: Column(
+                                                    children: [
+                                                      Image.asset(
+                                                        'assets/img/tes.png',
+                                                        width: 200,
+                                                      ),
+                                                      Text(
+                                                        (lang == 0)
+                                                            ? "Tidak Ada Data"
+                                                            : "No data",
+                                                        style: GoogleFonts.inder(
+                                                            color:
+                                                                isDark ? base : home),
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(height: 20),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Durasi "
-                                                              : "Period",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          startDate +
-                                                              " ~ " +
-                                                              endDate,
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Total Pemasukan "
-                                                              : "Total Income",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                          "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-                                                          ).format(snapshot.data![index].totalIncome)).replaceAll('IDR', '').toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Total Pengeluaran "
-                                                              : "Total Expense",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                           "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-                                                          ).format(snapshot.data![index].totalExpense)).replaceAll('IDR', '').toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 15),
-                                                  Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          (lang == 0)
-                                                              ? "Sisa "
-                                                              : " Balance ",
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                        Text(
-                                                           "Rp." +(NumberFormat.currency( locale: 'id', decimalDigits: 0,
-                                                          ).format(snapshot.data![index].sisa)).replaceAll('IDR', '').toString(),
-                                                          style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
-                                                        ),
-                                                      ]),
-                                                  SizedBox(height: 30),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 85),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 35,
+                                                );
+                                              }
+                                            }
+                                          },
+                                        ))
+                                      ],
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Visibility(
+                                            visible: (r == 3) ? true : false,
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(
+                                                  0, 0, 8, 30),
+                                              child: FloatingActionButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    // DetailPage adalah halaman yang dituju
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AddEditRekap(rekap: null),
+                                                    ),
+                                                  );
+                                                },
+                                                backgroundColor: primary,
+                                                child: Icon(
+                                                  Icons.add,
+                                                  color: base,
                                                 ),
-                                                Image.asset(
-                                                  'assets/img/tes.png',
-                                                  width: 200,
-                                                ),
-                                                Text(
-                                                  (lang == 0)
-                                                      ? "Tidak Ada Data"
-                                                      : "No data",
-                                                  style: GoogleFonts.inder(
-                                                      color:
-                                                          isDark ? base : home),
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          );
-                                        }
-                                      } else {
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 85),
-                                          child: Column(
-                                            children: [
-                                              Image.asset(
-                                                'assets/img/tes.png',
-                                                width: 200,
-                                              ),
-                                              Text(
-                                                (lang == 0)
-                                                    ? "Tidak Ada Data"
-                                                    : "No data",
-                                                style: GoogleFonts.inder(
-                                                    color:
-                                                        isDark ? base : home),
-                                              ),
-                                            ],
                                           ),
-                                        );
-                                      }
-                                    }
-                                  },
-                                ))
-                              ],
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Visibility(
-                                    visible: (r == 3) ? true : false,
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 8, 30),
-                                      child: FloatingActionButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            // DetailPage adalah halaman yang dituju
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddEditRekap(rekap: null),
-                                            ),
-                                          );
-                                        },
-                                        backgroundColor: primary,
-                                        child: Icon(
-                                          Icons.add,
-                                          color: base,
-                                        ),
+                                        ],
                                       ),
-                                    ),
+                                      
+                                    ],
                                   ),
-                                ],
-                              ),
-                              (r == 1)
-                                  ? ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(primary),
-                                        shape: MaterialStatePropertyAll(
-                                          ContinuousRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          // DetailPage adalah halaman yang dituju
-                                          MaterialPageRoute(
-                                            builder: (context) => GalleryPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        (lang == 0)
-                                            ? 'Lihat Galeri'
-                                            : 'View Gallery',
-                                        style: GoogleFonts.inder(
-                                          color: base,
-                                        ),
-                                      ),
-                                    )
-                                  : Center(),
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 400.ms),
-      backgroundColor: primary,
-      bottomNavigationBar: BottomAppBar(
-        color: isDark ? dialog : null,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          HomePage(selectedDate: DateTime.now()),
+              ).animate().fade().slideY(begin: 1, delay: 70.ms, duration: 400.ms),
+              floatingActionButton: (r == 1)
+                ? FloatingActionButton.extended(
+                    backgroundColor:primary,
+                    
+                    shape: ContinuousRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(100),
+                        ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        // DetailPage adalah halaman yang dituju
+                        MaterialPageRoute(
+                          builder: (context) => GalleryPage(),
+                        ),
+                      );
+                    },
+                    label: Text(
+                      (lang == 0)
+                          ? 'Lihat Galeri'
+                          : 'View Gallery',
+                      style: GoogleFonts.inder(
+                        color: base,
+                      ),
                     ),
-                  );
-                },
-                icon: Icon(
-                  Icons.home,
-                  color: isDark ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
-            // SizedBox(
-            //   width: 20,
-            // ),
-            Expanded(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
+                  )
+                : Center(),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat ,
+              backgroundColor: primary,
+              bottomNavigationBar: BottomAppBar(
+                color: isDark ? dialog : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(selectedDate: DateTime.now()),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.home,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
                     ),
-                  );
-                },
-                icon: Icon(
-                  Icons.list,
-                  color: isDark ? Colors.white : Colors.black,
-                ),
-              ),
-            ),
+                    // SizedBox(
+                    //   width: 20,
+                    // ),
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => CategoryPage(),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.list,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ),
 
-            Expanded(
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.bar_chart,
-                  color: primary,
-                ),
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => SettingPage(),
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.bar_chart,
+                          color: primary,
+                        ),
+                      ),
                     ),
-                  );
-                },
-                icon: Icon(
-                  Icons.settings,
-                  color: isDark ? Colors.white : Colors.black,
+                    Expanded(
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => SettingPage(),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.settings,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            );
   }
 }

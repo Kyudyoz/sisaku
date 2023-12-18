@@ -107,12 +107,13 @@ class _GalleryPageState extends State<GalleryPage> {
                                 return SingleChildScrollView(
                                   child: Container(
                                     width: double.infinity,
-                                    margin: EdgeInsets.all(10),
+                                    margin: EdgeInsets.all(20),
                                     child: Column(
                                       children: [
                                         Wrap(
-                                          spacing: 20,
-                                          runSpacing: 20,
+                                          spacing: 15,
+                                          runSpacing: 15,
+                                          
                                           children: snapshot.data!
                                               .map((e) => Stack(
                                                     alignment:
@@ -201,22 +202,30 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                             MainAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            e.transaction.name +
+                                                                            e.transaction.name,
+                                                                            style:
+                                                                                GoogleFonts.inder(
+                                                                              fontSize: 24,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: base,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
                                                                                 " (" +
                                                                                 e.category.name +
                                                                                 ")",
                                                                             style:
                                                                                 GoogleFonts.inder(
-                                                                              fontSize: 28,
+                                                                              fontSize: 20,
                                                                               fontWeight: FontWeight.bold,
-                                                                              color: base,
+                                                                              color: (e.category.type == 1 ) ? Colors.green : Colors.redAccent,
                                                                             ),
                                                                           ),
                                                                           Divider(
                                                                             thickness:
                                                                                 3,
                                                                             color:
-                                                                                base,
+                                                                                primary,
                                                                           ),
                                                                           SizedBox(
                                                                             height:
@@ -301,7 +310,7 @@ class _GalleryPageState extends State<GalleryPage> {
                                                                       context)
                                                                   .size
                                                                   .height /
-                                                              2.8,
+                                                              4.2,
                                                           decoration:
                                                               BoxDecoration(
                                                             borderRadius:
@@ -311,6 +320,8 @@ class _GalleryPageState extends State<GalleryPage> {
                                                             image:
                                                                 DecorationImage(
                                                               fit: BoxFit.fill,
+                                                              // fit: BoxFit.cover,// OR BoxFit.fitWidth
+                                                              // alignment: FractionalOffset.topCenter,
                                                               image: MemoryImage(e
                                                                       .transaction
                                                                       .image ??
@@ -347,21 +358,37 @@ class _GalleryPageState extends State<GalleryPage> {
                                                               2.5,
                                                           alignment:
                                                               Alignment.center,
-                                                          child: Text(
-                                                            e.transaction.name +
-                                                                " (" +
-                                                                e.category
-                                                                    .name +
-                                                                ")",
-                                                            style: GoogleFonts
-                                                                .inder(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
+                                                          child: Column(
+                                                            children: [
+                                                              Text(
+                                                                e.transaction.name,
+                                                                style: GoogleFonts
+                                                                    .inder(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color:
+                                                                      Colors.white,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                    " (" +
+                                                                    e.category
+                                                                        .name +
+                                                                    ")",
+                                                                style: GoogleFonts
+                                                                    .inder(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: (e.category
+                                                                        .type == 1) ?
+                                                                      Colors.green : Colors.redAccent,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
