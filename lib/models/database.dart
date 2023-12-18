@@ -950,6 +950,27 @@ class AppDb extends _$AppDb {
     return allTransactions;
   }
 
+   Stream<List<TransactionWithCategory>> getGalleryRekap(DateTime start, DateTime end, int type) {
+    // Lakukan query select
+    final query = (select(transactions).join([
+      innerJoin(
+        categories,
+        categories.id.equalsExp(transactions.category_id),
+      ),
+    ])
+      ..where(categories.type.equals(type))
+      ..where(transactions.transaction_date.isBetweenValues(start, end))
+      ..where(transactions.image.isNotNull()));
+
+    return query.watch().map((rows) {
+      return rows.map((row) {
+        return TransactionWithCategory(
+          row.readTable(transactions),
+          row.readTable(categories),
+        );
+      }).toList();
+    });
+  }
 
 }
 
