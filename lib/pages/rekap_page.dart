@@ -847,7 +847,9 @@ class _RekapPageState extends State<RekapPage> {
                                                       .format(snapshot
                                                           .data![index]
                                                           .endDate);
-                                              if (!isUpdate) {
+
+
+                                              while (isUpdate == false) {
                                                 update(
                                                     snapshot.data![index].id,
                                                     snapshot
@@ -857,6 +859,15 @@ class _RekapPageState extends State<RekapPage> {
 
                                                 isUpdate = true;
                                               }
+                                               // Update
+                                                Future.delayed(Duration(seconds: 2));
+                                                update(
+                                                    snapshot.data![index].id,
+                                                    snapshot
+                                                        .data![index].startDate,
+                                                    snapshot
+                                                        .data![index].endDate);
+                                                isUpdate = true;
 
                                               return Column(
                                                 children: [
@@ -865,6 +876,7 @@ class _RekapPageState extends State<RekapPage> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
                                                     children: [
+                                                      
                                                       Row(
                                                         children: [
                                                           Text(
@@ -891,12 +903,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                     ? base
                                                                     : home),
                                                           ),
-                                                          SizedBox(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width *
-                                                                  0.2),
+                                                          SizedBox(width: MediaQuery.of(context).size.width * 0.20)
                                                         ],
                                                       ),
                                                       IconButton(
@@ -941,6 +948,7 @@ class _RekapPageState extends State<RekapPage> {
                                                               " ~ " +
                                                               endDate,
                                                           style: TextStyle(
+                                                            fontWeight: FontWeight.w800,
                                                               color: isDark
                                                                   ? base
                                                                   : home),
@@ -962,7 +970,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
+                                                          "+ " + "Rp." +  
                                                               (NumberFormat
                                                                       .currency(
                                                                 locale: 'id',
@@ -976,9 +984,9 @@ class _RekapPageState extends State<RekapPage> {
                                                                       'IDR', '')
                                                                   .toString(),
                                                           style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
+                                                              fontWeight: FontWeight.w700,
+
+                                                              color: Colors.green),
                                                         ),
                                                       ]),
                                                   SizedBox(height: 15),
@@ -997,7 +1005,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
+                                                         "- " "Rp." +
                                                               (NumberFormat
                                                                       .currency(
                                                                 locale: 'id',
@@ -1011,9 +1019,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                       'IDR', '')
                                                                   .toString(),
                                                           style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
+                                                            fontWeight: FontWeight.w700,
+                                                              color: Color.fromARGB(255, 175, 36, 23)),
                                                         ),
                                                       ]),
                                                   SizedBox(height: 15),
@@ -1046,9 +1053,17 @@ class _RekapPageState extends State<RekapPage> {
                                                                       'IDR', '')
                                                                   .toString(),
                                                           style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
+                                                            fontWeight: FontWeight.w800,
+                                                              color:
+                                                              (snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .sisa! < 0) ? Colors.redAccent: primary
+                                                              // isDark
+                                                              //     ? base
+                                                              //     : home
+                                                                  
+                                                                  ),
                                                         ),
                                                       ]),
                                                   SizedBox(height: 30),
@@ -1149,7 +1164,10 @@ class _RekapPageState extends State<RekapPage> {
                                                       .format(snapshot
                                                           .data![index]
                                                           .endDate);
-                                              if (!isUpdate) {
+
+
+                                                // Update Jika ada perubahan transaksi
+                                                Future.delayed(Duration(seconds: 2));
                                                 update(
                                                     snapshot.data![index].id,
                                                     snapshot
@@ -1157,7 +1175,7 @@ class _RekapPageState extends State<RekapPage> {
                                                     snapshot
                                                         .data![index].endDate);
                                                 isUpdate = true;
-                                              }
+                                              
 
                                               return Column(
                                                 children: [
@@ -1169,6 +1187,17 @@ class _RekapPageState extends State<RekapPage> {
                                                     children: [
                                                       Row(
                                                         children: [
+                                                      //     IconButton(onPressed: () {
+                                                      //   update(
+                                                      //     snapshot.data![index].id,
+                                                      //     snapshot
+                                                      //         .data![index].startDate,
+                                                      //     snapshot
+                                                      //         .data![index].endDate);
+
+                                                      // isUpdate = true;
+                                                      // }, icon: Icon(Icons.replay_rounded, color: primary)),
+                                                          
                                                           Text(
                                                             snapshot
                                                                 .data![index]
@@ -1345,6 +1374,7 @@ class _RekapPageState extends State<RekapPage> {
                                                               " ~ " +
                                                               endDate,
                                                           style: TextStyle(
+                                                            fontWeight: FontWeight.w800,
                                                               color: isDark
                                                                   ? base
                                                                   : home),
@@ -1361,12 +1391,10 @@ class _RekapPageState extends State<RekapPage> {
                                                               ? "Total Pemasukan "
                                                               : "Total Income",
                                                           style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
+                                                              color: isDark ? base : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
+                                                        "+" +  "Rp." +
                                                               (NumberFormat
                                                                       .currency(
                                                                 locale: 'id',
@@ -1380,9 +1408,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                       'IDR', '')
                                                                   .toString(),
                                                           style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
+                                                            fontWeight: FontWeight.w700,
+                                                              color: Colors.green),
                                                         ),
                                                       ]),
                                                   SizedBox(height: 15),
@@ -1401,7 +1428,7 @@ class _RekapPageState extends State<RekapPage> {
                                                                   : home),
                                                         ),
                                                         Text(
-                                                          "Rp." +
+                                                       "-" +   "Rp." +
                                                               (NumberFormat
                                                                       .currency(
                                                                 locale: 'id',
@@ -1415,9 +1442,8 @@ class _RekapPageState extends State<RekapPage> {
                                                                       'IDR', '')
                                                                   .toString(),
                                                           style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
+                                                            fontWeight: FontWeight.w700,
+                                                              color: Color.fromARGB(255, 175, 36, 23)),
                                                         ),
                                                       ]),
                                                   SizedBox(height: 15),
@@ -1450,9 +1476,11 @@ class _RekapPageState extends State<RekapPage> {
                                                                       'IDR', '')
                                                                   .toString(),
                                                           style: TextStyle(
-                                                              color: isDark
-                                                                  ? base
-                                                                  : home),
+                                                            fontWeight:FontWeight.w700,
+                                                              color:  (snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .sisa! < 0) ? Colors.redAccent: primary),
                                                         ),
                                                       ]),
                                                   SizedBox(height: 30),
