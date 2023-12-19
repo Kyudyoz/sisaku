@@ -2,7 +2,7 @@
     <application
         android:label="Sisaku"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher1">
+        android:icon="@mipmap/logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
