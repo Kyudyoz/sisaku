@@ -557,7 +557,7 @@ class _DetailRekapsStat extends State<DetailRekap>
       appBar: AppBar(
         backgroundColor: primary,
         title: Text(
-          (lang == 0) ? "Detail Rekap" : "Recap Details",
+          (lang == 0) ? "Detail Rekap" : "Report Details",
           style: GoogleFonts.inder(
             fontWeight: FontWeight.w500,
             fontSize: 20,
@@ -588,10 +588,14 @@ class _DetailRekapsStat extends State<DetailRekap>
                       ),
                       TextButton(
                           onPressed: openExported,
-                          child: Row(children: [
-                            Text("Open"),
-                            SizedBox(width: 30),
-                            Icon(Icons.file_open, color: base)
+                          child: Row(
+                             mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                            Text("Open",style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w400,
+                            ),),
+                            SizedBox(width: 4),
+                            Icon(Icons.file_open, size: 23 , color: base)
                           ]))
                     ],
                   ),
@@ -1085,6 +1089,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                       totalExpense: totalExpense,
                                       totalIncome: totalIncome,
                                       dailyAverage: dailyAverage,
+                                      balance: balance,
                                       isMonthly: isMonthly,
                                     ),
 
@@ -1162,6 +1167,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                         .toString(),
                                                                     style: TextStyle(
                                                                         color: isDark
+                                                                        
                                                                             ? base
                                                                             : home),
                                                                   ), // Nama kategori income
@@ -1365,6 +1371,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                         totalExpense: totalExpense,
                                         totalIncome: totalIncome,
                                         dailyAverage: dailyAverage,
+                                        balance: balance,
                                         isMonthly: isMonthly,
                                       ),
 
@@ -1490,7 +1497,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                                 .bold,
                                                                             color: isDark
                                                                                 ? base
-                                                                                : Colors.black),
+                                                                                : home),
                                                                       ),
                                                                       Text(
                                                                         (lang ==
@@ -1509,7 +1516,7 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                     ],
                                                                   ),
                                                                   Text(
-                                                                    'Rp. ' +
+                                                                  ((snapshot.data![index].category.type == 1) ? '+' : '-') +  'Rp. ' +
                                                                         (NumberFormat
                                                                                 .currency(
                                                                           locale:
@@ -1526,9 +1533,8 @@ class _DetailRekapsStat extends State<DetailRekap>
                                                                             'IDR',
                                                                             ''),
                                                                     style: TextStyle(
-                                                                        color: isDark
-                                                                            ? base
-                                                                            : Colors.black),
+
+                                                                        color: (snapshot.data![index].category.type == 1) ? Colors.green : Color.fromARGB(255, 231, 44, 31)),
                                                                   ),
                                                                 ],
                                                               ),

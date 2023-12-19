@@ -71,10 +71,10 @@ class _AddEditRekapState extends State<AddEditRekap> {
           (widget.rekap == null)
               ? (lang == 0)
                   ? "Tambah Rekap"
-                  : "Add Recap"
+                  : "Add Report"
               : (lang == 0)
                   ? "Edit Rekap"
-                  : "Edit Recap",
+                  : "Edit Report",
           style: GoogleFonts.inder(
             fontWeight: FontWeight.w500,
             fontSize: 20,
@@ -109,7 +109,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                       if (value == null || value.isEmpty) {
                         return (lang == 0)
                             ? 'Nama Rekap tidak boleh kosong'
-                            : 'Recap Name cannot be empty';
+                            : 'Report Name cannot be empty';
                       }
                       return null;
                     },
@@ -121,7 +121,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                       ),
                       labelStyle:
                           TextStyle(color: isDark ? base : Colors.black),
-                      labelText: (lang == 0) ? 'Nama Rekap' : 'Recap Name',
+                      labelText: (lang == 0) ? 'Nama Rekap' : 'Report Name',
                     ),
                   ),
                 ),
@@ -309,7 +309,7 @@ class _AddEditRekapState extends State<AddEditRekap> {
                                 content: Text(
                                   (lang == 0)
                                       ? 'Berhasil Edit Rekap'
-                                      : "Edit REcap Success",
+                                      : "Edit Report Success",
                                   style: GoogleFonts.inder(color: base),
                                 ),
                                 backgroundColor: primary,

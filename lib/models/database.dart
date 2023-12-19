@@ -352,12 +352,17 @@ class AppDb extends _$AppDb {
 // Ngdapatin Daftar Custom Rekaps
   Stream<List<Rekap>> getCustomRekaps() {
     final query = select(rekaps)..where((tbl) => tbl.isMonthly.equals(false));
+    // query.
+    // for (var rekap in query) {
+      
+    // }
     return query.watch();
   }
 
   // Ngdapatin Daftar Transaksi PerBulan
   Stream<List<Rekap>> getMonthlyRekaps() {
     final query = select(rekaps)..where((tbl) => tbl.isMonthly.equals(true));
+
     return query.watch();
   }
 
@@ -621,7 +626,7 @@ class AppDb extends _$AppDb {
 
     double averageExpense = countExpense == 0 ? 0 : totalExpense / countExpense;
     double averageIncome = countIncome == 0 ? 0 : totalIncome / countIncome;
-
+    
     int sisa = totalIncome - totalExpense;
     // Insert ke dalam tabel rekaps dengan nilai yang dihitung
     return (update(rekaps)..where((tbl) => tbl.id.equals(id))).write(
